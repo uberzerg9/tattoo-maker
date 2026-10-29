@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Workspace</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#161616}
+a{color:#0E0E0E}a:hover{color:#0E0E0E}
+input[type=range]{accent-color:#FF4FB0;width:100%}
+</style>
+</helmet>
+<div lang="{{lang}}" style="position: relative; height: 100vh; min-height: 720px; overflow: hidden; background-color: #161616; background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1.4px), radial-gradient(rgba(0,0,0,0.5) 1px, transparent 1.4px); background-size: 6px 6px, 9px 9px; background-position: 0 0, 3px 4px; color: #0E0E0E; font-family: 'Rubik', system-ui, sans-serif">
+
+<div onPointerDown="{{pan.down}}" onPointerMove="{{pan.move}}" onPointerUp="{{pan.up}}" ref="{{stageRef}}" style="{{stageStyle}}">
+
+<div aria-hidden="true" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 1100px; height: 760px; pointer-events: none">
+<div style="position: absolute; left: 70px; top: 40px; transform: rotate(-12deg); background: #C8FF2E; border: 3px solid #0E0E0E; border-radius: 999px; padding: 8px 16px; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 16px; box-shadow: 4px 4px 0 #0E0E0E; white-space: nowrap">{{t.sticker}}</div>
+<svg style="position: absolute; right: 90px; top: 30px; transform: rotate(14deg)" width="92" height="92" viewBox="0 0 100 100"><path d="M50 4 L61 36 L95 36 L68 56 L78 90 L50 70 L22 90 L32 56 L5 36 L39 36 Z" fill="#FF4FB0" stroke="#0E0E0E" stroke-width="4" stroke-linejoin="round"></path><text x="50" y="58" text-anchor="middle" font-family="Unbounded, sans-serif" font-weight="900" font-size="15" fill="#0E0E0E">INK</text></svg>
+<svg style="position: absolute; left: 30px; bottom: 60px; transform: rotate(8deg)" width="84" height="84" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#FFE14D" stroke="#0E0E0E" stroke-width="5"></circle><path d="M30 34 l12 12 M42 34 l-12 12 M58 34 l12 12 M70 34 l-12 12" stroke="#0E0E0E" stroke-width="5" stroke-linecap="round"></path><path d="M30 64 Q50 80 70 64" fill="none" stroke="#0E0E0E" stroke-width="5" stroke-linecap="round"></path></svg>
+<svg style="position: absolute; right: 60px; bottom: 50px; transform: rotate(-20deg)" width="140" height="56" viewBox="0 0 140 56"><rect x="4" y="10" width="132" height="30" rx="15" fill="#4D6BFF" stroke="#0E0E0E" stroke-width="4"></rect><circle cx="32" cy="46" r="7" fill="#F4F4F0" stroke="#0E0E0E" stroke-width="3"></circle><circle cx="108" cy="46" r="7" fill="#F4F4F0" stroke="#0E0E0E" stroke-width="3"></circle><path d="M40 25 h60" stroke="#0E0E0E" stroke-width="3" stroke-dasharray="4 5"></path></svg>
+<svg style="position: absolute; left: 50%; bottom: 0; transform: translateX(160px) rotate(10deg)" width="48" height="70" viewBox="0 0 48 70"><path d="M28 2 L4 40 H22 L16 68 L44 26 H26 Z" fill="#C8FF2E" stroke="#0E0E0E" stroke-width="4" stroke-linejoin="round"></path></svg>
+</div>
+
+<div style="{{skinWrap}}">
+<div data-skin="1" style="{{skinPatch}}">
+<sc-if value="{{fresh}}" hint-placeholder-val="{{ true }}">
+<div style="position: absolute; left: 50%; top: 52%; width: 260px; height: 320px; transform: translate(-60%, -50%); border-radius: 50%; background: rgba(214, 72, 64, 0.22); filter: blur(28px)"></div>
+</sc-if>
+<div style="position: absolute; inset: 0; border-radius: 26px; background-image: radial-gradient(circle at 20% 30%, rgba(90,50,30,0.10) 0 1px, transparent 2px), radial-gradient(circle at 70% 60%, rgba(90,50,30,0.08) 0 1px, transparent 2px); background-size: 14px 14px, 19px 19px"></div>
+<svg viewBox="0 0 600 520" style="position: absolute; inset: 0; width: 100%; height: 100%" role="img" aria-label="{{t.skinAria}}">
+<sc-if value="{{stencilOn}}" hint-placeholder-val="{{ true }}">
+<g fill="none" stroke="#6A3FB5" stroke-width="2" stroke-linecap="round" opacity="{{stencilOpacity}}">
+<path d="M302 340 C 345 325, 365 300, 372 270 C 336 276, 310 300, 302 340 Z"></path>
+<ellipse cx="300" cy="188" rx="22" ry="36"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(72 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(144 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(216 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(288 300 230)"></ellipse>
+<circle cx="300" cy="230" r="16"></circle>
+</g>
+</sc-if>
+<g fill="none" stroke="#17161A" stroke-width="3.2" stroke-linecap="round" opacity="{{inkOpacity}}">
+<path d="M300 470 C 300 400, 284 340, 300 262"></path>
+<path d="M296 400 C 250 380, 230 350, 222 320 C 262 330, 288 360, 296 400 Z"></path>
+</g>
+<g fill="#17161A" opacity="{{inkOpacity}}">
+<circle cx="238" cy="333" r="1.6" opacity="0.9"></circle><circle cx="244" cy="340" r="1.5" opacity="0.85"></circle><circle cx="250" cy="348" r="1.6" opacity="0.9"></circle><circle cx="256" cy="356" r="1.4" opacity="0.8"></circle><circle cx="262" cy="363" r="1.5" opacity="0.85"></circle><circle cx="268" cy="371" r="1.4" opacity="0.8"></circle><circle cx="275" cy="378" r="1.5" opacity="0.85"></circle><circle cx="282" cy="386" r="1.3" opacity="0.75"></circle>
+<circle cx="245" cy="333" r="1.2" opacity="0.6"></circle><circle cx="252" cy="341" r="1.1" opacity="0.55"></circle><circle cx="259" cy="349" r="1.2" opacity="0.6"></circle><circle cx="266" cy="357" r="1" opacity="0.5"></circle><circle cx="273" cy="366" r="1.1" opacity="0.5"></circle><circle cx="280" cy="374" r="1" opacity="0.45"></circle>
+<circle cx="251" cy="335" r="0.9" opacity="0.4"></circle><circle cx="260" cy="344" r="0.8" opacity="0.35"></circle><circle cx="268" cy="352" r="0.9" opacity="0.35"></circle><circle cx="276" cy="361" r="0.8" opacity="0.3"></circle>
+</g>
+<circle cx="303" cy="330" r="14" fill="none" stroke="#17161A" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.6"></circle>
+</svg>
+<div style="position: absolute; left: 22px; top: -16px; transform: rotate(-3deg); background: #F4F4F0; border: 3px solid #0E0E0E; padding: 4px 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; box-shadow: 3px 3px 0 #0E0E0E; white-space: nowrap">{{t.sheet}}</div>
+</div>
+</div>
+</div>
+
+<header style="position: absolute; top: 14px; left: 50%; transform: translateX(-50%) rotate(-0.6deg); z-index: 50; display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 16px; background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 14px; box-shadow: 6px 6px 0 #0E0E0E; white-space: nowrap; max-width: calc(100% - 32px); overflow-x: auto">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 22px; line-height: 1; letter-spacing: -0.01em">{{t.brandA}}<span style="color: #FF4FB0; -webkit-text-stroke: 1px #0E0E0E">✶</span>{{t.brandB}}</span>
+<button aria-label="{{t.undo}}" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #F4F4F0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"></path><path d="M4 9h11a5 5 0 0 1 0 10h-3"></path></svg>
+</button>
+<button onClick="{{resetLayout}}" style="height: 40px; padding: 0 12px; background: #FFE14D; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer">{{t.reset}}</button>
+<button style="height: 40px; padding: 0 14px; background: #FF4FB0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer">{{t.save}}</button>
+<button onClick="{{toggleProfile}}" aria-label="{{t.profile}}" aria-expanded="{{profileOpen}}" style="{{profileBtn}}">AS</button>
+</header>
+
+<sc-if value="{{profileOpen}}" hint-placeholder-val="{{ false }}">
+<section aria-label="{{t.profile}}" style="position: absolute; top: 82px; left: 50%; transform: translateX(60px) rotate(1.2deg); z-index: 60; width: 300px; max-width: calc(100% - 32px); background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 14px; box-shadow: 6px 6px 0 #0E0E0E">
+<div style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; background: #C9B8FF; border-bottom: 3px solid #0E0E0E; border-radius: 11px 11px 0 0">
+<h2 style="margin: 0; flex: 1; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 15px">{{t.profileTitle}}</h2>
+<button onClick="{{toggleProfile}}" aria-label="{{t.close}}" style="width: 32px; height: 32px; background: #F4F4F0; border: 2px solid #0E0E0E; border-radius: 8px; color: #0E0E0E; font: inherit; font-weight: 700; font-size: 18px; line-height: 1; cursor: pointer">×</button>
+</div>
+<div style="padding: 14px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 12px">
+<div style="width: 52px; height: 52px; flex: none; border-radius: 50%; background: #FFE14D; border: 3px solid #0E0E0E; box-shadow: 2px 2px 0 #0E0E0E; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 16px">AS</div>
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 14px">[YOUR NAME]</span>
+<span style="font-size: 13px">{{t.level}}</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span id="langLabel" style="font-size: 14px; font-weight: 500">{{t.language}}</span>
+<div role="group" aria-labelledby="langLabel" style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{langs}}" as="l" hint-placeholder-count="3">
+<button onClick="{{l.pick}}" aria-pressed="{{l.on}}" style="{{l.style}}"><span>{{l.native}}</span><span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px">{{l.code}}</span></button>
+</sc-for>
+</div>
+</div>
+<p style="margin: 0; font-size: 12px; line-height: 1.4">{{t.langNote}}</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<a href="Profile.dc.html" style="height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; background: #C8FF2E; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; box-shadow: 3px 3px 0 #0E0E0E; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; text-decoration: none">{{t.viewProfile}}</a>
+<a href="Login.dc.html" style="height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; text-decoration: none">{{t.logout}}</a>
+</div>
+</div>
+</section>
+</sc-if>
+
+<section aria-label="{{t.carts}}" style="{{p.carts}}">
+<div onPointerDown="{{h.carts.down}}" onPointerMove="{{h.carts.move}}" onPointerUp="{{h.carts.up}}" style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; background: #C8FF2E; border-bottom: 3px solid #0E0E0E; border-radius: 11px 11px 0 0; cursor: grab; user-select: none; touch-action: none">
+<h2 style="margin: 0; flex: 1; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 15px">{{t.carts}}</h2>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; background: #0E0E0E; color: #C8FF2E; padding: 3px 8px; border-radius: 999px">{{cartLabel}}</span>
+<button onClick="{{h.carts.toggle}}" aria-label="{{h.carts.label}}" style="width: 32px; height: 32px; background: #F4F4F0; border: 2px solid #0E0E0E; border-radius: 8px; color: #0E0E0E; font: inherit; font-weight: 700; font-size: 18px; line-height: 1; cursor: pointer">{{h.carts.icon}}</button>
+</div>
+<sc-if value="{{open.carts}}" hint-placeholder-val="{{ true }}">
+<div style="width: 280px; min-width: 220px; min-height: 120px; max-height: 70vh; overflow: auto; resize: both; box-sizing: border-box; padding: 8px; display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{carts}}" as="c" hint-placeholder-count="5">
+<button onClick="{{c.pick}}" style="{{c.row}}">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 22px; line-height: 1; width: 42px">{{c.count}}</span>
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px">{{c.group}} · {{c.type}}</span>
+<span style="font-size: 13px">{{c.use}}</span>
+</div>
+</button>
+</sc-for>
+</div>
+</sc-if>
+</section>
+
+<section aria-label="{{t.caps}}" style="{{p.caps}}">
+<div onPointerDown="{{h.caps.down}}" onPointerMove="{{h.caps.move}}" onPointerUp="{{h.caps.up}}" style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; background: #FF4FB0; border-bottom: 3px solid #0E0E0E; border-radius: 11px 11px 0 0; cursor: grab; user-select: none; touch-action: none">
+<h2 style="margin: 0; flex: 1; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 15px">{{t.caps}}</h2>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; background: #0E0E0E; color: #FF4FB0; padding: 3px 8px; border-radius: 999px">{{capName}}</span>
+<button onClick="{{h.caps.toggle}}" aria-label="{{h.caps.label}}" style="width: 32px; height: 32px; background: #F4F4F0; border: 2px solid #0E0E0E; border-radius: 8px; color: #0E0E0E; font: inherit; font-weight: 700; font-size: 18px; line-height: 1; cursor: pointer">{{h.caps.icon}}</button>
+</div>
+<sc-if value="{{open.caps}}" hint-placeholder-val="{{ true }}">
+<div style="width: 280px; min-width: 220px; min-height: 120px; overflow: auto; resize: both; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{caps}}" as="k" hint-placeholder-count="5">
+<button onClick="{{k.pick}}" aria-label="{{k.name}}" style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 4px 0; min-height: 64px; background: transparent; border: 0; cursor: pointer; font: inherit">
+<div style="{{k.swatch}}"></div>
+<div style="width: 30px; height: 6px; background: #F4F4F0; border: 2px solid #0E0E0E; border-radius: 4px; overflow: hidden"><div style="{{k.bar}}"></div></div>
+</button>
+</sc-for>
+</div>
+<button style="height: 44px; background: #4D6BFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; box-shadow: 3px 3px 0 #0E0E0E; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 12px; cursor: pointer">{{t.dip}}</button>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; font-weight: 500"><span>{{t.inkLeft}}</span><span style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 15px">64%</span></div>
+<div style="height: 12px; background: #F4F4F0; border: 2px solid #0E0E0E; border-radius: 999px; overflow: hidden"><div style="width: 64%; height: 100%; background: repeating-linear-gradient(-45deg, #0E0E0E 0 6px, #3A3A3A 6px 12px)"></div></div>
+</div>
+</div>
+</sc-if>
+</section>
+
+<section aria-label="{{t.machine}}" style="{{p.machine}}">
+<div onPointerDown="{{h.machine.down}}" onPointerMove="{{h.machine.move}}" onPointerUp="{{h.machine.up}}" style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; background: #4D6BFF; border-bottom: 3px solid #0E0E0E; border-radius: 11px 11px 0 0; cursor: grab; user-select: none; touch-action: none">
+<h2 style="margin: 0; flex: 1; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 15px">{{t.machine}}</h2>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; background: #0E0E0E; color: #F4F4F0; padding: 3px 8px; border-radius: 999px">{{speedLabel}}</span>
+<button onClick="{{h.machine.toggle}}" aria-label="{{h.machine.label}}" style="width: 32px; height: 32px; background: #F4F4F0; border: 2px solid #0E0E0E; border-radius: 8px; color: #0E0E0E; font: inherit; font-weight: 700; font-size: 18px; line-height: 1; cursor: pointer">{{h.machine.icon}}</button>
+</div>
+<sc-if value="{{open.machine}}" hint-placeholder-val="{{ true }}">
+<div style="width: 280px; min-width: 220px; min-height: 120px; overflow: auto; resize: both; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end">
+<label for="speed" style="font-size: 13px; font-weight: 500; padding-bottom: 6px">{{t.speed}}</label>
+<div style="display: flex; align-items: baseline; gap: 4px"><span style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 48px; line-height: 0.9">{{speed}}</span><span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 14px">{{t.hz}}</span></div>
+</div>
+<input id="speed" type="range" min="50" max="150" step="5" value="{{speed}}" onChange="{{onSpeed}}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<button onClick="{{presetShade}}" style="{{shadeBtn}}">{{t.presetShade}}</button>
+<button onClick="{{presetLine}}" style="{{lineBtn}}">{{t.presetLine}}</button>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.4">{{t.speedHint}}</p>
+</div>
+</sc-if>
+</section>
+
+<section aria-label="{{t.skin}}" style="{{p.skin}}">
+<div onPointerDown="{{h.skin.down}}" onPointerMove="{{h.skin.move}}" onPointerUp="{{h.skin.up}}" style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; background: #FFE14D; border-bottom: 3px solid #0E0E0E; border-radius: 11px 11px 0 0; cursor: grab; user-select: none; touch-action: none">
+<h2 style="margin: 0; flex: 1; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 15px">{{t.skin}}</h2>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; background: #0E0E0E; color: #FFE14D; padding: 3px 8px; border-radius: 999px">{{toneName}}</span>
+<button onClick="{{h.skin.toggle}}" aria-label="{{h.skin.label}}" style="width: 32px; height: 32px; background: #F4F4F0; border: 2px solid #0E0E0E; border-radius: 8px; color: #0E0E0E; font: inherit; font-weight: 700; font-size: 18px; line-height: 1; cursor: pointer">{{h.skin.icon}}</button>
+</div>
+<sc-if value="{{open.skin}}" hint-placeholder-val="{{ true }}">
+<div style="width: 280px; min-width: 220px; min-height: 80px; overflow: auto; resize: both; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 500">{{t.tone}}</span>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{tones}}" as="tn" hint-placeholder-count="6">
+<button onClick="{{tn.pick}}" aria-label="{{tn.name}}" style="{{tn.swatch}}"></button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</section>
+
+<section aria-label="{{t.stencil}}" style="{{p.stencil}}">
+<div onPointerDown="{{h.stencil.down}}" onPointerMove="{{h.stencil.move}}" onPointerUp="{{h.stencil.up}}" style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; background: #C8FF2E; border-bottom: 3px solid #0E0E0E; border-radius: 11px 11px 0 0; cursor: grab; user-select: none; touch-action: none">
+<h2 style="margin: 0; flex: 1; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 15px">{{t.stencil}}</h2>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; background: #0E0E0E; color: #C8FF2E; padding: 3px 8px; border-radius: 999px">{{stencilPct}}</span>
+<button onClick="{{h.stencil.toggle}}" aria-label="{{h.stencil.label}}" style="width: 32px; height: 32px; background: #F4F4F0; border: 2px solid #0E0E0E; border-radius: 8px; color: #0E0E0E; font: inherit; font-weight: 700; font-size: 18px; line-height: 1; cursor: pointer">{{h.stencil.icon}}</button>
+</div>
+<sc-if value="{{open.stencil}}" hint-placeholder-val="{{ true }}">
+<div style="width: 280px; min-width: 220px; min-height: 120px; overflow: auto; resize: both; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; gap: 10px; align-items: center">
+<div style="width: 76px; height: 86px; flex: none; background: #F4F4F0; border: 2px dashed #0E0E0E; border-radius: 10px; display: flex; align-items: center; justify-content: center">
+<svg width="54" height="70" viewBox="200 140 200 340" role="img" aria-label="{{t.thumbAria}}">
+<g fill="none" stroke="#6A3FB5" stroke-width="7" stroke-linecap="round">
+<path d="M300 470 C 300 400, 284 340, 300 262"></path>
+<path d="M296 400 C 250 380, 230 350, 222 320 C 262 330, 288 360, 296 400 Z"></path>
+<path d="M302 340 C 345 325, 365 300, 372 270 C 336 276, 310 300, 302 340 Z"></path>
+<circle cx="300" cy="230" r="16"></circle>
+<ellipse cx="300" cy="188" rx="22" ry="36"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(72 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(288 300 230)"></ellipse>
+</g>
+</svg>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px">flower-sketch.png</span>
+<span style="font-size: 12px">{{t.dropHint}}</span>
+</div>
+</div>
+<label for="stencilOpacity" style="font-size: 13px; font-weight: 500">{{t.visibility}}</label>
+<input id="stencilOpacity" type="range" min="10" max="100" step="5" value="{{stencilVal}}" onChange="{{onStencilOpacity}}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<button style="height: 44px; background: #F4F4F0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer">{{t.upload}}</button>
+<a href="Stencil.dc.html" style="height: 44px; box-sizing: border-box; background: #FF4FB0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; box-shadow: 3px 3px 0 #0E0E0E; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; text-decoration: none; display: flex; align-items: center; justify-content: center">{{t.transfer}}</a>
+</div>
+</div>
+</sc-if>
+</section>
+
+<div style="position: absolute; left: 24px; bottom: 18px; z-index: 40; transform: rotate(-1deg); display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; padding: 8px 12px; background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 12px; box-shadow: 4px 4px 0 #0E0E0E; max-width: calc(100% - 48px); box-sizing: border-box; font-size: 13px">
+<span>{{t.passes}} <b style="font-family: 'Unbounded', sans-serif; font-weight: 900">38</b></span>
+<span>{{t.deviation}} <b style="font-family: 'Unbounded', sans-serif; font-weight: 900">{{t.deviationVal}}</b></span>
+<span style="background: #FFE14D; border: 2px solid #0E0E0E; border-radius: 999px; padding: 2px 8px">{{t.trauma}} <b>{{t.traumaVal}}</b></span>
+</div>
+
+<div style="position: absolute; left: 50%; bottom: 80px; transform: translateX(-50%); z-index: 44; padding: 5px 12px; background: rgba(14,14,14,0.82); color: #F4F4F0; border-radius: 999px; font-size: 12px; white-space: nowrap; max-width: calc(100% - 32px); overflow: hidden; text-overflow: ellipsis; pointer-events: none">{{t.navHint}}</div>
+
+<div style="position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 45; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 14px; padding: 5px; box-shadow: 5px 5px 0 #0E0E0E; max-width: calc(100% - 32px); box-sizing: border-box">
+<button onClick="{{toolNeedle}}" aria-label="{{t.toolNeedle}}" style="{{needleBtn}}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l6-6"></path><path d="M9 9l6 6"></path><path d="M14 4l6 6-5 5-6-6z"></path></svg>
+</button>
+<button onClick="{{toolHand}}" aria-label="{{t.toolHand}}" style="{{handBtn}}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11"></path><path d="M11 10V4.5a1.5 1.5 0 0 1 3 0V11"></path><path d="M14 10.5V6a1.5 1.5 0 0 1 3 0v7a7 7 0 0 1-7 7h-.5a6 6 0 0 1-4.6-2.2L3 15.5a1.6 1.6 0 0 1 2.4-2L8 15"></path></svg>
+</button>
+<div style="width: 2px; height: 24px; background: #0E0E0E; margin: 0 2px"></div>
+<button onClick="{{toggleStencil}}" style="{{stencilBtn}}">{{t.stencilShort}}</button>
+<button onClick="{{setFresh}}" style="{{freshBtn}}">{{t.fresh}}</button>
+<button onClick="{{setHealed}}" style="{{healedBtn}}">{{t.healed}}</button>
+<div style="width: 2px; height: 24px; background: #0E0E0E; margin: 0 2px"></div>
+<button onClick="{{zoomOut}}" aria-label="{{t.zoomOut}}" style="width: 40px; height: 40px; background: #F4F4F0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-weight: 700; font-size: 20px; line-height: 1; cursor: pointer">−</button>
+<button onClick="{{zoomReset}}" aria-label="{{t.zoomReset}}" style="height: 40px; min-width: 64px; background: #0E0E0E; color: #C8FF2E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 12px; cursor: pointer">{{zoomLabel}}</button>
+<button onClick="{{zoomIn}}" aria-label="{{t.zoomIn}}" style="width: 40px; height: 40px; background: #F4F4F0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-weight: 700; font-size: 20px; line-height: 1; cursor: pointer">+</button>
+<div style="width: 2px; height: 24px; background: #0E0E0E; margin: 0 2px"></div>
+<button onClick="{{rotLeft}}" aria-label="{{t.rotLeft}}" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #F4F4F0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4v6h6"></path><path d="M3.5 10A9 9 0 1 1 6 17.5"></path></svg>
+</button>
+<button onClick="{{rotReset}}" aria-label="{{t.rotReset}}" style="height: 40px; min-width: 58px; background: #C9B8FF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 12px; cursor: pointer">{{rotLabel}}</button>
+<button onClick="{{rotRight}}" aria-label="{{t.rotRight}}" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #F4F4F0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4v6h-6"></path><path d="M20.5 10A9 9 0 1 0 18 17.5"></path></svg>
+</button>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+const DEFAULT_POS = {
+  carts: { side: 'left', x: 24, y: 86 },
+  caps: { side: 'left', x: 24, y: 456 },
+  machine: { side: 'right', x: 24, y: 86 },
+  skin: { side: 'right', x: 24, y: 352 },
+  stencil: { side: 'right', x: 24, y: 512 }
+};
+const ROT = { carts: -1.2, caps: 0.9, machine: 1, skin: -0.8, stencil: 0.6 };
+const PATCH_W = 640;
+const PATCH_H = 500;
+const LANGS = [
+  { code: 'EN', id: 'en', native: 'English' },
+  { code: 'RU', id: 'ru', native: 'Русский' },
+  { code: 'RO', id: 'ro', native: 'Română' }
+];
+const I18N = {
+  en: {
+    brandA: 'TATTOO', brandB: 'TRAINER', undo: 'Undo', reset: 'RESET', save: 'SAVE', profile: 'Profile', profileTitle: 'PROFILE', close: 'Close',
+    level: 'Beginner · 12 sessions', viewProfile: 'PROFILE', logout: 'LOG OUT', language: 'Language', langNote: 'The whole interface switches instantly. Lessons and hints follow the same language.',
+    collapse: 'Collapse', expand: 'Expand', sticker: "DON'T SHAKE", sheet: 'SHEET 20 × 15 CM',
+    skinAria: 'Flower sketch on a sheet of practice skin: the stem and left leaf are inked, the rest is stencil lines',
+    carts: 'CARTRIDGES', caps: 'INK CAPS', machine: 'MACHINE', skin: 'SKIN', stencil: 'STENCIL',
+    dip: 'DIP NEEDLE', inkLeft: 'Ink in cartridge', speed: 'Speed', hz: 'Hz', presetShade: 'SHADING 80', presetLine: 'LINING 120',
+    speedHint: 'Slower: sparser dots, softer gradient. Faster: solid line.', tone: 'Skin tone',
+    dropHint: 'Drop a file here or upload', visibility: 'Visibility on skin', upload: 'UPLOAD', transfer: 'TRANSFER', thumbAria: 'Uploaded sketch thumbnail',
+    passes: 'Passes', deviation: 'Deviation', deviationVal: '0.6 mm', trauma: 'Trauma:', traumaVal: 'medium',
+    toolNeedle: 'Tool: machine', toolHand: 'Tool: move skin', stencilShort: 'STENCIL', fresh: 'FRESH', healed: 'HEALED',
+    zoomIn: 'Zoom in', zoomOut: 'Zoom out', zoomReset: 'Reset zoom and position', rotLeft: 'Rotate left 15°', rotRight: 'Rotate right 15°', rotReset: 'Reset rotation', navHint: 'Scroll — pan · Ctrl/⌘ + scroll — zoom · Alt + scroll — rotate · drag grip tape — move',
+    cartTypes: ['Liner', 'Liner', 'Shader', 'Magnum', 'Round magnum'],
+    cartUses: ['Fine lines, details', 'Main outline', 'Small fill areas', 'Whip shading', 'Soft gradient, full black'],
+    capNames: ['black', 'grey 60', 'grey 30', 'grey 10', 'white'],
+    toneNames: ['light', 'beige', 'honey', 'olive', 'tan', 'deep']
+  },
+  ru: {
+    brandA: 'ТАТУ', brandB: 'ТРЕНАЖЁР', undo: 'Отменить', reset: 'СБРОС', save: 'СОХРАНИТЬ', profile: 'Профиль', profileTitle: 'ПРОФИЛЬ', close: 'Закрыть',
+    level: 'Новичок · 12 сессий', viewProfile: 'ПРОФИЛЬ', logout: 'ВЫЙТИ', language: 'Язык', langNote: 'Весь интерфейс переключается сразу. Уроки и подсказки — на том же языке.',
+    collapse: 'Свернуть', expand: 'Развернуть', sticker: 'НЕ ДРОЖИ', sheet: 'ЛИСТ 20 × 15 СМ',
+    skinAria: 'Эскиз цветка на листе искусственной кожи: стебель и левый лист набиты, остальное — линии стенсила',
+    carts: 'КАРТРИДЖИ', caps: 'КОЛПАЧКИ', machine: 'МАШИНКА', skin: 'КОЖА', stencil: 'СТЕНСИЛ',
+    dip: 'МАКНУТЬ', inkLeft: 'Краска в картридже', speed: 'Скорость', hz: 'Гц', presetShade: 'ШЕЙДИНГ 80', presetLine: 'КОНТУР 120',
+    speedHint: 'Медленнее — точки реже, мягче градиент. Быстрее — сплошная линия.', tone: 'Оттенок',
+    dropHint: 'Перетащи файл сюда или загрузи', visibility: 'Видимость на коже', upload: 'ЗАГРУЗИТЬ', transfer: 'ПЕРЕНЕСТИ', thumbAria: 'Миниатюра загруженного эскиза',
+    passes: 'Проходы', deviation: 'Отклонение', deviationVal: '0,6 мм', trauma: 'Травма:', traumaVal: 'средняя',
+    toolNeedle: 'Инструмент: машинка', toolHand: 'Инструмент: двигать кожу', stencilShort: 'СТЕНСИЛ', fresh: 'СВЕЖАЯ', healed: 'ЗАЖИВШАЯ',
+    zoomIn: 'Увеличить', zoomOut: 'Уменьшить', zoomReset: 'Сбросить масштаб и положение', rotLeft: 'Повернуть влево на 15°', rotRight: 'Повернуть вправо на 15°', rotReset: 'Сбросить поворот', navHint: 'Скролл — двигать · Ctrl/⌘ + скролл — зум · Alt + скролл — поворот · тяни за гриптейп',
+    cartTypes: ['Лайнер', 'Лайнер', 'Шейдер', 'Магнум', 'Скругл. магнум'],
+    cartUses: ['Тонкий контур, детали', 'Основной контур', 'Заливка мелких зон', 'Вип-шейдинг', 'Мягкий градиент, фулл-блэк'],
+    capNames: ['чёрный', 'серый 60', 'серый 30', 'серый 10', 'белый'],
+    toneNames: ['светлая', 'бежевая', 'медовая', 'оливковая', 'смуглая', 'тёмная']
+  },
+  ro: {
+    brandA: 'TATTOO', brandB: 'TRAINER', undo: 'Anulează', reset: 'RESETARE', save: 'SALVEAZĂ', profile: 'Profil', profileTitle: 'PROFIL', close: 'Închide',
+    level: 'Începător · 12 sesiuni', viewProfile: 'PROFIL', logout: 'IEȘIRE', language: 'Limbă', langNote: 'Toată interfața se schimbă instant. Lecțiile și indiciile urmează aceeași limbă.',
+    collapse: 'Restrânge', expand: 'Extinde', sticker: 'NU TREMURA', sheet: 'FOAIE 20 × 15 CM',
+    skinAria: 'Schiță de floare pe o foaie de piele de exersat: tulpina și frunza stângă sunt tatuate, restul sunt linii de stencil',
+    carts: 'CARTUȘE', caps: 'CĂPĂCELE', machine: 'MAȘINĂ', skin: 'PIELE', stencil: 'STENCIL',
+    dip: 'ÎNMOAIE', inkLeft: 'Cerneală în cartuș', speed: 'Viteză', hz: 'Hz', presetShade: 'UMBRIRE 80', presetLine: 'CONTUR 120',
+    speedHint: 'Mai lent: puncte mai rare, gradient mai fin. Mai rapid: linie continuă.', tone: 'Nuanța pielii',
+    dropHint: 'Trage fișierul aici sau încarcă', visibility: 'Vizibilitate pe piele', upload: 'ÎNCARCĂ', transfer: 'TRANSFERĂ', thumbAria: 'Miniatura schiței încărcate',
+    passes: 'Treceri', deviation: 'Abatere', deviationVal: '0,6 mm', trauma: 'Traumă:', traumaVal: 'medie',
+    toolNeedle: 'Unealtă: mașină', toolHand: 'Unealtă: mută pielea', stencilShort: 'STENCIL', fresh: 'PROASPĂT', healed: 'VINDECAT',
+    zoomIn: 'Mărește', zoomOut: 'Micșorează', zoomReset: 'Resetează zoomul și poziția', rotLeft: 'Rotește la stânga 15°', rotRight: 'Rotește la dreapta 15°', rotReset: 'Resetează rotația', navHint: 'Scroll — mută · Ctrl/⌘ + scroll — zoom · Alt + scroll — rotire · trage de grip tape',
+    cartTypes: ['Liner', 'Liner', 'Shader', 'Magnum', 'Magnum rotund'],
+    cartUses: ['Linii fine, detalii', 'Contur principal', 'Umplere zone mici', 'Whip shading', 'Gradient fin, full black'],
+    capNames: ['negru', 'gri 60', 'gri 30', 'gri 10', 'alb'],
+    toneNames: ['deschisă', 'bej', 'miere', 'măslinie', 'bronzată', 'închisă']
+  }
+};
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.drag = null;
+    this.panning = null;
+    this.wheelFn = (e) => this.handleWheel(e);
+    this.stageRef = (el) => {
+      if (this.stageEl) this.stageEl.removeEventListener('wheel', this.wheelFn);
+      this.stageEl = el;
+      if (el) el.addEventListener('wheel', this.wheelFn, { passive: false });
+    };
+    this.state = {
+      lang: 'en', profileOpen: false,
+      cart: 'm1-7', cap: 'black', speed: 85, view: 'fresh', stencil: true, stencilOpacity: 60,
+      tone: 't2', tool: 'needle',
+      zoom: 1, ox: 0, oy: 0, rot: 0, isPanning: false,
+      pos: { ...DEFAULT_POS },
+      open: { carts: true, caps: true, machine: true, skin: true, stencil: true },
+      zs: { carts: 11, caps: 12, machine: 13, skin: 14, stencil: 15 },
+      top: 15
+    };
+  }
+  clampOffset(x, y, z) {
+    const m = (Math.max(PATCH_W, PATCH_H) * z) / 2;
+    const mx = m + 120;
+    const my = m + 80;
+    return { ox: Math.max(-mx, Math.min(mx, x)), oy: Math.max(-my, Math.min(my, y)) };
+  }
+  setZoom(z) {
+    const v = Math.min(3, Math.max(0.5, Math.round(z * 100) / 100));
+    this.setState({ zoom: v, ...this.clampOffset(this.state.ox, this.state.oy, v) });
+  }
+  setRot(r) {
+    let v = ((Math.round(r) % 360) + 360) % 360;
+    if (v > 180) v -= 360;
+    this.setState({ rot: v });
+  }
+  handleWheel(e) {
+    e.preventDefault();
+    const z = this.state.zoom;
+    if (e.ctrlKey || e.metaKey) {
+      const d = Math.max(-60, Math.min(60, e.deltaY));
+      this.setZoom(z * Math.exp(-d * 0.006));
+    } else if (e.altKey) {
+      this.setRot(this.state.rot + (e.deltaY < 0 ? -5 : 5));
+    } else {
+      const dx = e.shiftKey ? e.deltaY : e.deltaX;
+      const dy = e.shiftKey ? 0 : e.deltaY;
+      this.setState(this.clampOffset(this.state.ox - dx, this.state.oy - dy, z));
+    }
+  }
+  handlers(id, t) {
+    const open = this.state.open[id];
+    return {
+      icon: open ? '−' : '+',
+      label: open ? t.collapse : t.expand,
+      toggle: () => this.setState({ open: { ...this.state.open, [id]: !open } }),
+      down: (e) => {
+        if (e.target.closest && e.target.closest('button')) return;
+        const p = this.state.pos[id];
+        this.drag = { id, sx: e.clientX, sy: e.clientY, ox: p.x, oy: p.y };
+        if (e.currentTarget.setPointerCapture) e.currentTarget.setPointerCapture(e.pointerId);
+        const top = this.state.top + 1;
+        this.setState({ top, zs: { ...this.state.zs, [id]: top } });
+      },
+      move: (e) => {
+        if (!this.drag || this.drag.id !== id) return;
+        const p = this.state.pos[id];
+        const dx = e.clientX - this.drag.sx;
+        const dy = e.clientY - this.drag.sy;
+        const nx = p.side === 'left' ? this.drag.ox + dx : this.drag.ox - dx;
+        this.setState({ pos: { ...this.state.pos, [id]: { ...p, x: Math.max(0, nx), y: Math.max(0, this.drag.oy + dy) } } });
+      },
+      up: () => { this.drag = null; }
+    };
+  }
+  panelStyle(id) {
+    const p = this.state.pos[id];
+    const s = { position: 'absolute', top: p.y + 'px', zIndex: this.state.zs[id], background: '#F4F4F0', border: '3px solid #0E0E0E', borderRadius: '14px', boxShadow: '6px 6px 0 #0E0E0E', transform: 'rotate(' + ROT[id] + 'deg)', maxWidth: 'calc(100% - 32px)' };
+    s[p.side] = p.x + 'px';
+    return s;
+  }
+  renderVals() {
+    const t = I18N[this.state.lang] || I18N.en;
+    const lime = '#C8FF2E';
+    const pink = '#FF4FB0';
+    const cartData = [
+      { id: 'rl-3', count: '03', group: 'RL' },
+      { id: 'rl-7', count: '07', group: 'RL' },
+      { id: 'rs-9', count: '09', group: 'RS' },
+      { id: 'm1-7', count: '07', group: 'M1' },
+      { id: 'rm-15', count: '15', group: 'RM' }
+    ];
+    const rowBase = { display: 'flex', alignItems: 'center', gap: '12px', width: '100%', minHeight: '52px', padding: '6px 10px', border: '2px solid #0E0E0E', borderRadius: '10px', color: '#0E0E0E', font: 'inherit', textAlign: 'left', cursor: 'pointer' };
+    const carts = cartData.map((c, i) => ({
+      ...c,
+      type: t.cartTypes[i],
+      use: t.cartUses[i],
+      row: c.id === this.state.cart ? { ...rowBase, background: lime, boxShadow: '3px 3px 0 #0E0E0E' } : { ...rowBase, background: '#F4F4F0', borderColor: '#BDBDB6' },
+      pick: () => this.setState({ cart: c.id })
+    }));
+    const current = cartData.find((c) => c.id === this.state.cart) || cartData[0];
+    const capData = [
+      { id: 'black', color: '#141316', level: 80 },
+      { id: 'g60', color: '#4A4A50', level: 55 },
+      { id: 'g30', color: '#8B8B92', level: 70 },
+      { id: 'g10', color: '#C3C3C8', level: 35 },
+      { id: 'white', color: '#FFFFFF', level: 90 }
+    ];
+    const caps = capData.map((k, i) => {
+      const on = k.id === this.state.cap;
+      return {
+        ...k,
+        name: t.capNames[i],
+        swatch: { width: '38px', height: '38px', borderRadius: '50%', background: k.color, boxSizing: 'border-box', border: '3px solid #0E0E0E', boxShadow: on ? '0 0 0 3px ' + pink + ', 0 0 0 5px #0E0E0E' : '2px 2px 0 #0E0E0E', transform: on ? 'translateY(-2px)' : 'none' },
+        bar: { width: k.level + '%', height: '100%', background: '#0E0E0E' },
+        pick: () => this.setState({ cap: k.id })
+      };
+    });
+    const capIdx = Math.max(0, capData.findIndex((k) => k.id === this.state.cap));
+    const toneData = [
+      { id: 't1', color: '#F3D9C6' },
+      { id: 't2', color: '#E6C3A7' },
+      { id: 't3', color: '#D1A07A' },
+      { id: 't4', color: '#A87452' },
+      { id: 't5', color: '#7A4E33' },
+      { id: 't6', color: '#4E3122' }
+    ];
+    const tones = toneData.map((tn, i) => {
+      const on = tn.id === this.state.tone;
+      return {
+        ...tn,
+        name: t.toneNames[i],
+        swatch: { height: '40px', background: tn.color, border: '3px solid #0E0E0E', borderRadius: '10px', cursor: 'pointer', boxShadow: on ? '0 0 0 3px #FFE14D, 0 0 0 5px #0E0E0E' : '2px 2px 0 #0E0E0E' },
+        pick: () => this.setState({ tone: tn.id })
+      };
+    });
+    const toneIdx = Math.max(0, toneData.findIndex((tn) => tn.id === this.state.tone));
+    const langs = LANGS.map((l) => {
+      const on = l.id === this.state.lang;
+      return {
+        ...l,
+        on,
+        style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '44px', padding: '0 12px', border: '2px solid #0E0E0E', borderRadius: '10px', background: on ? lime : '#F4F4F0', boxShadow: on ? '3px 3px 0 #0E0E0E' : 'none', color: '#0E0E0E', font: 'inherit', fontSize: '15px', fontWeight: 500, cursor: 'pointer' },
+        pick: () => this.setState({ lang: l.id })
+      };
+    });
+    const fresh = this.state.view === 'fresh';
+    const segBase = { height: '40px', padding: '0 10px', border: '2px solid #0E0E0E', borderRadius: '10px', fontFamily: 'Unbounded, sans-serif', fontWeight: 700, fontSize: '11px', cursor: 'pointer', color: '#0E0E0E' };
+    const segOn = { ...segBase, background: pink };
+    const segOff = { ...segBase, background: '#F4F4F0' };
+    const toolBase = { width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #0E0E0E', borderRadius: '10px', cursor: 'pointer', color: '#0E0E0E' };
+    const preBase = { minHeight: '44px', border: '2px solid #0E0E0E', borderRadius: '10px', fontFamily: 'Unbounded, sans-serif', fontWeight: 700, fontSize: '11px', cursor: 'pointer', color: '#0E0E0E' };
+    const sp = this.state.speed;
+    const z = this.state.zoom;
+    const hand = this.state.tool === 'hand';
+    const po = this.state.profileOpen;
+    return {
+      t,
+      lang: this.state.lang,
+      langs,
+      profileOpen: po,
+      toggleProfile: () => this.setState({ profileOpen: !po }),
+      profileBtn: { width: '40px', height: '40px', borderRadius: '50%', background: po ? '#C9B8FF' : '#FFE14D', border: '2px solid #0E0E0E', boxShadow: po ? '2px 2px 0 #0E0E0E' : 'none', color: '#0E0E0E', fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: '12px', cursor: 'pointer' },
+      p: { carts: this.panelStyle('carts'), caps: this.panelStyle('caps'), machine: this.panelStyle('machine'), skin: this.panelStyle('skin'), stencil: this.panelStyle('stencil') },
+      h: { carts: this.handlers('carts', t), caps: this.handlers('caps', t), machine: this.handlers('machine', t), skin: this.handlers('skin', t), stencil: this.handlers('stencil', t) },
+      open: this.state.open,
+      resetLayout: () => this.setState({ pos: { ...DEFAULT_POS }, open: { carts: true, caps: true, machine: true, skin: true, stencil: true }, zoom: 1, ox: 0, oy: 0, rot: 0 }),
+      stageStyle: { position: 'absolute', inset: '0', overflow: 'hidden', cursor: this.state.isPanning ? 'grabbing' : (hand ? 'grab' : 'crosshair'), touchAction: 'none' },
+      skinWrap: { position: 'absolute', left: '50%', top: '50%', width: PATCH_W + 'px', height: PATCH_H + 'px', marginLeft: (-PATCH_W / 2) + 'px', marginTop: (-PATCH_H / 2) + 'px', transform: 'translate(' + this.state.ox + 'px, ' + this.state.oy + 'px) rotate(' + this.state.rot + 'deg) scale(' + z + ')', transformOrigin: '50% 50%', transition: this.state.isPanning ? 'none' : 'transform 120ms ease-out' },
+      skinPatch: { position: 'absolute', inset: '0', background: toneData[toneIdx].color, borderRadius: '26px', border: '3px solid #0E0E0E', boxShadow: '10px 10px 0 rgba(0,0,0,0.55)' },
+      pan: {
+        down: (e) => {
+          const onSkin = e.target.closest && e.target.closest('[data-skin]');
+          if (!hand && onSkin) return;
+          this.panning = { sx: e.clientX, sy: e.clientY, ox: this.state.ox, oy: this.state.oy };
+          if (e.currentTarget.setPointerCapture) e.currentTarget.setPointerCapture(e.pointerId);
+          this.setState({ isPanning: true });
+        },
+        move: (e) => {
+          if (!this.panning) return;
+          this.setState(this.clampOffset(this.panning.ox + e.clientX - this.panning.sx, this.panning.oy + e.clientY - this.panning.sy, z));
+        },
+        up: () => { this.panning = null; this.setState({ isPanning: false }); }
+      },
+      toolNeedle: () => this.setState({ tool: 'needle' }),
+      toolHand: () => this.setState({ tool: 'hand' }),
+      needleBtn: { ...toolBase, background: hand ? '#F4F4F0' : lime },
+      handBtn: { ...toolBase, background: hand ? lime : '#F4F4F0' },
+      zoomLabel: Math.round(z * 100) + '%',
+      zoomIn: () => this.setZoom(z + 0.25),
+      zoomOut: () => this.setZoom(z - 0.25),
+      zoomReset: () => this.setState({ zoom: 1, ox: 0, oy: 0 }),
+      stageRef: this.stageRef,
+      rotLabel: this.state.rot + '°',
+      rotLeft: () => this.setRot(this.state.rot - 15),
+      rotRight: () => this.setRot(this.state.rot + 15),
+      rotReset: () => this.setRot(0),
+      carts,
+      caps,
+      tones,
+      toneName: t.toneNames[toneIdx],
+      capName: t.capNames[capIdx],
+      cartLabel: current.count + ' ' + current.group,
+      speed: sp,
+      speedLabel: sp + ' ' + t.hz,
+      onSpeed: (e) => this.setState({ speed: Number(e.target.value) }),
+      presetShade: () => this.setState({ speed: 80 }),
+      presetLine: () => this.setState({ speed: 120 }),
+      shadeBtn: { ...preBase, background: sp === 80 ? lime : '#F4F4F0' },
+      lineBtn: { ...preBase, background: sp === 120 ? lime : '#F4F4F0' },
+      fresh,
+      inkOpacity: fresh ? 0.95 : 0.78,
+      setFresh: () => this.setState({ view: 'fresh' }),
+      setHealed: () => this.setState({ view: 'healed' }),
+      freshBtn: fresh ? segOn : segOff,
+      healedBtn: fresh ? segOff : segOn,
+      stencilOn: this.state.stencil,
+      stencilBtn: this.state.stencil ? { ...segBase, background: '#C9B8FF' } : segOff,
+      stencilOpacity: this.state.stencilOpacity / 100,
+      stencilVal: this.state.stencilOpacity,
+      stencilPct: this.state.stencilOpacity + '%',
+      onStencilOpacity: (e) => this.setState({ stencilOpacity: Number(e.target.value) }),
+      toggleStencil: () => this.setState({ stencil: !this.state.stencil })
+    };
+  }
+}
+</script>
+</body>
+</html>

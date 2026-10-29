@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stencil transfer</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#161616}
+a{color:#0E0E0E}a:hover{color:#0E0E0E}
+input[type=range]{accent-color:#FF4FB0;width:100%}
+input[type=checkbox]{accent-color:#FF4FB0;width:20px;height:20px}
+</style>
+</helmet>
+<div style="width: 1000px; height: 680px; box-sizing: border-box; padding: 18px; background-color: #161616; background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1.4px); background-size: 6px 6px; font-family: 'Rubik', system-ui, sans-serif; color: #0E0E0E">
+<div style="position: relative; height: 100%; box-sizing: border-box; background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 18px; box-shadow: 8px 8px 0 #0E0E0E; display: flex; flex-direction: column">
+
+<div aria-hidden="true" style="position: absolute; right: 70px; top: -18px; transform: rotate(8deg); background: #FFE14D; border: 3px solid #0E0E0E; border-radius: 999px; padding: 6px 14px; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 13px; box-shadow: 3px 3px 0 #0E0E0E">STEP 2/3</div>
+
+<header style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 16px 14px 22px; background: #C8FF2E; border-bottom: 3px solid #0E0E0E; border-radius: 15px 15px 0 0">
+<h1 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 28px; line-height: 1">SKETCH TRANSFER</h1>
+<div style="display: flex; align-items: center; gap: 8px">
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; gap: 6px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px">
+<li style="padding: 6px 10px; border: 2px solid #0E0E0E; border-radius: 999px; background: #F4F4F0">1 UPLOAD</li>
+<li style="padding: 6px 10px; border: 2px solid #0E0E0E; border-radius: 999px; background: #FF4FB0; box-shadow: 2px 2px 0 #0E0E0E">2 LINES</li>
+<li style="padding: 6px 10px; border: 2px solid #0E0E0E; border-radius: 999px; background: #F4F4F0">3 PLACE</li>
+</ol>
+<a href="Main.dc.html" aria-label="Close" style="width: 40px; height: 40px; box-sizing: border-box; border: 2px solid #0E0E0E; border-radius: 10px; background: #F4F4F0; display: flex; align-items: center; justify-content: center; color: #0E0E0E">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
+</a>
+</div>
+</header>
+
+<div style="flex: 1; display: flex; gap: 22px; padding: 20px 22px; min-height: 0">
+
+<div style="flex: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="flex: 1; background: #FFFFFF; border: 3px solid #0E0E0E; border-radius: 14px; transform: rotate(-1deg); box-shadow: 4px 4px 0 #0E0E0E; display: flex; align-items: center; justify-content: center">
+<svg width="200" height="280" viewBox="200 140 200 340" role="img" aria-label="Original pencil sketch of a flower">
+<g fill="none" stroke="#3B3A3E" stroke-width="2.4" stroke-linecap="round" opacity="0.85">
+<path d="M300 470 C 300 400, 284 340, 300 262"></path>
+<path d="M301 468 C 302 402, 287 342, 302 264" opacity="0.4"></path>
+<path d="M296 400 C 250 380, 230 350, 222 320 C 262 330, 288 360, 296 400 Z"></path>
+<path d="M302 340 C 345 325, 365 300, 372 270 C 336 276, 310 300, 302 340 Z"></path>
+<circle cx="300" cy="230" r="16"></circle>
+<ellipse cx="300" cy="188" rx="22" ry="36"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(72 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(144 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(216 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(288 300 230)"></ellipse>
+</g>
+<g fill="#3B3A3E" opacity="0.18"><path d="M240 330 C 260 350, 275 370, 292 392 L 288 396 C 268 372, 250 352, 236 334 Z"></path></g>
+</svg>
+</div>
+<figcaption style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px">ORIGINAL · flower-sketch.png</figcaption>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="flex: 1; background: #E6C3A7; border: 3px solid #0E0E0E; border-radius: 14px; transform: rotate(1deg); box-shadow: 4px 4px 0 #0E0E0E; display: flex; align-items: center; justify-content: center">
+<svg width="200" height="280" viewBox="200 140 200 340" role="img" aria-label="Purple stencil lines on skin">
+<g fill="none" stroke="#6A3FB5" stroke-width="{{stroke}}" stroke-linecap="round">
+<path d="M300 470 C 300 400, 284 340, 300 262"></path>
+<path d="M296 400 C 250 380, 230 350, 222 320 C 262 330, 288 360, 296 400 Z"></path>
+<path d="M302 340 C 345 325, 365 300, 372 270 C 336 276, 310 300, 302 340 Z"></path>
+<circle cx="300" cy="230" r="16"></circle>
+<ellipse cx="300" cy="188" rx="22" ry="36"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(72 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(144 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(216 300 230)"></ellipse>
+<ellipse cx="300" cy="188" rx="22" ry="36" transform="rotate(288 300 230)"></ellipse>
+</g>
+</svg>
+</div>
+<figcaption style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px">STENCIL ON SKIN</figcaption>
+</figure>
+</div>
+
+<div style="width: 250px; flex: none; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<label for="threshold" style="font-size: 14px; font-weight: 500">Line threshold</label>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 18px">{{threshold}}</span>
+</div>
+<input id="threshold" type="range" min="0" max="255" step="1" value="{{threshold}}" onChange="{{onThreshold}}">
+<span style="font-size: 12px">Higher means less noise and shading</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<label for="thickness" style="font-size: 14px; font-weight: 500">Line weight</label>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 18px">{{strokeLabel}}</span>
+</div>
+<input id="thickness" type="range" min="1" max="6" step="0.5" value="{{stroke}}" onChange="{{onStroke}}">
+</div>
+<label style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; min-height: 44px; padding: 0 12px; background: #FFE14D; border: 2px solid #0E0E0E; border-radius: 10px">
+<input type="checkbox" checked="{{ true }}">
+Remove fills and shading
+</label>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="size" style="font-size: 14px; font-weight: 500">Size on skin</label>
+<div style="display: flex; align-items: center; gap: 8px">
+<input id="size" type="text" value="12" style="width: 72px; height: 44px; box-sizing: border-box; padding: 0 10px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 18px">
+<span style="font-size: 14px">cm tall</span>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.45">Max 15 cm, the size of the skin sheet. After transfer, move and rotate the stencil right on the skin.</p>
+</div>
+</div>
+
+<footer style="display: flex; justify-content: space-between; align-items: center; padding: 14px 22px; border-top: 3px solid #0E0E0E">
+<button style="height: 44px; padding: 0 16px; background: #F4F4F0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer">OTHER FILE</button>
+<div style="display: flex; gap: 10px">
+<a href="Main.dc.html" style="height: 44px; box-sizing: border-box; padding: 0 18px; display: flex; align-items: center; color: #0E0E0E; background: #F4F4F0; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; text-decoration: none">CANCEL</a>
+<a href="Main.dc.html" style="height: 44px; box-sizing: border-box; padding: 0 20px; display: flex; align-items: center; background: #FF4FB0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; box-shadow: 4px 4px 0 #0E0E0E; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 12px; text-decoration: none">TRANSFER TO SKIN</a>
+</div>
+</footer>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1000,"height":680}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { threshold: 140, stroke: 2.5 };
+  }
+  renderVals() {
+    return {
+      threshold: this.state.threshold,
+      onThreshold: (e) => this.setState({ threshold: Number(e.target.value) }),
+      stroke: this.state.stroke,
+      strokeLabel: this.state.stroke + ' px',
+      onStroke: (e) => this.setState({ stroke: Number(e.target.value) })
+    };
+  }
+}
+</script>
+</body>
+</html>

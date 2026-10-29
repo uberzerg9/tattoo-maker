@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Profile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#161616}
+a{color:#0E0E0E}a:hover{color:#0E0E0E}
+input:focus{outline:3px solid #FF4FB0;outline-offset:2px}
+input[type=range]{accent-color:#FF4FB0;width:100%}
+</style>
+</helmet>
+<div lang="{{lang}}" style="min-height: 100vh; box-sizing: border-box; padding: 20px 24px 40px; background-color: #161616; background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1.4px), radial-gradient(rgba(0,0,0,0.5) 1px, transparent 1.4px); background-size: 6px 6px, 9px 9px; background-position: 0 0, 3px 4px; color: #0E0E0E; font-family: 'Rubik', system-ui, sans-serif">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 8px 8px 18px; background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 14px; box-shadow: 6px 6px 0 #0E0E0E">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 22px; line-height: 1">{{t.brandA}}<span style="color: #FF4FB0; -webkit-text-stroke: 1px #0E0E0E">✶</span>{{t.brandB}}</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="Main.dc.html" style="height: 40px; box-sizing: border-box; padding: 0 14px; display: flex; align-items: center; gap: 8px; background: #C8FF2E; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; text-decoration: none">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+{{t.back}}
+</a>
+<a href="Login.dc.html" style="height: 40px; box-sizing: border-box; padding: 0 14px; display: flex; align-items: center; background: #F4F4F0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; text-decoration: none">{{t.logout}}</a>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start">
+
+<div style="flex: 1 1 340px; max-width: 420px; display: flex; flex-direction: column; gap: 24px">
+
+<section aria-label="{{t.profile}}" style="background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 16px; box-shadow: 6px 6px 0 #0E0E0E; transform: rotate(-0.8deg); overflow: hidden">
+<div style="height: 70px; background: repeating-linear-gradient(-45deg, #FF4FB0 0 14px, #FFE14D 14px 28px); border-bottom: 3px solid #0E0E0E"></div>
+<div style="padding: 0 20px 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="margin-top: -40px; width: 84px; height: 84px; border-radius: 50%; background: #C8FF2E; border: 3px solid #0E0E0E; box-shadow: 3px 3px 0 #0E0E0E; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 26px">AS</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 24px">[YOUR NAME]</h1>
+<span style="font-size: 15px">@inkalex</span>
+</div>
+<span style="align-self: flex-start; background: #C9B8FF; border: 2px solid #0E0E0E; border-radius: 999px; padding: 4px 12px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px">{{t.level}}</span>
+</div>
+</section>
+
+<section aria-labelledby="statsTitle" style="display: flex; flex-direction: column; gap: 12px">
+<h2 id="statsTitle" style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 18px; color: #F4F4F0">{{t.stats}}</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="background: #C8FF2E; border: 3px solid #0E0E0E; border-radius: 14px; box-shadow: 4px 4px 0 #0E0E0E; padding: 12px 14px; transform: rotate(-1deg)"><div style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 34px; line-height: 1">12</div><div style="font-size: 14px; font-weight: 500; margin-top: 4px">{{t.sessions}}</div></div>
+<div style="background: #FF4FB0; border: 3px solid #0E0E0E; border-radius: 14px; box-shadow: 4px 4px 0 #0E0E0E; padding: 12px 14px; transform: rotate(1deg)"><div style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 34px; line-height: 1">{{t.hoursVal}}</div><div style="font-size: 14px; font-weight: 500; margin-top: 4px">{{t.hours}}</div></div>
+<div style="background: #FFE14D; border: 3px solid #0E0E0E; border-radius: 14px; box-shadow: 4px 4px 0 #0E0E0E; padding: 12px 14px; transform: rotate(0.6deg)"><div style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 34px; line-height: 1">{{t.devVal}}</div><div style="font-size: 14px; font-weight: 500; margin-top: 4px">{{t.deviation}}</div></div>
+<div style="background: #4D6BFF; border: 3px solid #0E0E0E; border-radius: 14px; box-shadow: 4px 4px 0 #0E0E0E; padding: 12px 14px; transform: rotate(-0.6deg)"><div style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 34px; line-height: 1">4</div><div style="font-size: 14px; font-weight: 500; margin-top: 4px">{{t.streak}}</div></div>
+</div>
+</section>
+
+<section aria-labelledby="worksTitle" style="display: flex; flex-direction: column; gap: 12px">
+<h2 id="worksTitle" style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 18px; color: #F4F4F0">{{t.saved}}</h2>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<a href="Main.dc.html" aria-label="{{t.work1}}" style="aspect-ratio: 4 / 5; background: #E6C3A7; border: 3px solid #0E0E0E; border-radius: 12px; box-shadow: 4px 4px 0 #0E0E0E; transform: rotate(-2deg); display: flex; align-items: center; justify-content: center">
+<svg width="60%" viewBox="200 140 200 340" aria-hidden="true"><g fill="none" stroke="#17161A" stroke-width="6" stroke-linecap="round"><path d="M300 470 C 300 400, 284 340, 300 262"></path><path d="M296 400 C 250 380, 230 350, 222 320 C 262 330, 288 360, 296 400 Z"></path><circle cx="300" cy="230" r="16"></circle><ellipse cx="300" cy="188" rx="22" ry="36"></ellipse></g></svg>
+</a>
+<a href="Main.dc.html" aria-label="{{t.work2}}" style="aspect-ratio: 4 / 5; background: #A87452; border: 3px solid #0E0E0E; border-radius: 12px; box-shadow: 4px 4px 0 #0E0E0E; transform: rotate(1.5deg); display: flex; align-items: center; justify-content: center">
+<svg width="60%" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 10 L61 40 L92 40 L67 58 L77 88 L50 70 L23 88 L33 58 L8 40 L39 40 Z" fill="none" stroke="#17161A" stroke-width="4" stroke-linejoin="round"></path></svg>
+</a>
+<a href="Main.dc.html" aria-label="{{t.work3}}" style="aspect-ratio: 4 / 5; background: #F3D9C6; border: 3px solid #0E0E0E; border-radius: 12px; box-shadow: 4px 4px 0 #0E0E0E; transform: rotate(-0.8deg); display: flex; align-items: center; justify-content: center">
+<svg width="60%" viewBox="0 0 100 100" aria-hidden="true"><path d="M15 80 C 35 20, 65 20, 85 80" fill="none" stroke="#17161A" stroke-width="4" stroke-linecap="round"></path><path d="M25 80 C 42 38, 58 38, 75 80" fill="none" stroke="#17161A" stroke-width="3" stroke-linecap="round" opacity="0.5"></path></svg>
+</a>
+</div>
+</section>
+</div>
+
+<section aria-labelledby="settingsTitle" style="flex: 999 1 560px; min-width: 0; background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 16px; box-shadow: 8px 8px 0 #0E0E0E; transform: rotate(0.4deg)">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: #4D6BFF; border-bottom: 3px solid #0E0E0E; border-radius: 13px 13px 0 0">
+<h2 id="settingsTitle" style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 22px">{{t.settings}}</h2>
+<button style="height: 40px; padding: 0 16px; background: #C8FF2E; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; box-shadow: 3px 3px 0 #0E0E0E; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer">{{t.save}}</button>
+</div>
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 26px">
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 14px">{{t.account}}</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="pname" style="font-size: 14px; font-weight: 500">{{t.name}}</label>
+<input id="pname" type="text" value="[YOUR NAME]" style="height: 46px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 16px; min-width: 0">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="pemail" style="font-size: 14px; font-weight: 500">{{t.email}}</label>
+<input id="pemail" type="email" value="you@example.com" style="height: 46px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 16px; min-width: 0">
+</div>
+</div>
+<button style="align-self: flex-start; height: 40px; padding: 0 14px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer">{{t.changePw}}</button>
+</div>
+
+<div style="height: 3px; background: #0E0E0E; border-radius: 2px"></div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h3 id="plangLabel" style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 14px">{{t.language}}</h3>
+<div role="group" aria-labelledby="plangLabel" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{langs}}" as="l" hint-placeholder-count="3">
+<button onClick="{{l.pick}}" aria-pressed="{{l.on}}" style="{{l.style}}"><span>{{l.native}}</span><span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px">{{l.code}}</span></button>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.4">{{t.langNote}}</p>
+</div>
+
+<div style="height: 3px; background: #0E0E0E; border-radius: 2px"></div>
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 14px">{{t.defaults}}</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 500">{{t.tone}} · <b>{{toneName}}</b></span>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{tones}}" as="tn" hint-placeholder-count="6">
+<button onClick="{{tn.pick}}" aria-label="{{tn.name}}" style="{{tn.swatch}}"></button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<label for="pspeed" style="font-size: 14px; font-weight: 500">{{t.speed}}</label>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 18px">{{speedLabel}}</span>
+</div>
+<input id="pspeed" type="range" min="50" max="150" step="5" value="{{speed}}" onChange="{{onSpeed}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span id="unitsLabel" style="font-size: 14px; font-weight: 500">{{t.units}}</span>
+<div role="group" aria-labelledby="unitsLabel" style="display: flex; gap: 6px">
+<button onClick="{{setCm}}" aria-pressed="{{isCm}}" style="{{cmBtn}}">{{t.cm}}</button>
+<button onClick="{{setIn}}" aria-pressed="{{isIn}}" style="{{inBtn}}">{{t.inch}}</button>
+</div>
+</div>
+</div>
+</div>
+
+<div style="height: 3px; background: #0E0E0E; border-radius: 2px"></div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 14px">{{t.danger}}</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<a href="Login.dc.html" style="height: 44px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; text-decoration: none">{{t.logout}}</a>
+<button style="height: 44px; padding: 0 16px; background: #FFFFFF; color: #A1124F; border: 2px dashed #A1124F; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer">{{t.deleteAcc}}</button>
+</div>
+</div>
+
+</div>
+</section>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+const LANGS = [
+  { code: 'EN', id: 'en', native: 'English' },
+  { code: 'RU', id: 'ru', native: 'Русский' },
+  { code: 'RO', id: 'ro', native: 'Română' }
+];
+const I18N = {
+  en: {
+    brandA: 'TATTOO', brandB: 'TRAINER', back: 'WORKSPACE', logout: 'LOG OUT', profile: 'Profile', level: 'BEGINNER',
+    stats: 'MY STATS', sessions: 'sessions', hours: 'hours on skin', hoursVal: '7.5', deviation: 'avg deviation', devVal: '0.8', streak: 'day streak',
+    saved: 'SAVED WORK', work1: 'Open work: peony', work2: 'Open work: star', work3: 'Open work: arch',
+    settings: 'SETTINGS', save: 'SAVE CHANGES', account: 'ACCOUNT', name: 'Name', email: 'Email', changePw: 'Change password',
+    language: 'LANGUAGE', langNote: 'Applies to the whole app: workspace, lessons and hints.',
+    defaults: 'WORKSPACE DEFAULTS', tone: 'Skin tone', speed: 'Machine speed', hz: 'Hz', units: 'Units', cm: 'cm', inch: 'inches',
+    danger: 'DANGER ZONE', deleteAcc: 'DELETE ACCOUNT',
+    toneNames: ['light', 'beige', 'honey', 'olive', 'tan', 'deep']
+  },
+  ru: {
+    brandA: 'ТАТУ', brandB: 'ТРЕНАЖЁР', back: 'РАБОЧЕЕ МЕСТО', logout: 'ВЫЙТИ', profile: 'Профиль', level: 'НОВИЧОК',
+    stats: 'МОЯ СТАТИСТИКА', sessions: 'сессий', hours: 'часов на коже', hoursVal: '7,5', deviation: 'ср. отклонение', devVal: '0,8', streak: 'дня подряд',
+    saved: 'СОХРАНЁННЫЕ РАБОТЫ', work1: 'Открыть работу: пион', work2: 'Открыть работу: звезда', work3: 'Открыть работу: арка',
+    settings: 'НАСТРОЙКИ', save: 'СОХРАНИТЬ', account: 'АККАУНТ', name: 'Имя', email: 'Email', changePw: 'Сменить пароль',
+    language: 'ЯЗЫК', langNote: 'Применяется ко всему приложению: рабочее место, уроки и подсказки.',
+    defaults: 'НАСТРОЙКИ РАБОЧЕГО МЕСТА', tone: 'Оттенок кожи', speed: 'Скорость машинки', hz: 'Гц', units: 'Единицы', cm: 'см', inch: 'дюймы',
+    danger: 'ОПАСНАЯ ЗОНА', deleteAcc: 'УДАЛИТЬ АККАУНТ',
+    toneNames: ['светлая', 'бежевая', 'медовая', 'оливковая', 'смуглая', 'тёмная']
+  },
+  ro: {
+    brandA: 'TATTOO', brandB: 'TRAINER', back: 'ATELIER', logout: 'IEȘIRE', profile: 'Profil', level: 'ÎNCEPĂTOR',
+    stats: 'STATISTICI', sessions: 'sesiuni', hours: 'ore pe piele', hoursVal: '7,5', deviation: 'abatere medie', devVal: '0,8', streak: 'zile la rând',
+    saved: 'LUCRĂRI SALVATE', work1: 'Deschide lucrarea: bujor', work2: 'Deschide lucrarea: stea', work3: 'Deschide lucrarea: arc',
+    settings: 'SETĂRI', save: 'SALVEAZĂ', account: 'CONT', name: 'Nume', email: 'Email', changePw: 'Schimbă parola',
+    language: 'LIMBĂ', langNote: 'Se aplică întregii aplicații: atelier, lecții și indicii.',
+    defaults: 'SETĂRI ATELIER', tone: 'Nuanța pielii', speed: 'Viteza mașinii', hz: 'Hz', units: 'Unități', cm: 'cm', inch: 'inchi',
+    danger: 'ZONĂ PERICULOASĂ', deleteAcc: 'ȘTERGE CONTUL',
+    toneNames: ['deschisă', 'bej', 'miere', 'măslinie', 'bronzată', 'închisă']
+  }
+};
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { lang: 'en', tone: 't2', speed: 85, units: 'cm' };
+  }
+  renderVals() {
+    const t = I18N[this.state.lang] || I18N.en;
+    const langs = LANGS.map((l) => {
+      const on = l.id === this.state.lang;
+      return {
+        ...l,
+        on,
+        style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '48px', padding: '0 12px', border: '2px solid #0E0E0E', borderRadius: '10px', background: on ? '#C8FF2E' : '#FFFFFF', boxShadow: on ? '3px 3px 0 #0E0E0E' : 'none', color: '#0E0E0E', font: 'inherit', fontSize: '15px', fontWeight: 500, cursor: 'pointer' },
+        pick: () => this.setState({ lang: l.id })
+      };
+    });
+    const toneData = ['#F3D9C6', '#E6C3A7', '#D1A07A', '#A87452', '#7A4E33', '#4E3122'];
+    const tones = toneData.map((c, i) => {
+      const id = 't' + (i + 1);
+      const on = id === this.state.tone;
+      return {
+        name: t.toneNames[i],
+        swatch: { height: '40px', background: c, border: '3px solid #0E0E0E', borderRadius: '10px', cursor: 'pointer', boxShadow: on ? '0 0 0 3px #FFE14D, 0 0 0 5px #0E0E0E' : '2px 2px 0 #0E0E0E' },
+        pick: () => this.setState({ tone: id })
+      };
+    });
+    const toneIdx = Number(this.state.tone.slice(1)) - 1;
+    const seg = (on) => ({ flex: 1, minHeight: '44px', padding: '0 14px', border: '2px solid #0E0E0E', borderRadius: '10px', background: on ? '#FF4FB0' : '#FFFFFF', boxShadow: on ? '2px 2px 0 #0E0E0E' : 'none', color: '#0E0E0E', font: 'inherit', fontSize: '15px', fontWeight: 500, cursor: 'pointer' });
+    const isCm = this.state.units === 'cm';
+    return {
+      t,
+      lang: this.state.lang,
+      langs,
+      tones,
+      toneName: t.toneNames[toneIdx],
+      speed: this.state.speed,
+      speedLabel: this.state.speed + ' ' + t.hz,
+      onSpeed: (e) => this.setState({ speed: Number(e.target.value) }),
+      isCm,
+      isIn: !isCm,
+      cmBtn: seg(isCm),
+      inBtn: seg(!isCm),
+      setCm: () => this.setState({ units: 'cm' }),
+      setIn: () => this.setState({ units: 'in' })
+    };
+  }
+}
+</script>
+</body>
+</html>

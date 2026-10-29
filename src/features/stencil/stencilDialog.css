@@ -1,0 +1,336 @@
+/* Sketch transfer dialog (docs/design/Stencil.dc.html) */
+.stencil-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background-color: rgba(22, 22, 22, 0.82);
+  background-image: var(--grip-tape-image);
+  background-size: var(--grip-tape-size);
+  background-position: var(--grip-tape-position);
+}
+
+.stencil-dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: min(1000px, 100%);
+  height: min(644px, 100%);
+  background: var(--color-panel);
+  border: var(--border-panel);
+  border-radius: 18px;
+  box-shadow: 8px 8px 0 var(--color-ink);
+  font-family: var(--font-body);
+  color: var(--color-ink);
+}
+
+.stencil-dialog__step {
+  position: absolute;
+  top: -18px;
+  right: 70px;
+  padding: 6px 14px;
+  background: var(--color-yellow);
+  border: var(--border-panel);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-control);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 13px;
+  transform: rotate(8deg);
+}
+
+.stencil-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 16px 14px 22px;
+  background: var(--color-lime);
+  border-bottom: var(--border-panel);
+  border-radius: 15px 15px 0 0;
+}
+
+.stencil-dialog__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.stencil-dialog__header-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stencil-dialog__steps {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.stencil-dialog__steps li {
+  padding: 6px 10px;
+  background: var(--color-panel);
+  border: var(--border-control);
+  border-radius: var(--radius-pill);
+}
+
+.stencil-dialog__steps li.is-active {
+  background: var(--color-pink);
+  box-shadow: var(--shadow-small);
+}
+
+.stencil-dialog__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--size-control);
+  height: var(--size-control);
+  padding: 0;
+  background: var(--color-panel);
+  color: var(--color-ink);
+  border: var(--border-control);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.stencil-dialog__body {
+  display: flex;
+  flex: 1;
+  gap: 22px;
+  min-height: 0;
+  padding: 20px 22px;
+}
+
+.stencil-dialog__body--pick {
+  align-items: stretch;
+}
+
+.stencil-drop {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--color-white);
+  border: 3px dashed var(--color-ink);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.stencil-drop.is-over {
+  background: var(--color-lilac);
+}
+
+.stencil-drop__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+}
+
+.stencil-drop__hint {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.stencil-dialog__previews {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  min-width: 0;
+}
+
+.stencil-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  margin: 0;
+}
+
+.stencil-figure figcaption {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.stencil-figure__status {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.stencil-figure__frame {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 0;
+  padding: 10px;
+  border: var(--border-panel);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+}
+
+.stencil-figure__frame--paper {
+  background: var(--color-white);
+  transform: rotate(-1deg);
+}
+
+.stencil-figure__frame--skin {
+  transform: rotate(1deg);
+}
+
+.stencil-figure__frame img,
+.stencil-figure__frame canvas {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.stencil-controls {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 16px;
+  width: 250px;
+  overflow-y: auto;
+}
+
+.stencil-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stencil-control > label,
+.stencil-control__head label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.stencil-control__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.stencil-control__value {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.stencil-control__hint {
+  font-size: 12px;
+}
+
+.stencil-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--size-control-lg);
+  padding: 0 12px;
+  background: var(--color-yellow);
+  border: var(--border-control);
+  border-radius: var(--radius-control);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.stencil-check input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-pink);
+}
+
+.stencil-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.stencil-size input {
+  box-sizing: border-box;
+  width: 84px;
+  height: var(--size-control-lg);
+  padding: 0 10px;
+  background: var(--color-white);
+  color: var(--color-ink);
+  border: var(--border-control);
+  border-radius: var(--radius-control);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.stencil-dialog__note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.stencil-dialog__error {
+  margin: 0;
+  padding: 8px 10px;
+  background: var(--color-white);
+  color: var(--color-danger);
+  border: 2px solid var(--color-danger);
+  border-radius: var(--radius-control);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.stencil-dialog__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 22px;
+  border-top: var(--border-panel);
+}
+
+.stencil-dialog__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.stencil-dialog__transfer {
+  padding: 0 20px;
+  font-weight: 900;
+  font-size: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.stencil-dialog .btn:disabled,
+.stencil-dialog__close:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 860px) {
+  .stencil-dialog__body {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .stencil-controls {
+    width: auto;
+  }
+}

@@ -1,0 +1,101 @@
+body {
+  margin: 0;
+  background: var(--color-bg);
+  font-family: var(--font-body);
+}
+
+a,
+a:hover {
+  color: var(--color-ink);
+}
+
+input[type="range"] {
+  accent-color: var(--color-pink);
+  width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-blue);
+  outline-offset: 2px;
+}
+
+/* Shared controls */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: var(--size-control);
+  padding: 0 12px;
+  background: var(--color-panel);
+  color: var(--color-ink);
+  border: var(--border-control);
+  border-radius: var(--radius-control);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn--lg {
+  min-height: var(--size-control-lg);
+  height: var(--size-control-lg);
+}
+
+.btn--raised {
+  box-shadow: var(--shadow-control);
+}
+
+.btn--lime {
+  background: var(--color-lime);
+}
+
+.btn--pink {
+  background: var(--color-pink);
+}
+
+.btn--yellow {
+  background: var(--color-yellow);
+}
+
+.btn--blue {
+  background: var(--color-blue);
+}
+
+.btn--white {
+  background: var(--color-white);
+}
+
+.btn--lilac {
+  background: var(--color-lilac);
+}
+
+.btn--on-lime[aria-pressed="true"] {
+  background: var(--color-lime);
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-control);
+  height: var(--size-control);
+  padding: 0;
+  background: var(--color-panel);
+  color: var(--color-ink);
+  border: var(--border-control);
+  border-radius: var(--radius-control);
+  font: inherit;
+  cursor: pointer;
+}
+
+.icon-btn--lime {
+  background: var(--color-lime);
+}
+
+.icon-btn--glyph {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1;
+}

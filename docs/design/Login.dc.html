@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Log in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#161616}
+a{color:#0E0E0E}a:hover{color:#0E0E0E}
+input:focus{outline:3px solid #FF4FB0;outline-offset:2px}
+input[type=checkbox]{accent-color:#FF4FB0;width:20px;height:20px}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; background-color: #161616; background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1.4px), radial-gradient(rgba(0,0,0,0.5) 1px, transparent 1.4px); background-size: 6px 6px, 9px 9px; background-position: 0 0, 3px 4px; color: #0E0E0E; font-family: 'Rubik', system-ui, sans-serif">
+
+<div style="flex: 1 1 560px; min-height: 420px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 48px 56px; box-sizing: border-box">
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<div style="position: absolute; left: 8%; top: 9%; transform: rotate(-10deg); background: #C8FF2E; border: 3px solid #0E0E0E; border-radius: 999px; padding: 8px 16px; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 16px; box-shadow: 4px 4px 0 #0E0E0E">DON'T SHAKE</div>
+<svg style="position: absolute; right: 10%; top: 7%; transform: rotate(14deg)" width="110" height="110" viewBox="0 0 100 100"><path d="M50 4 L61 36 L95 36 L68 56 L78 90 L50 70 L22 90 L32 56 L5 36 L39 36 Z" fill="#FF4FB0" stroke="#0E0E0E" stroke-width="4" stroke-linejoin="round"></path><text x="50" y="58" text-anchor="middle" font-family="Unbounded, sans-serif" font-weight="900" font-size="15" fill="#0E0E0E">INK</text></svg>
+<svg style="position: absolute; left: 10%; bottom: 10%; transform: rotate(8deg)" width="96" height="96" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#FFE14D" stroke="#0E0E0E" stroke-width="5"></circle><path d="M30 34 l12 12 M42 34 l-12 12 M58 34 l12 12 M70 34 l-12 12" stroke="#0E0E0E" stroke-width="5" stroke-linecap="round"></path><path d="M30 64 Q50 80 70 64" fill="none" stroke="#0E0E0E" stroke-width="5" stroke-linecap="round"></path></svg>
+<svg style="position: absolute; right: 12%; bottom: 14%; transform: rotate(-18deg)" width="170" height="64" viewBox="0 0 140 56"><rect x="4" y="10" width="132" height="30" rx="15" fill="#4D6BFF" stroke="#0E0E0E" stroke-width="4"></rect><circle cx="32" cy="46" r="7" fill="#F4F4F0" stroke="#0E0E0E" stroke-width="3"></circle><circle cx="108" cy="46" r="7" fill="#F4F4F0" stroke="#0E0E0E" stroke-width="3"></circle><path d="M40 25 h60" stroke="#0E0E0E" stroke-width="3" stroke-dasharray="4 5"></path></svg>
+<svg style="position: absolute; left: 46%; bottom: 6%; transform: rotate(10deg)" width="52" height="76" viewBox="0 0 48 70"><path d="M28 2 L4 40 H22 L16 68 L44 26 H26 Z" fill="#C8FF2E" stroke="#0E0E0E" stroke-width="4" stroke-linejoin="round"></path></svg>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 20px; max-width: 560px">
+<h1 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 76px; line-height: 0.92; letter-spacing: -0.02em; color: #F4F4F0">TATTOO<span style="color: #FF4FB0">✶</span><br>TRAINER</h1>
+<p style="margin: 0; display: inline-block; align-self: flex-start; transform: rotate(-1.5deg); background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 12px; padding: 10px 14px; box-shadow: 5px 5px 0 #0E0E0E; font-size: 18px; font-weight: 500">Practice on skin that never bleeds.</p>
+</div>
+</div>
+
+<div style="flex: 1 1 480px; display: flex; align-items: center; justify-content: center; padding: 40px 24px; box-sizing: border-box">
+<section aria-labelledby="loginTitle" style="width: 100%; max-width: 440px; background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 18px; box-shadow: 8px 8px 0 #0E0E0E; transform: rotate(0.8deg)">
+<div style="padding: 14px 20px; background: #C8FF2E; border-bottom: 3px solid #0E0E0E; border-radius: 15px 15px 0 0">
+<h2 id="loginTitle" style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 24px">LOG IN</h2>
+</div>
+<form style="padding: 22px 20px 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="email" style="font-size: 14px; font-weight: 500">Email</label>
+<input id="email" type="email" placeholder="you@example.com" style="height: 48px; box-sizing: border-box; padding: 0 14px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 16px">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<label for="password" style="font-size: 14px; font-weight: 500">Password</label>
+<a href="#forgot" style="font-size: 13px; font-weight: 500">Forgot password?</a>
+</div>
+<div style="display: flex; gap: 6px">
+<input id="password" type="{{pwType}}" placeholder="••••••••" style="flex: 1; min-width: 0; height: 48px; box-sizing: border-box; padding: 0 14px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 16px">
+<button type="button" onClick="{{togglePw}}" style="height: 48px; padding: 0 12px; background: #F4F4F0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 10px; cursor: pointer">{{pwLabel}}</button>
+</div>
+</div>
+<label style="display: flex; align-items: center; gap: 10px; font-size: 14px; min-height: 32px">
+<input type="checkbox" checked="{{ true }}">
+Keep me logged in
+</label>
+<a href="Main.dc.html" style="height: 52px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; background: #FF4FB0; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 12px; box-shadow: 4px 4px 0 #0E0E0E; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 14px; text-decoration: none">LOG IN</a>
+<div style="display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500"><span style="flex: 1; height: 2px; background: #0E0E0E"></span>or<span style="flex: 1; height: 2px; background: #0E0E0E"></span></div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<button type="button" style="height: 48px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer">Continue with Google</button>
+<button type="button" style="height: 48px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer">Continue with Apple</button>
+</div>
+<p style="margin: 4px 0 0; text-align: center; font-size: 14px">New here? <a href="Signup.dc.html" style="font-weight: 700; background: #FFE14D; padding: 2px 6px; border: 2px solid #0E0E0E; border-radius: 6px; text-decoration: none">Create an account</a></p>
+</form>
+</section>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { showPw: false };
+  }
+  renderVals() {
+    const s = this.state.showPw;
+    return {
+      pwType: s ? 'text' : 'password',
+      pwLabel: s ? 'HIDE' : 'SHOW',
+      togglePw: () => this.setState({ showPw: !s })
+    };
+  }
+}
+</script>
+</body>
+</html>

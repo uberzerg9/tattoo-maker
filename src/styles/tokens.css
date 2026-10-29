@@ -1,0 +1,77 @@
+/* Design tokens. Source: docs/design/README.md and docs/design/Main.dc.html */
+:root {
+  /* Surfaces and ink */
+  --color-bg: #161616;
+  --color-panel: #f4f4f0;
+  --color-ink: #0e0e0e;
+  --color-white: #ffffff;
+  --color-border-muted: #bdbdb6;
+  --color-hint-bg: rgba(14, 14, 14, 0.82);
+
+  /* Accents */
+  --color-lime: #c8ff2e;
+  --color-pink: #ff4fb0;
+  --color-blue: #4d6bff;
+  --color-yellow: #ffe14d;
+  --color-lilac: #c9b8ff;
+  --color-danger: #a1124f;
+
+  /* Drawing */
+  --color-stencil: #6a3fb5;
+  --color-art-ink: #17161a;
+  --color-redness: rgba(214, 72, 64, 0.22);
+  --color-sheet-shadow: rgba(0, 0, 0, 0.55);
+  --color-meter-stripe: #3a3a3a;
+
+  /* Skin tones (practice skin sheet) */
+  --skin-t1: #f3d9c6;
+  --skin-t2: #e6c3a7;
+  --skin-t3: #d1a07a;
+  --skin-t4: #a87452;
+  --skin-t5: #7a4e33;
+  --skin-t6: #4e3122;
+
+  /* Ink caps */
+  --cap-black: #141316;
+  --cap-g60: #4a4a50;
+  --cap-g30: #8b8b92;
+  --cap-g10: #c3c3c8;
+  --cap-white: #ffffff;
+
+  /* Type */
+  --font-display: "Unbounded", sans-serif;
+  --font-body: "Rubik", system-ui, sans-serif;
+
+  /* Borders, radii, shadows */
+  --border-panel: 3px solid var(--color-ink);
+  --border-control: 2px solid var(--color-ink);
+  --radius-panel: 14px;
+  --radius-panel-inner: 11px;
+  --radius-control: 10px;
+  --radius-small: 8px;
+  --radius-pill: 999px;
+  --shadow-panel: 6px 6px 0 var(--color-ink);
+  --shadow-bar: 5px 5px 0 var(--color-ink);
+  --shadow-card: 4px 4px 0 var(--color-ink);
+  --shadow-control: 3px 3px 0 var(--color-ink);
+  --shadow-small: 2px 2px 0 var(--color-ink);
+
+  /* Sizes */
+  --size-control: 40px;
+  --size-control-lg: 44px;
+  --size-panel-toggle: 32px;
+
+  /* Grip-tape background */
+  --grip-tape-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1.4px),
+    radial-gradient(rgba(0, 0, 0, 0.5) 1px, transparent 1.4px);
+  --grip-tape-size: 6px 6px, 9px 9px;
+  --grip-tape-position: 0 0, 3px 4px;
+
+  /* Stacking */
+  --z-feedback: 40;
+  --z-nav-hint: 44;
+  --z-toolbar: 45;
+  --z-topbar: 50;
+  --z-popover: 60;
+  --z-dialog: 80;
+}

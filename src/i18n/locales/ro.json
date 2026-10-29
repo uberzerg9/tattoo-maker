@@ -1,0 +1,192 @@
+{
+  "workspace": {
+    "brand": {
+      "a": "TATTOO",
+      "b": "TRAINER"
+    },
+    "topbar": {
+      "undo": "Anulează",
+      "reset": "RESETARE",
+      "save": "SALVEAZĂ"
+    },
+    "profile": {
+      "open": "Profil",
+      "title": "PROFIL",
+      "close": "Închide",
+      "level": "Începător · {{sessions}} sesiuni",
+      "language": "Limbă",
+      "note": "Toată interfața se schimbă instant. Lecțiile și indiciile urmează aceeași limbă.",
+      "view": "PROFIL",
+      "logout": "IEȘIRE"
+    },
+    "panel": {
+      "collapse": "Restrânge",
+      "expand": "Extinde"
+    },
+    "decor": {
+      "sticker": "NU TREMURA",
+      "ink": "INK"
+    },
+    "sheet": {
+      "label": "FOAIE 20 × 15 CM"
+    },
+    "carts": {
+      "title": "CARTUȘE",
+      "items": {
+        "rl-3": {
+          "type": "Liner",
+          "use": "Linii fine, detalii"
+        },
+        "rl-7": {
+          "type": "Liner",
+          "use": "Contur principal"
+        },
+        "rs-9": {
+          "type": "Shader",
+          "use": "Umplere zone mici"
+        },
+        "m1-7": {
+          "type": "Magnum",
+          "use": "Whip shading"
+        },
+        "rm-15": {
+          "type": "Magnum rotund",
+          "use": "Gradient fin, full black"
+        }
+      }
+    },
+    "caps": {
+      "title": "CĂPĂCELE",
+      "dip": "ÎNMOAIE",
+      "inkLeft": "Cerneală în cartuș",
+      "names": {
+        "black": "negru",
+        "g60": "gri 60",
+        "g30": "gri 30",
+        "g10": "gri 10",
+        "white": "alb"
+      },
+      "empty": "Căpăcelul e gol — alege altul.",
+      "capLevel": "Cerneală rămasă: {{cap}}"
+    },
+    "machine": {
+      "title": "MAȘINĂ",
+      "speed": "Viteză",
+      "hz": "Hz",
+      "presetShade": "UMBRIRE 80",
+      "presetLine": "CONTUR 120",
+      "hint": "Mai lent: puncte mai rare, gradient mai fin. Mai rapid: linie continuă."
+    },
+    "skin": {
+      "title": "PIELE",
+      "tone": "Nuanța pielii",
+      "names": {
+        "t1": "deschisă",
+        "t2": "bej",
+        "t3": "miere",
+        "t4": "măslinie",
+        "t5": "bronzată",
+        "t6": "închisă"
+      }
+    },
+    "stencil": {
+      "title": "STENCIL",
+      "dropHint": "Trage fișierul aici sau încarcă",
+      "visibility": "Vizibilitate pe piele",
+      "upload": "ÎNCARCĂ",
+      "transfer": "TRANSFERĂ",
+      "dialog": {
+        "title": "TRANSFER SCHIȚĂ",
+        "step": "PASUL {{n}}/3",
+        "steps": {
+          "upload": "1 ÎNCARCĂ",
+          "lines": "2 LINII",
+          "place": "3 AMPLASEAZĂ"
+        },
+        "close": "Închide",
+        "originalAria": "Schița originală",
+        "original": "ORIGINAL · {{name}}",
+        "onSkin": "STENCIL PE PIELE",
+        "onSkinAria": "Linii mov de stencil pe piele",
+        "threshold": "Prag linii",
+        "thresholdHint": "Mai mare înseamnă mai puțin zgomot și umbre",
+        "weight": "Grosimea liniei",
+        "unitPx": "px",
+        "removeFills": "Elimină umplerile și umbrele",
+        "size": "Mărime pe piele",
+        "cmTall": "cm înălțime",
+        "sizeHint": "Maximum {{max}} cm, mărimea foii de piele. După transfer, mută și rotește stencilul direct pe piele.",
+        "otherFile": "ALT FIȘIER",
+        "cancel": "ANULEAZĂ",
+        "transfer": "TRANSFERĂ PE PIELE",
+        "dropTitle": "Trage schița aici",
+        "dropHint": "PNG, JPG sau WEBP, până la 10 MB",
+        "chooseFile": "ALEGE FIȘIER",
+        "loadingEngine": "Se încarcă detectorul de linii…",
+        "working": "Se procesează…",
+        "transferring": "Se transferă…",
+        "errors": {
+          "type": "Fișierul nu este o imagine PNG, JPG sau WEBP.",
+          "size": "Fișierul depășește 10 MB.",
+          "decode": "Imaginea nu a putut fi citită.",
+          "failed": "Ceva n-a mers la crearea stencilului."
+        }
+      }
+    },
+    "feedback": {
+      "passes": "Treceri",
+      "deviation": "Abatere",
+      "trauma": "Traumă:",
+      "traumaLevel": {
+        "low": "scăzută",
+        "medium": "medie",
+        "high": "ridicată"
+      }
+    },
+    "toolbar": {
+      "toolNeedle": "Unealtă: mașină",
+      "toolHand": "Unealtă: mută pielea",
+      "stencil": "STENCIL",
+      "fresh": "PROASPĂT",
+      "healed": "VINDECAT",
+      "zoomIn": "Mărește",
+      "zoomOut": "Micșorează",
+      "zoomReset": "Resetează zoomul și poziția",
+      "rotLeft": "Rotește la stânga 15°",
+      "rotRight": "Rotește la dreapta 15°",
+      "rotReset": "Resetează rotația",
+      "navHint": "Scroll — mută · Ctrl/⌘ + scroll — zoom · Alt + scroll — rotire · trage de grip tape"
+    },
+    "debug": {
+      "fps": "cadre/s",
+      "renderMs": "randare ms",
+      "zoom": "zoom",
+      "rotation": "rotire",
+      "cursor": "cursor mm",
+      "hitsPerSecond": "lovituri/s",
+      "speed": "viteză mm/s",
+      "spacing": "pas mm",
+      "depth": "adâncime",
+      "hits": "lovituri / trase",
+      "showHits": "centrele loviturilor",
+      "clearHits": "șterge",
+      "stampMs": "ștampilă ms",
+      "dots": "puncte/lot",
+      "gpuMs": "gpu ms",
+      "ink": "cerneală %",
+      "showTrauma": "hartă traumă",
+      "depthOverride": "adâncime manuală",
+      "depthValue": "valoare adâncime"
+    },
+    "unsupported": {
+      "title": "BROWSERUL TĂU NU ESTE SUPORTAT",
+      "hint": "Pielea de exersat are nevoie de WebGL 2 cu buffere float. Încearcă ultimul Chrome, Edge, Firefox sau Safari."
+    },
+    "placing": {
+      "hint": "Trage de mijloc ca să muți, de colțuri ca să redimensionezi, de mânerul de sus ca să rotești. Prima trăsătură blochează stencilul.",
+      "move": "Mută stencilul",
+      "scale": "Redimensionează stencilul",
+      "rotate": "Rotește stencilul"
+    }
+  }
+}

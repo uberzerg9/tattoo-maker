@@ -1,0 +1,192 @@
+{
+  "workspace": {
+    "brand": {
+      "a": "TATTOO",
+      "b": "TRAINER"
+    },
+    "topbar": {
+      "undo": "Undo",
+      "reset": "RESET",
+      "save": "SAVE"
+    },
+    "profile": {
+      "open": "Profile",
+      "title": "PROFILE",
+      "close": "Close",
+      "level": "Beginner · {{sessions}} sessions",
+      "language": "Language",
+      "note": "The whole interface switches instantly. Lessons and hints follow the same language.",
+      "view": "PROFILE",
+      "logout": "LOG OUT"
+    },
+    "panel": {
+      "collapse": "Collapse",
+      "expand": "Expand"
+    },
+    "decor": {
+      "sticker": "DON'T SHAKE",
+      "ink": "INK"
+    },
+    "sheet": {
+      "label": "SHEET 20 × 15 CM"
+    },
+    "carts": {
+      "title": "CARTRIDGES",
+      "items": {
+        "rl-3": {
+          "type": "Liner",
+          "use": "Fine lines, details"
+        },
+        "rl-7": {
+          "type": "Liner",
+          "use": "Main outline"
+        },
+        "rs-9": {
+          "type": "Shader",
+          "use": "Small fill areas"
+        },
+        "m1-7": {
+          "type": "Magnum",
+          "use": "Whip shading"
+        },
+        "rm-15": {
+          "type": "Round magnum",
+          "use": "Soft gradient, full black"
+        }
+      }
+    },
+    "caps": {
+      "title": "INK CAPS",
+      "dip": "DIP NEEDLE",
+      "inkLeft": "Ink in cartridge",
+      "names": {
+        "black": "black",
+        "g60": "grey 60",
+        "g30": "grey 30",
+        "g10": "grey 10",
+        "white": "white"
+      },
+      "empty": "This cap is empty — pick another.",
+      "capLevel": "Ink left in {{cap}}"
+    },
+    "machine": {
+      "title": "MACHINE",
+      "speed": "Speed",
+      "hz": "Hz",
+      "presetShade": "SHADING 80",
+      "presetLine": "LINING 120",
+      "hint": "Slower: sparser dots, softer gradient. Faster: solid line."
+    },
+    "skin": {
+      "title": "SKIN",
+      "tone": "Skin tone",
+      "names": {
+        "t1": "light",
+        "t2": "beige",
+        "t3": "honey",
+        "t4": "olive",
+        "t5": "tan",
+        "t6": "deep"
+      }
+    },
+    "stencil": {
+      "title": "STENCIL",
+      "dropHint": "Drop a file here or upload",
+      "visibility": "Visibility on skin",
+      "upload": "UPLOAD",
+      "transfer": "TRANSFER",
+      "dialog": {
+        "title": "SKETCH TRANSFER",
+        "step": "STEP {{n}}/3",
+        "steps": {
+          "upload": "1 UPLOAD",
+          "lines": "2 LINES",
+          "place": "3 PLACE"
+        },
+        "close": "Close",
+        "originalAria": "Original sketch",
+        "original": "ORIGINAL · {{name}}",
+        "onSkin": "STENCIL ON SKIN",
+        "onSkinAria": "Purple stencil lines on skin",
+        "threshold": "Line threshold",
+        "thresholdHint": "Higher means less noise and shading",
+        "weight": "Line weight",
+        "unitPx": "px",
+        "removeFills": "Remove fills and shading",
+        "size": "Size on skin",
+        "cmTall": "cm tall",
+        "sizeHint": "Max {{max}} cm, the size of the skin sheet. After transfer, move and rotate the stencil right on the skin.",
+        "otherFile": "OTHER FILE",
+        "cancel": "CANCEL",
+        "transfer": "TRANSFER TO SKIN",
+        "dropTitle": "Drop a sketch here",
+        "dropHint": "PNG, JPG or WEBP, up to 10 MB",
+        "chooseFile": "CHOOSE FILE",
+        "loadingEngine": "Loading the line detector…",
+        "working": "Working…",
+        "transferring": "Transferring…",
+        "errors": {
+          "type": "That file is not a PNG, JPG or WEBP image.",
+          "size": "That file is over 10 MB.",
+          "decode": "That image could not be read.",
+          "failed": "Something went wrong while making the stencil."
+        }
+      }
+    },
+    "feedback": {
+      "passes": "Passes",
+      "deviation": "Deviation",
+      "trauma": "Trauma:",
+      "traumaLevel": {
+        "low": "low",
+        "medium": "medium",
+        "high": "high"
+      }
+    },
+    "toolbar": {
+      "toolNeedle": "Tool: machine",
+      "toolHand": "Tool: move skin",
+      "stencil": "STENCIL",
+      "fresh": "FRESH",
+      "healed": "HEALED",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "zoomReset": "Reset zoom and position",
+      "rotLeft": "Rotate left 15°",
+      "rotRight": "Rotate right 15°",
+      "rotReset": "Reset rotation",
+      "navHint": "Scroll — pan · Ctrl/⌘ + scroll — zoom · Alt + scroll — rotate · drag grip tape — move"
+    },
+    "debug": {
+      "fps": "frames/s",
+      "renderMs": "render ms",
+      "zoom": "zoom",
+      "rotation": "rotation",
+      "cursor": "cursor mm",
+      "hitsPerSecond": "hits/s",
+      "speed": "speed mm/s",
+      "spacing": "spacing mm",
+      "depth": "depth",
+      "hits": "hits / strokes",
+      "showHits": "hit centres",
+      "clearHits": "clear hits",
+      "stampMs": "stamp ms",
+      "dots": "dots/batch",
+      "gpuMs": "gpu ms",
+      "ink": "ink %",
+      "showTrauma": "trauma heatmap",
+      "depthOverride": "depth override",
+      "depthValue": "forced depth"
+    },
+    "unsupported": {
+      "title": "YOUR BROWSER CAN'T RUN THE TRAINER",
+      "hint": "Practice skin needs WebGL 2 with float render targets. Try the latest Chrome, Edge, Firefox or Safari."
+    },
+    "placing": {
+      "hint": "Drag the middle to move, the corners to resize, the top handle to rotate. Your first stroke locks the stencil.",
+      "move": "Move stencil",
+      "scale": "Resize stencil",
+      "rotate": "Rotate stencil"
+    }
+  }
+}

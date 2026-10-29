@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && !('stats' in request.resource.data);
+      allow update: if isOwner(uid) && !request.resource.data.diff(resource.data)
+        .affectedKeys().hasAny(['stats', 'username', 'createdAt']);
+      allow delete: if false; // только через функцию удаления аккаунта
+
+      match /sketches/{id} { allow read, write: if isOwner(uid); }
+      match /works/{id}    { allow read, write: if isOwner(uid); }
+      match /sessions/{id} {
+        allow read, create: if isOwner(uid);
+        allow update, delete: if false;
+      }
+    }
+
+    match /usernames/{name} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && name.matches('^[a-z0-9_]{3,20}$');
+      allow update, delete: if false;
+    }
+
+    match /cartridgePresets/{id} {
+      allow read: if signedIn();
+      allow write: if false; // правится из консоли или админ-скриптом
+    }
+  }
+}

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign up</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#161616}
+a{color:#0E0E0E}a:hover{color:#0E0E0E}
+input:focus{outline:3px solid #FF4FB0;outline-offset:2px}
+input[type=checkbox]{accent-color:#FF4FB0;width:20px;height:20px;flex:none}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; background-color: #161616; background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1.4px), radial-gradient(rgba(0,0,0,0.5) 1px, transparent 1.4px); background-size: 6px 6px, 9px 9px; background-position: 0 0, 3px 4px; color: #0E0E0E; font-family: 'Rubik', system-ui, sans-serif">
+
+<div style="flex: 1 1 520px; min-height: 380px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 48px 56px; box-sizing: border-box">
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<div style="position: absolute; right: 10%; top: 10%; transform: rotate(9deg); background: #FFE14D; border: 3px solid #0E0E0E; border-radius: 999px; padding: 8px 16px; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 16px; box-shadow: 4px 4px 0 #0E0E0E">FIRST LINE FREE</div>
+<svg style="position: absolute; left: 9%; top: 8%; transform: rotate(-14deg)" width="96" height="96" viewBox="0 0 100 100"><path d="M50 4 L61 36 L95 36 L68 56 L78 90 L50 70 L22 90 L32 56 L5 36 L39 36 Z" fill="#C8FF2E" stroke="#0E0E0E" stroke-width="4" stroke-linejoin="round"></path><text x="50" y="58" text-anchor="middle" font-family="Unbounded, sans-serif" font-weight="900" font-size="14" fill="#0E0E0E">NEW</text></svg>
+<svg style="position: absolute; right: 14%; bottom: 12%; transform: rotate(12deg)" width="56" height="82" viewBox="0 0 48 70"><path d="M28 2 L4 40 H22 L16 68 L44 26 H26 Z" fill="#FF4FB0" stroke="#0E0E0E" stroke-width="4" stroke-linejoin="round"></path></svg>
+<svg style="position: absolute; left: 12%; bottom: 12%; transform: rotate(-8deg)" width="170" height="64" viewBox="0 0 140 56"><rect x="4" y="10" width="132" height="30" rx="15" fill="#C9B8FF" stroke="#0E0E0E" stroke-width="4"></rect><circle cx="32" cy="46" r="7" fill="#F4F4F0" stroke="#0E0E0E" stroke-width="3"></circle><circle cx="108" cy="46" r="7" fill="#F4F4F0" stroke="#0E0E0E" stroke-width="3"></circle><path d="M40 25 h60" stroke="#0E0E0E" stroke-width="3" stroke-dasharray="4 5"></path></svg>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 22px; max-width: 520px">
+<h1 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 64px; line-height: 0.95; letter-spacing: -0.02em; color: #F4F4F0">JOIN THE<br><span style="color: #C8FF2E">NEEDLE</span><br>CLUB</h1>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+<li style="align-self: flex-start; transform: rotate(-1deg); background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 12px; padding: 8px 12px; box-shadow: 4px 4px 0 #0E0E0E; font-size: 16px; font-weight: 500">Real cartridges, real techniques</li>
+<li style="align-self: flex-start; transform: rotate(1deg); background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 12px; padding: 8px 12px; box-shadow: 4px 4px 0 #0E0E0E; font-size: 16px; font-weight: 500">Feedback on every line you pull</li>
+<li style="align-self: flex-start; transform: rotate(-0.5deg); background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 12px; padding: 8px 12px; box-shadow: 4px 4px 0 #0E0E0E; font-size: 16px; font-weight: 500">Your sketches, your stencils</li>
+</ul>
+</div>
+</div>
+
+<div style="flex: 1 1 520px; display: flex; align-items: center; justify-content: center; padding: 32px 24px; box-sizing: border-box">
+<section aria-labelledby="signupTitle" style="width: 100%; max-width: 480px; background: #F4F4F0; border: 3px solid #0E0E0E; border-radius: 18px; box-shadow: 8px 8px 0 #0E0E0E; transform: rotate(-0.6deg)">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: #FF4FB0; border-bottom: 3px solid #0E0E0E; border-radius: 15px 15px 0 0">
+<h2 id="signupTitle" style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 24px">SIGN UP</h2>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 11px; background: #0E0E0E; color: #FF4FB0; padding: 4px 10px; border-radius: 999px">FREE</span>
+</div>
+<form style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="name" style="font-size: 14px; font-weight: 500">Name</label>
+<input id="name" type="text" placeholder="Alex" style="height: 46px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 16px; min-width: 0">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="nick" style="font-size: 14px; font-weight: 500">Username</label>
+<input id="nick" type="text" placeholder="@inkalex" style="height: 46px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 16px; min-width: 0">
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="semail" style="font-size: 14px; font-weight: 500">Email</label>
+<input id="semail" type="email" placeholder="you@example.com" style="height: 46px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 16px">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="spw" style="font-size: 14px; font-weight: 500">Password</label>
+<input id="spw" type="password" placeholder="At least 8 characters" onChange="{{onPw}}" style="height: 46px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 10px; font: inherit; font-size: 16px">
+<div style="display: flex; align-items: center; gap: 8px">
+<div style="flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="4">
+<div style="{{b.style}}"></div>
+</sc-for>
+</div>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 10px; min-width: 64px; text-align: right">{{strengthLabel}}</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span id="levelLabel" style="font-size: 14px; font-weight: 500">Your experience</span>
+<div role="group" aria-labelledby="levelLabel" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{levels}}" as="lv" hint-placeholder-count="3">
+<button type="button" onClick="{{lv.pick}}" aria-pressed="{{lv.on}}" style="{{lv.style}}">{{lv.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span id="slangLabel" style="font-size: 14px; font-weight: 500">Interface language</span>
+<div role="group" aria-labelledby="slangLabel" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{langs}}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{l.pick}}" aria-pressed="{{l.on}}" style="{{l.style}}">{{l.native}}</button>
+</sc-for>
+</div>
+</div>
+<label style="display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.4">
+<input type="checkbox">
+<span>I agree to the <a href="#terms" style="font-weight: 700">Terms</a> and <a href="#privacy" style="font-weight: 700">Privacy policy</a></span>
+</label>
+<a href="Main.dc.html" style="height: 52px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; background: #C8FF2E; color: #0E0E0E; border: 2px solid #0E0E0E; border-radius: 12px; box-shadow: 4px 4px 0 #0E0E0E; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 14px; text-decoration: none">CREATE ACCOUNT</a>
+<p style="margin: 0; text-align: center; font-size: 14px">Already inked? <a href="Login.dc.html" style="font-weight: 700; background: #FFE14D; padding: 2px 6px; border: 2px solid #0E0E0E; border-radius: 6px; text-decoration: none">Log in</a></p>
+</form>
+</section>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { pw: '', level: 'never', lang: 'en' };
+  }
+  renderVals() {
+    const pw = this.state.pw;
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[A-Z]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+    const colors = ['#FF4FB0', '#FFE14D', '#4D6BFF', '#C8FF2E'];
+    const labels = ['WEAK', 'OK', 'GOOD', 'STRONG'];
+    const bars = [0, 1, 2, 3].map((i) => ({ style: { height: '10px', border: '2px solid #0E0E0E', borderRadius: '4px', background: i < score ? colors[score - 1] : '#FFFFFF' } }));
+    const chip = (on) => ({ minHeight: '40px', padding: '0 12px', border: '2px solid #0E0E0E', borderRadius: '999px', background: on ? '#C9B8FF' : '#FFFFFF', boxShadow: on ? '2px 2px 0 #0E0E0E' : 'none', color: '#0E0E0E', font: 'inherit', fontSize: '14px', fontWeight: 500, cursor: 'pointer' });
+    const levels = [
+      { id: 'never', label: 'Never tattooed' },
+      { id: 'fake', label: 'Practice skin only' },
+      { id: 'apprentice', label: 'Apprentice' }
+    ].map((lv) => ({ ...lv, on: lv.id === this.state.level, style: chip(lv.id === this.state.level), pick: () => this.setState({ level: lv.id }) }));
+    const langs = [
+      { id: 'en', native: 'English' },
+      { id: 'ru', native: 'Русский' },
+      { id: 'ro', native: 'Română' }
+    ].map((l) => ({ ...l, on: l.id === this.state.lang, style: { ...chip(l.id === this.state.lang), borderRadius: '10px', background: l.id === this.state.lang ? '#C8FF2E' : '#FFFFFF' }, pick: () => this.setState({ lang: l.id }) }));
+    return {
+      onPw: (e) => this.setState({ pw: e.target.value }),
+      bars,
+      strengthLabel: pw.length === 0 ? '' : labels[Math.max(0, score - 1)],
+      levels,
+      langs
+    };
+  }
+}
+</script>
+</body>
+</html>
