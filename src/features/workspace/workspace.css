@@ -1,8 +1,11 @@
 .workspace {
   position: relative;
+  /* 100vh is the tallest the page can be on iPad Safari, with its toolbars away: the bottom row ended up under them.
+     100dvh follows the visible height. The old min-height pushed the toolbar off short screens, so it is gone. */
   height: 100vh;
-  min-height: 720px;
+  height: 100dvh;
   overflow: hidden;
+  overscroll-behavior: none;
   background-color: var(--color-bg);
   background-image: var(--grip-tape-image);
   background-size: var(--grip-tape-size);
@@ -17,7 +20,12 @@
   inset: 0;
   overflow: hidden;
   cursor: crosshair;
+  /* The stage gets every touch: our own pan and pinch run, not the browser's scrolling, zooming or text selection. */
   touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .stage--hand {
@@ -155,33 +163,6 @@
   transform: rotate(-3deg);
 }
 
-.unsupported {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: var(--z-popover);
-  width: min(420px, calc(100% - 32px));
-  padding: 20px;
-  background: var(--color-panel);
-  border: var(--border-panel);
-  border-radius: var(--radius-panel);
-  box-shadow: var(--shadow-panel);
-  transform: translate(-50%, -50%) rotate(-1deg);
-}
-
-.unsupported__title {
-  margin: 0 0 8px;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 18px;
-}
-
-.unsupported__hint {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
 .debug-overlay {
   position: absolute;
   left: 50%;
@@ -231,7 +212,7 @@
 /* Top bar */
 .topbar {
   position: absolute;
-  top: 14px;
+  top: calc(14px + env(safe-area-inset-top, 0px));
   left: 50%;
   z-index: var(--z-topbar);
   display: flex;
@@ -410,17 +391,48 @@
 }
 
 /* Feedback strip */
-.feedback {
+/* The bottom row: the score strip on the left of the toolbar, which stays centred. Longer languages wrap the strip
+   instead of sliding it under the toolbar. */
+.bottom-bar {
   position: absolute;
-  left: 24px;
-  bottom: 18px;
-  z-index: var(--z-feedback);
+  left: calc(24px + env(safe-area-inset-left, 0px));
+  right: calc(24px + env(safe-area-inset-right, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  z-index: var(--z-toolbar);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.bottom-bar > * {
+  pointer-events: auto;
+}
+
+@media (max-width: 1300px) {
+  /* Too narrow to sit side by side: the strip goes above the toolbar. */
+  .bottom-bar {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 10px;
+  }
+
+  .bottom-bar > .feedback {
+    justify-self: start;
+  }
+}
+
+.feedback {
+  position: relative;
+  grid-column: 1;
+  justify-self: start;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 14px;
   box-sizing: border-box;
-  max-width: calc(100% - 48px);
+  max-width: 100%;
   padding: 8px 12px;
   background: var(--color-panel);
   border: var(--border-panel);
@@ -446,7 +458,7 @@
 .nav-hint {
   position: absolute;
   left: 50%;
-  bottom: 80px;
+  bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   z-index: var(--z-nav-hint);
   max-width: calc(100% - 32px);
   padding: 5px 12px;
@@ -461,25 +473,28 @@
   transform: translateX(-50%);
 }
 
+/* Scroll / Ctrl / Alt hints are for a mouse; on a touch screen they only get in the way of the toolbar. */
+@media (pointer: coarse) {
+  .nav-hint {
+    display: none;
+  }
+}
+
 .toolbar {
-  position: absolute;
-  left: 50%;
-  bottom: 18px;
-  z-index: var(--z-toolbar);
+  position: relative;
+  grid-column: 2;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 4px;
   box-sizing: border-box;
-  /* An absolute box at left: 50% otherwise wraps at half the viewport width. */
   width: max-content;
-  max-width: calc(100% - 32px);
+  max-width: 100%;
   padding: 5px;
   background: var(--color-panel);
   border: var(--border-panel);
   border-radius: var(--radius-panel);
   box-shadow: var(--shadow-bar);
-  transform: translateX(-50%);
 }
 
 .toolbar__tool[aria-pressed="true"] {
@@ -586,17 +601,88 @@
   cursor: move;
 }
 
-.placing-hint {
-  position: absolute;
-  top: 86px;
-  left: 50%;
-  max-width: min(560px, calc(100% - 32px));
-  padding: 6px 14px;
-  background: var(--color-hint-bg);
-  color: var(--color-panel);
+/* Save status in the top bar */
+.save-status {
+  padding: 4px 10px;
+  background: var(--color-panel);
+  border: var(--border-control);
   border-radius: var(--radius-pill);
   font-size: 12px;
-  text-align: center;
-  pointer-events: none;
-  transform: translateX(-50%);
+  font-weight: 500;
+}
+
+.save-status--saving,
+.save-status--opening {
+  background: var(--color-yellow);
+}
+
+.save-status--offline {
+  background: var(--color-lilac);
+}
+
+.save-status--failed {
+  background: var(--color-pink);
+}
+
+/* Saved works in the profile popover */
+.works {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.work-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 4px;
+  background: var(--color-panel);
+  color: var(--color-ink);
+  border: var(--border-control);
+  border-color: var(--color-border-muted);
+  border-radius: var(--radius-control);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.work-row[aria-current="true"] {
+  background: var(--color-lime);
+  border-color: var(--color-ink);
+}
+
+.work-row__preview {
+  flex: none;
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
+  background: var(--color-border-muted);
+  border: var(--border-control);
+  border-radius: var(--radius-small);
+}
+
+.work-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.work-row__title {
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.work-row__meta {
+  font-size: 12px;
 }

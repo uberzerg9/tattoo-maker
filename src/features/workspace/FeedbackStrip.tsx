@@ -4,7 +4,8 @@ import type { TraumaLevel } from "./config";
 
 interface FeedbackStripProps {
   passes: number;
-  deviationMm: number;
+  /** Null until a liner has hit near a stencil line. */
+  deviationMm: number | null;
   traumaLevel: TraumaLevel;
 }
 
@@ -24,7 +25,7 @@ export function FeedbackStrip({
       </span>
       <span>
         {t("workspace.feedback.deviation")}{" "}
-        <b className="feedback__num">{format.millimetres(deviationMm)}</b>
+        <b className="feedback__num">{deviationMm === null ? "–" : format.millimetres(deviationMm)}</b>
       </span>
       <span className="feedback__trauma">
         {t("workspace.feedback.trauma")}{" "}

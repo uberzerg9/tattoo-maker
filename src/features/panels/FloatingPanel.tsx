@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { CSSProperties, PointerEvent, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { PanelId } from "../workspace/config";
@@ -11,6 +11,16 @@ interface DragState {
   originX: number;
   originY: number;
 }
+
+interface ResizeState {
+  startX: number;
+  startY: number;
+  width: number;
+  height: number;
+}
+
+/** What a panel can be dragged down to; the CSS minimums are the same. */
+const MIN_PANEL_BODY = { width: 220, height: 120 };
 
 interface FloatingPanelProps {
   id: PanelId;
@@ -29,6 +39,10 @@ export function FloatingPanel({ id, title, badge, bodyClassName, children }: Flo
   const togglePanel = useWorkspaceStore((s) => s.togglePanel);
   const raisePanel = useWorkspaceStore((s) => s.raisePanel);
   const drag = useRef<DragState | null>(null);
+  const resize = useRef<ResizeState | null>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  /** Set by dragging the corner handle; null until then, so the CSS size applies. */
+  const [bodySize, setBodySize] = useState<{ width: number; height: number } | null>(null);
 
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest("button")) return;
@@ -54,10 +68,36 @@ export function FloatingPanel({ id, title, badge, bodyClassName, children }: Flo
     drag.current = null;
   };
 
+  // The corner handle replaces the browser's own resize grip, which does not work with a finger.
+  const onResizeDown = (e: PointerEvent<HTMLDivElement>) => {
+    const body = bodyRef.current;
+    if (!body) return;
+    e.stopPropagation();
+    resize.current = { startX: e.clientX, startY: e.clientY, width: body.offsetWidth, height: body.offsetHeight };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    raisePanel(id);
+  };
+
+  const onResizeMove = (e: PointerEvent<HTMLDivElement>) => {
+    const r = resize.current;
+    if (!r) return;
+    setBodySize({
+      width: Math.max(MIN_PANEL_BODY.width, Math.round(r.width + e.clientX - r.startX)),
+      height: Math.max(MIN_PANEL_BODY.height, Math.round(r.height + e.clientY - r.startY)),
+    });
+  };
+
+  const endResize = () => {
+    resize.current = null;
+  };
+
+  // The safe-area insets keep panels clear of the notch and the home bar when the page runs edge to edge.
   const style: CSSProperties = {
-    top: position.y,
+    top: `calc(${position.y}px + env(safe-area-inset-top, 0px))`,
     zIndex,
-    ...(position.side === "left" ? { left: position.x } : { right: position.x }),
+    ...(position.side === "left"
+      ? { left: `calc(${position.x}px + env(safe-area-inset-left, 0px))` }
+      : { right: `calc(${position.x}px + env(safe-area-inset-right, 0px))` }),
   };
 
   return (
@@ -81,7 +121,21 @@ export function FloatingPanel({ id, title, badge, bodyClassName, children }: Flo
           {open ? "−" : "+"}
         </button>
       </div>
-      {open && <div className={`panel__body ${bodyClassName ?? ""}`}>{children}</div>}
+      {open && (
+        <div ref={bodyRef} className={`panel__body ${bodyClassName ?? ""}`} style={bodySize ?? undefined}>
+          {children}
+        </div>
+      )}
+      {open && (
+        <div
+          className="panel__resize"
+          aria-hidden="true"
+          onPointerDown={onResizeDown}
+          onPointerMove={onResizeMove}
+          onPointerUp={endResize}
+          onPointerCancel={endResize}
+        />
+      )}
     </section>
   );
 }

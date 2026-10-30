@@ -31,7 +31,11 @@ export function useFormat() {
       maximumFractionDigits: 1,
     });
 
+    const dateTime = new Intl.DateTimeFormat(lang, { dateStyle: "medium", timeStyle: "short" });
+
     return {
+      /** A date and time from epoch milliseconds. */
+      dateTime: (ms: number) => dateTime.format(ms),
       integer: (n: number) => integer.format(n),
       decimal: (n: number, digits = 1) =>
         (digits === 2 ? decimal2 : decimal1).format(n),

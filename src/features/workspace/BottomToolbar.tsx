@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useFormat } from "../../i18n/useFormat";
 import { useWorkspaceStore } from "../../store/workspaceStore";
-import { ROTATE_STEP_DEG, ZOOM_STEP } from "./config";
+import { ROTATE_STEP_DEG, ZOOM_MAX, ZOOM_MIN, ZOOM_STEP } from "./config";
 import { HandIcon, NeedleIcon, RotateLeftIcon, RotateRightIcon } from "./icons";
 
 export function BottomToolbar() {
@@ -69,6 +69,7 @@ export function BottomToolbar() {
         type="button"
         className="icon-btn icon-btn--glyph"
         aria-label={t("workspace.toolbar.zoomOut")}
+        disabled={zoom <= ZOOM_MIN}
         onClick={() => setZoom(zoom - ZOOM_STEP)}
       >
         −
@@ -85,6 +86,7 @@ export function BottomToolbar() {
         type="button"
         className="icon-btn icon-btn--glyph"
         aria-label={t("workspace.toolbar.zoomIn")}
+        disabled={zoom >= ZOOM_MAX}
         onClick={() => setZoom(zoom + ZOOM_STEP)}
       >
         +

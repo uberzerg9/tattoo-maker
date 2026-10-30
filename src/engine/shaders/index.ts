@@ -1,6 +1,7 @@
 import hitFragRaw from "./hit.frag.glsl?raw";
 import hitVertRaw from "./hit.vert.glsl?raw";
 import markerFragRaw from "./marker.frag.glsl?raw";
+import reduceFragRaw from "./reduce.frag.glsl?raw";
 import sheetFragRaw from "./sheet.frag.glsl?raw";
 import sheetVertRaw from "./sheet.vert.glsl?raw";
 import stampFragRaw from "./stamp.frag.glsl?raw";
@@ -22,5 +23,6 @@ export const hitFrag = hitFragRaw;
 export const stampVert = stampVertRaw;
 export const stampFrag = stampFragRaw;
 export const traumaFrag = traumaFragRaw;
+export const reduceFrag = reduceFragRaw;
 export const skinVert = skinVertRaw;
 export const skinFrag = skinFragRaw;

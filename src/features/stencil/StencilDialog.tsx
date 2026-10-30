@@ -1,3 +1,4 @@
+import { track } from "../../lib/analytics";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChangeEvent, DragEvent, RefObject } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,16 +7,20 @@ import { stencilSizeMm } from "../../engine/stencil";
 import type { TattooEngine } from "../../engine";
 import { useFormat } from "../../i18n/useFormat";
 import { useWorkspaceStore } from "../../store/workspaceStore";
+import { displayStep, fromDisplay, toDisplay } from "../workspace/units";
+import type { Units } from "../workspace/units";
 import { MAX_STENCIL_HEIGHT_MM } from "../../engine/stencil";
 import { ACCEPTED_SKETCH_TYPES, SketchError, decodeSketch } from "./stencilFile";
 import type { SketchErrorCode } from "./stencilFile";
 import { StencilWorker } from "./StencilWorker";
+import { registerSketch } from "../works/sketchService";
 import { hexToRgb, paintPreview } from "./stencilPreview";
 import "./stencilDialog.css";
 
 type Phase = "pick" | "loading" | "tune";
 
 interface Sketch {
+  file: File;
   name: string;
   url: string;
   width: number;
@@ -27,6 +32,9 @@ const maxHeightFor = (width: number, height: number) =>
   Math.floor((Math.min(MAX_STENCIL_HEIGHT_MM, SHEET_MM.width / (width / height)) / 10) * 10) / 10;
 
 const DEFAULTS = { threshold: 140, lineWeightPx: 2.5, removeFills: true, heightCm: 12 };
+
+/** A size in cm as the text of the size field, in the person's units. */
+const sizeFieldText = (cm: number, units: Units) => String(Math.round(toDisplay(cm, units) * 100) / 100);
 const PREVIEW_DEBOUNCE_MS = 120;
 const STENCIL_RGB = [0x6a, 0x3f, 0xb5] as const;
 
@@ -40,13 +48,14 @@ export default function StencilDialog({ engineRef }: StencilDialogProps) {
   const format = useFormat();
   const initialFile = useWorkspaceStore((s) => s.stencilDialog.file);
   const skinTone = useWorkspaceStore((s) => s.skinTone);
+  const units = useWorkspaceStore((s) => s.units);
   const close = useWorkspaceStore((s) => s.closeStencilDialog);
 
   const [phase, setPhase] = useState<Phase>(initialFile ? "loading" : "pick");
   const [error, setError] = useState<SketchErrorCode | "failed" | null>(null);
   const [sketch, setSketch] = useState<Sketch | null>(null);
   const [settings, setSettings] = useState(DEFAULTS);
-  const [sizeText, setSizeText] = useState(String(DEFAULTS.heightCm));
+  const [sizeText, setSizeText] = useState(() => sizeFieldText(DEFAULTS.heightCm, useWorkspaceStore.getState().units));
   const [engineReady, setEngineReady] = useState(false);
   /** The settings the preview on screen was made with. */
   const [shownKey, setShownKey] = useState<string | null>(null);
@@ -105,7 +114,7 @@ export default function StencilDialog({ engineRef }: StencilDialogProps) {
       URL.revokeObjectURL(url);
       throw e;
     }
-    return { name: file.name, url, width, height };
+    return { file, name: file.name, url, width, height };
   }, []);
 
   const showSketch = useCallback((next: Sketch) => {
@@ -114,7 +123,7 @@ export default function StencilDialog({ engineRef }: StencilDialogProps) {
     sketchUrlRef.current = next.url;
     setSketch(next);
     setSettings((s) => ({ ...s, heightCm }));
-    setSizeText(String(heightCm));
+    setSizeText(sizeFieldText(heightCm, useWorkspaceStore.getState().units));
     setShownKey(null);
     setPhase("tune");
   }, []);
@@ -183,8 +192,8 @@ export default function StencilDialog({ engineRef }: StencilDialogProps) {
 
   const onSize = (value: string) => {
     setSizeText(value);
-    const n = Number(value.replace(",", "."));
-    if (Number.isFinite(n) && n >= 1) setSettings((s) => ({ ...s, heightCm: Math.min(n, maxHeightCm) }));
+    const cm = fromDisplay(Number(value.replace(",", ".")), units);
+    if (Number.isFinite(cm) && cm >= 1) setSettings((s) => ({ ...s, heightCm: Math.min(cm, maxHeightCm) }));
   };
 
   const transfer = async () => {
@@ -201,11 +210,21 @@ export default function StencilDialog({ engineRef }: StencilDialogProps) {
         heightMm: settings.heightCm * 10,
       });
       engine.setStencil(result.mask, result.distanceMm);
+      const sketchRef = await registerSketch({
+        file: sketch.file,
+        mask: result.mask,
+        threshold: settings.threshold,
+        lineWeightPx: settings.lineWeightPx,
+        removeFills: settings.removeFills,
+        heightCm: settings.heightCm,
+      });
+      track.stencilTransfer({ size_cm: settings.heightCm, threshold: settings.threshold });
       keepUrlRef.current = true; // the panel thumbnail now owns the sketch's object URL
       useWorkspaceStore.getState().stencilTransferred({
         fileName: sketch.name,
         thumbUrl: sketch.url,
         size: stencilSizeMm(result.width, result.height),
+        sketch: sketchRef,
       });
       close();
     } catch {
@@ -327,11 +346,11 @@ export default function StencilDialog({ engineRef }: StencilDialogProps) {
               <div className="stencil-control">
                 <label htmlFor="stencil-size">{t("workspace.stencil.dialog.size")}</label>
                 <div className="stencil-size">
-                  <input id="stencil-size" type="number" inputMode="decimal" min={1} max={maxHeightCm} step={0.5} value={sizeText} onChange={(e) => onSize(e.target.value)} />
-                  <span>{t("workspace.stencil.dialog.cmTall")}</span>
+                  <input id="stencil-size" type="number" inputMode="decimal" min={Math.round(toDisplay(1, units) * 100) / 100} max={Math.round(toDisplay(maxHeightCm, units) * 100) / 100} step={displayStep(units)} value={sizeText} onChange={(e) => onSize(e.target.value)} />
+                  <span>{t("workspace.stencil.dialog.tall", { unit: t(`workspace.stencil.dialog.unit.${units}`) })}</span>
                 </div>
               </div>
-              <p className="stencil-dialog__note">{t("workspace.stencil.dialog.sizeHint", { max: format.decimal(maxHeightCm) })}</p>
+              <p className="stencil-dialog__note">{t("workspace.stencil.dialog.sizeHint", { max: format.decimal(toDisplay(maxHeightCm, units)), unit: t(`workspace.stencil.dialog.unit.${units}`) })}</p>
               {error && (
                 <p className="stencil-dialog__error" role="alert">
                   {t(`workspace.stencil.dialog.errors.${error}`)}

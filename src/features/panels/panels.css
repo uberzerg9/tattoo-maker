@@ -48,6 +48,8 @@
   border-radius: var(--radius-panel-inner) var(--radius-panel-inner) 0 0;
   cursor: grab;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   touch-action: none;
 }
 
@@ -93,7 +95,22 @@
   padding: 12px;
   gap: 10px;
   overflow: auto;
-  resize: both;
+}
+
+/* Corner grip: drag it (mouse, finger or pencil) to resize the panel. */
+.panel__resize {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 0 0 var(--radius-panel-inner) 0;
+  cursor: nwse-resize;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  /* Two diagonal grip lines. */
+  background: linear-gradient(135deg, transparent 0 55%, var(--color-ink) 55% 62%, transparent 62% 72%, var(--color-ink) 72% 79%, transparent 79%);
 }
 
 .panel__body--carts {

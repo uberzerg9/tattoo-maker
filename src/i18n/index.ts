@@ -23,4 +23,7 @@ i18n
     interpolation: { escapeValue: false },
   });
 
+// Dev only: lets the layout checks stretch the strings in the browser (window.__i18n).
+if (import.meta.env.DEV && typeof window !== "undefined") (window as unknown as { __i18n?: typeof i18n }).__i18n = i18n;
+
 export default i18n;

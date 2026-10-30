@@ -61,7 +61,7 @@ src/engine/presets/cartridges.json — versioned, loaded at start (Firestore car
 
 json
 {
-"version": 1,
+"version": 2,
 "cartridges": {
 "rl-3": { "group": "RL", "needles": 3, "needleMm": 0.35, "layout": "round-tight", "footprintMm": 0.8, "inkPerHit": 0.22, "traumaPerHit": 0.012, "spreadMm": 0.04 },
 "rl-7": { "group": "RL", "needles": 7, "needleMm": 0.35, "layout": "round-tight", "footprintMm": 1.2, "inkPerHit": 0.20, "traumaPerHit": 0.014, "spreadMm": 0.05 },
@@ -69,7 +69,7 @@ json
 "m1-7": { "group": "M1", "needles": 7, "needleMm": 0.35, "layout": "flat-row", "footprintMm": 2.4, "inkPerHit": 0.07, "traumaPerHit": 0.008, "spreadMm": 0.06 },
 "rm-15": { "group": "RM", "needles": 15, "needleMm": 0.35, "layout": "curved-row", "footprintMm": 5.0, "inkPerHit": 0.06, "traumaPerHit": 0.007, "spreadMm": 0.07 }
 },
-"ink": { "consumptionPerHit": 0.0006, "fadeBelow": 0.25 },
+"ink": { "consumptionPerHit": 0.00018, "fadeBelow": 0.25 },
 "trauma": { "overworkThreshold": 0.6, "blowoutDepth": 0.85 },
 "render": { "healedInkFactor": 0.85, "healedBlurMm": 0.12, "freshRedness": 0.55 }
 }

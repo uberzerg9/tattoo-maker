@@ -1,0 +1,84 @@
+/* Full-page "your browser can't run the trainer" screen. */
+.unsupported-screen {
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background-color: var(--color-bg);
+  background-image: var(--grip-tape-image);
+  background-size: var(--grip-tape-size);
+  background-position: var(--grip-tape-position);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+.unsupported-card {
+  box-sizing: border-box;
+  width: min(560px, 100%);
+  background: var(--color-panel);
+  border: var(--border-panel);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+}
+
+.unsupported-card__head {
+  padding: 16px 20px;
+  background: var(--color-pink);
+  border-bottom: var(--border-panel);
+}
+
+.unsupported-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.unsupported-card__body {
+  padding: 18px 20px 8px;
+}
+
+.unsupported-card__lead {
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.unsupported-card__h2 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.unsupported-card__list {
+  margin: 0 0 14px;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.unsupported-card__code {
+  margin: 0 0 16px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.unsupported-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.unsupported-card__actions .btn {
+  flex: 1 1 160px;
+  height: auto;
+  padding: 8px 14px;
+  text-align: center;
+}

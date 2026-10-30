@@ -1,6 +1,7 @@
 {
   "projects": {
     "default": "tattoo-maker-82071",
-    "dev": "tattoo-maker-82071"
+    "dev": "tattoo-maker-82071",
+    "prod": "tattoo-maker-82071"
   }
 }

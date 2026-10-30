@@ -2,17 +2,30 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
     function isOwner(uid) { return request.auth != null && request.auth.uid == uid; }
+    function isType(type) { return request.resource.contentType == type; }
 
+    // Эскиз: исходник (расширение и тип совпадают, см. sketchPaths в workTypes.ts) и PNG трафарета,
+    // до 10 МБ, только картинки. Других имён файлов нет.
     match /users/{uid}/sketches/{id}/{file} {
-      allow read: if isOwner(uid);
-      allow write: if isOwner(uid)
+      allow read, delete: if isOwner(uid);
+      allow create, update: if isOwner(uid)
         && request.resource.size < 10 * 1024 * 1024
-        && request.resource.contentType.matches('image/(png|jpeg|webp)');
+        && ((file == 'original.png' && isType('image/png'))
+          || (file == 'original.jpg' && isType('image/jpeg'))
+          || (file == 'original.webp' && isType('image/webp'))
+          || (file == 'stencil.png' && isType('image/png')));
     }
 
+    // Работа: ink.bin и trauma.bin (gzip), превью. Больше ничего.
     match /users/{uid}/works/{id}/{file} {
-      allow read: if isOwner(uid);
-      allow write: if isOwner(uid) && request.resource.size < 25 * 1024 * 1024;
+      allow read, delete: if isOwner(uid);
+      allow create, update: if isOwner(uid) && (
+        (file in ['ink.bin', 'trauma.bin']
+          && request.resource.size < 25 * 1024 * 1024
+          && isType('application/octet-stream'))
+        || (file == 'preview.webp'
+          && request.resource.size < 2 * 1024 * 1024
+          && request.resource.contentType.matches('image/(webp|png)')));
     }
   }
 }

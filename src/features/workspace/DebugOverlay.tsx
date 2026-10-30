@@ -20,8 +20,11 @@ export function DebugOverlay({
   const [stats, setStats] = useState<DebugStats | null>(null);
   const [showHits, setShowHits] = useState(false);
   const [showTrauma, setShowTrauma] = useState(false);
+  const [showDeviation, setShowDeviation] = useState(false);
   const [overrideDepth, setOverrideDepth] = useState(false);
   const [forcedDepth, setForcedDepth] = useState(0.5);
+  const [markedHash, setMarkedHash] = useState<string | null>(null);
+  const [hashResult, setHashResult] = useState<string | null>(null);
 
   useEffect(() => {
     const id = window.setInterval(
@@ -62,7 +65,19 @@ export function DebugOverlay({
         {format.integer(stats?.strokeCount ?? 0)}
       </span>
       <span>
+        {t("workspace.debug.undoSteps")} {format.integer(stats?.undoSteps ?? 0)} /{" "}
+        {format.integer(stats?.checkpointSlots ?? 0)}
+      </span>
+      <span>
         {t("workspace.debug.ink")} {format.decimal((stats?.inkLevel ?? 1) * 100)}
+      </span>
+      <span>
+        {t("workspace.debug.deviation")}{" "}
+        {stats?.deviationMm == null ? dash : format.decimal(stats.deviationMm, 2)}
+      </span>
+      <span>
+        {t("workspace.debug.overwork")}{" "}
+        {format.decimal((stats?.overworkShare ?? 0) * 100)}
       </span>
       <span>
         {t("workspace.debug.stampMs")} {format.decimal(stats?.stampMs ?? 0, 2)}
@@ -119,6 +134,19 @@ export function DebugOverlay({
         <label>
           <input
             type="checkbox"
+            checked={showDeviation}
+            onChange={(e) => {
+              setShowDeviation(e.target.checked);
+              engineRef.current?.setDebugOptions({
+                showDeviationHeatmap: e.target.checked,
+              });
+            }}
+          />{" "}
+          {t("workspace.debug.showDeviation")}
+        </label>
+        <label>
+          <input
+            type="checkbox"
             checked={overrideDepth}
             onChange={(e) => {
               setOverrideDepth(e.target.checked);
@@ -147,6 +175,34 @@ export function DebugOverlay({
         <span className="debug-overlay__depth-value">
           {format.decimal(forcedDepth, 2)}
         </span>
+        <button
+          type="button"
+          data-testid="hash-mark"
+          onClick={() => {
+            const hash = engineRef.current?.getBufferHash();
+            setMarkedHash(hash ? `${hash.ink}/${hash.trauma}` : null);
+            setHashResult(hash ? `${hash.ink}/${hash.trauma}` : null);
+          }}
+        >
+          {t("workspace.debug.hashMark")}
+        </button>
+        <button
+          type="button"
+          data-testid="hash-compare"
+          onClick={() => {
+            const hash = engineRef.current?.getBufferHash();
+            if (!hash || markedHash === null) {
+              setHashResult(null);
+              return;
+            }
+            const now = `${hash.ink}/${hash.trauma}`;
+            const verdict = now === markedHash ? t("workspace.debug.hashSame") : t("workspace.debug.hashDifferent");
+            setHashResult(`${verdict} ${now}`);
+          }}
+        >
+          {t("workspace.debug.hashCompare")}
+        </button>
+        <span data-testid="hash-result">{hashResult ?? t("workspace.debug.hashNone")}</span>
         <button type="button" onClick={() => engineRef.current?.clearHits()}>
           {t("workspace.debug.clearHits")}
         </button>

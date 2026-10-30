@@ -1,4 +1,7 @@
 {
+  "app": {
+    "title": "Tattoo Trainer"
+  },
   "workspace": {
     "brand": {
       "a": "TATTOO",
@@ -13,11 +16,20 @@
       "open": "Profil",
       "title": "PROFIL",
       "close": "Închide",
-      "level": "Începător · {{sessions}} sesiuni",
+      "level_one": "Începător · {{count, number}} sesiune",
+      "level_few": "Începător · {{count, number}} sesiuni",
+      "level_other": "Începător · {{count, number}} de sesiuni",
       "language": "Limbă",
       "note": "Toată interfața se schimbă instant. Lecțiile și indiciile urmează aceeași limbă.",
       "view": "PROFIL",
-      "logout": "IEȘIRE"
+      "logout": "IEȘIRE",
+      "works": {
+        "title": "Lucrări salvate",
+        "empty": "Nimic salvat încă.",
+        "open": "Deschide {{title}}",
+        "updated": "Actualizat {{date}}",
+        "localOnly": "Doar pe acest dispozitiv"
+      }
     },
     "panel": {
       "collapse": "Restrânge",
@@ -28,7 +40,7 @@
       "ink": "INK"
     },
     "sheet": {
-      "label": "FOAIE 20 × 15 CM"
+      "label": "FOAIE {{w}} × {{h}} {{unit}}"
     },
     "carts": {
       "title": "CARTUȘE",
@@ -47,7 +59,7 @@
         },
         "m1-7": {
           "type": "Magnum",
-          "use": "Whip shading"
+          "use": "Umbrire cu mișcare de bici"
         },
         "rm-15": {
           "type": "Magnum rotund",
@@ -114,8 +126,7 @@
         "unitPx": "px",
         "removeFills": "Elimină umplerile și umbrele",
         "size": "Mărime pe piele",
-        "cmTall": "cm înălțime",
-        "sizeHint": "Maximum {{max}} cm, mărimea foii de piele. După transfer, mută și rotește stencilul direct pe piele.",
+        "sizeHint": "Maximum {{max}} {{unit}}, mărimea foii de piele. După transfer, mută și rotește stencilul direct pe piele.",
         "otherFile": "ALT FIȘIER",
         "cancel": "ANULEAZĂ",
         "transfer": "TRANSFERĂ PE PIELE",
@@ -130,6 +141,11 @@
           "size": "Fișierul depășește 10 MB.",
           "decode": "Imaginea nu a putut fi citită.",
           "failed": "Ceva n-a mers la crearea stencilului."
+        },
+        "tall": "{{unit}} înălțime",
+        "unit": {
+          "cm": "cm",
+          "in": "inci"
         }
       }
     },
@@ -169,6 +185,12 @@
       "depth": "adâncime",
       "hits": "lovituri / trase",
       "showHits": "centrele loviturilor",
+      "undoSteps": "pași anulare",
+      "hashMark": "reține hash",
+      "hashCompare": "compară hash",
+      "hashSame": "identic",
+      "hashDifferent": "diferit",
+      "hashNone": "încă fără hash",
       "clearHits": "șterge",
       "stampMs": "ștampilă ms",
       "dots": "puncte/lot",
@@ -176,17 +198,378 @@
       "ink": "cerneală %",
       "showTrauma": "hartă traumă",
       "depthOverride": "adâncime manuală",
-      "depthValue": "valoare adâncime"
-    },
-    "unsupported": {
-      "title": "BROWSERUL TĂU NU ESTE SUPORTAT",
-      "hint": "Pielea de exersat are nevoie de WebGL 2 cu buffere float. Încearcă ultimul Chrome, Edge, Firefox sau Safari."
+      "depthValue": "valoare adâncime",
+      "showDeviation": "hartă abatere",
+      "overwork": "suprasolicitat %",
+      "deviation": "abatere mm"
     },
     "placing": {
-      "hint": "Trage de mijloc ca să muți, de colțuri ca să redimensionezi, de mânerul de sus ca să rotești. Prima trăsătură blochează stencilul.",
+      "hint": "Trage mijlocul ca să muți stencilul, colțurile ca să îl redimensionezi, mânerul de sus ca să îl rotești. Nu se poate desena până nu îl aplici.",
       "move": "Mută stencilul",
       "scale": "Redimensionează stencilul",
-      "rotate": "Rotește stencilul"
+      "rotate": "Rotește stencilul",
+      "keys": "Enter sau Spațiu — aplică · Esc — anulează",
+      "label": "Poziționează stencilul",
+      "apply": "APLICĂ STENCILUL",
+      "cancel": "ANULEAZĂ"
+    },
+    "work": {
+      "new": "Nou",
+      "untitled": "Lucrare fără nume",
+      "confirmDiscard": "Ai modificări nesalvate. Le renunți?",
+      "openFailed": "Nu am putut deschide această lucrare.",
+      "status": {
+        "saving": "Se salvează…",
+        "saved": "Salvat",
+        "offline": "Offline — salvat local",
+        "failed": "Nu s-a putut salva",
+        "unsaved": "Modificări nesalvate",
+        "opening": "Se deschide…"
+      }
+    },
+    "units": {
+      "cm": "CM",
+      "in": "INCI"
     }
+  },
+  "auth": {
+    "splash": "Se încarcă…",
+    "common": {
+      "email": "Email",
+      "emailPlaceholder": "tu@example.com",
+      "password": "Parolă",
+      "show": "ARATĂ",
+      "hide": "ASCUNDE",
+      "or": "sau",
+      "google": "Continuă cu Google",
+      "apple": "Continuă cu Apple",
+      "appleSoon": "Autentificarea cu Apple va fi disponibilă în curând"
+    },
+    "login": {
+      "title": "AUTENTIFICARE",
+      "sticker": "NU TREMURA",
+      "tagline": "Exersează pe o piele care nu sângerează.",
+      "forgot": "Ai uitat parola?",
+      "keep": "Păstrează-mă conectat",
+      "submit": "INTRĂ",
+      "busy": "SE CONECTEAZĂ…",
+      "newHere": "Ești nou aici?",
+      "create": "Creează un cont"
+    },
+    "signup": {
+      "title": "ÎNREGISTRARE",
+      "badge": "GRATIS",
+      "sticker": "PRIMA LINIE GRATIS",
+      "heroA": "INTRĂ ÎN",
+      "heroB": "CLUBUL",
+      "heroC": "ACULUI",
+      "b1": "Cartușe reale, tehnici reale",
+      "b2": "Feedback la fiecare linie trasă",
+      "b3": "Schițele tale, șabloanele tale",
+      "name": "Nume",
+      "namePlaceholder": "Alex",
+      "username": "Nume de utilizator",
+      "usernamePlaceholder": "@inkalex",
+      "usernameHint": "3–20 caractere: a–z, cifre sau _",
+      "passwordPlaceholder": "Cel puțin 8 caractere",
+      "strengthLabel": "Puterea parolei",
+      "strength": {
+        "weak": "SLABĂ",
+        "ok": "OK",
+        "good": "BUNĂ",
+        "strong": "PUTERNICĂ"
+      },
+      "level": "Experiența ta",
+      "levels": {
+        "never": "Nu am tatuat niciodată",
+        "fake": "Doar piele de exerciții",
+        "apprentice": "Ucenic"
+      },
+      "language": "Limba interfeței",
+      "agree": "Sunt de acord cu <terms>Termenii</terms> și <privacy>Politica de confidențialitate</privacy>",
+      "submit": "CREEAZĂ CONTUL",
+      "busy": "SE CREEAZĂ…",
+      "already": "Ești deja cu noi?",
+      "login": "Autentifică-te"
+    },
+    "complete": {
+      "title": "APROAPE GATA",
+      "intro": "Contul {{email}} este creat. Alege un username ca să termini.",
+      "taken": "Acest username este luat. Alege altul — contul este deja creat.",
+      "submit": "TERMINĂ"
+    },
+    "forgot": {
+      "title": "AI UITAT PAROLA",
+      "intro": "Introdu emailul și îți trimitem un link pentru o parolă nouă.",
+      "submit": "TRIMITE LINKUL",
+      "sent": "Dacă există un cont pentru {{email}}, linkul este pe drum. Verifică-ți inboxul.",
+      "back": "Înapoi la autentificare"
+    },
+    "verify": {
+      "region": "Verificarea emailului",
+      "text": "Verifică-ți emailul — am trimis un link la {{email}}.",
+      "resend": "TRIMITE DIN NOU",
+      "resendIn": "DIN NOU ÎN {{seconds}} S",
+      "check": "AM VERIFICAT",
+      "sent": "Trimis. Verifică-ți inboxul.",
+      "notYet": "Încă neverificat."
+    },
+    "errors": {
+      "required": "Câmp obligatoriu.",
+      "invalidEmail": "Introdu o adresă de email validă.",
+      "nameRequired": "Introdu numele.",
+      "usernameInvalid": "3–20 de caractere: a–z, 0–9 sau _.",
+      "usernameTaken": "Acest username este luat.",
+      "passwordShort": "Cel puțin 8 caractere.",
+      "invalidCredentials": "Email sau parolă greșită.",
+      "emailInUse": "Acest email este deja înregistrat. Încearcă să te autentifici sau să-ți resetezi parola.",
+      "weakPassword": "Parola este prea slabă. Folosește cel puțin 8 caractere.",
+      "tooManyRequests": "Prea multe încercări. Așteaptă câteva minute.",
+      "network": "Problemă de rețea. Verifică conexiunea și încearcă din nou.",
+      "popupBlocked": "Fereastra de autentificare a fost blocată. Permite ferestrele pop-up și încearcă din nou.",
+      "provider": "Nu am putut face autentificarea cu acest serviciu. Încearcă din nou sau folosește emailul.",
+      "unknown": "Ceva nu a mers. Încearcă din nou.",
+      "wrongPassword": "Parolă greșită.",
+      "emailTaken": "Acest email este folosit de alt cont.",
+      "reauthNeeded": "Autentifică-te din nou și reîncearcă.",
+      "deleteFailed": "Nu am putut șterge contul. Nu s-a pierdut nimic; încearcă din nou."
+    },
+    "stickers": {
+      "ink": "TATU",
+      "oops": "UPS",
+      "new": "NOU"
+    }
+  },
+  "profilePage": {
+    "close": "Închide",
+    "cancel": "ANULEAZĂ",
+    "failed": "Nu s-a putut salva. Încearcă din nou.",
+    "back": "ATELIER",
+    "stats": {
+      "title": "STATISTICILE MELE",
+      "sessions_one": "sesiune",
+      "sessions_few": "sesiuni",
+      "sessions_other": "de sesiuni",
+      "hours": "ore pe piele",
+      "deviation": "abatere medie, mm",
+      "streak_one": "zi la rând",
+      "streak_few": "zile la rând",
+      "streak_other": "de zile la rând"
+    },
+    "works": {
+      "rename": "REDENUMEȘTE",
+      "delete": "ȘTERGE",
+      "renameTitle": "REDENUMEȘTE LUCRAREA",
+      "titleLabel": "Titlu",
+      "deleteTitle": "ȘTERGE LUCRAREA",
+      "deleteText": "Ștergi „{{title}}”? Lucrarea și fișierele ei sunt eliminate definitiv."
+    },
+    "settings": {
+      "title": "SETĂRI",
+      "save": "SALVEAZĂ",
+      "saved": "Salvat.",
+      "account": "CONT",
+      "language": "LIMBĂ",
+      "languageNote": "Se aplică întregii aplicații: atelier, lecții și indicii. Se salvează imediat.",
+      "defaults": "SETĂRI ATELIER",
+      "units": "Unități",
+      "unit": {
+        "cm": "cm",
+        "in": "inci"
+      },
+      "danger": "ZONĂ PERICULOASĂ",
+      "providerAccount": "Te autentifici cu contul Google sau Apple, deci emailul și parola se schimbă acolo."
+    },
+    "email": {
+      "change": "Schimbă emailul",
+      "title": "SCHIMBĂ EMAILUL",
+      "intro": "Trimitem un link de confirmare la adresa nouă. Emailul se schimbă după ce îl deschizi.",
+      "newEmail": "Email nou",
+      "send": "TRIMITE LINKUL",
+      "sent": "Am trimis un link la {{email}}. Emailul se schimbă după ce îl deschizi."
+    },
+    "password": {
+      "change": "Schimbă parola",
+      "title": "SCHIMBĂ PAROLA",
+      "new": "Parolă nouă",
+      "update": "ACTUALIZEAZĂ",
+      "done": "Parola a fost schimbată."
+    },
+    "reauth": {
+      "password": "Parola curentă",
+      "provider": "Pentru siguranță, îți vom cere să te autentifici din nou cu furnizorul tău."
+    },
+    "delete": {
+      "button": "ȘTERGE CONTUL",
+      "title": "ȘTERGE CONTUL",
+      "warning": "Contul, username-ul, lucrările salvate, schițele și statisticile sunt șterse definitiv. Nu se poate anula.",
+      "confirm": "ȘTERGE DEFINITIV",
+      "busy": "SE ȘTERGE…"
+    },
+    "analytics": {
+      "title": "Cookie-uri de analiză",
+      "text": "Statisticile anonime de utilizare ne ajută să îmbunătățim trainerul. Te poți răzgândi oricând.",
+      "on": "PORNIT",
+      "off": "OPRIT"
+    }
+  },
+  "consent": {
+    "title": "Cookie-uri de analiză",
+    "text": "Vrem să numărăm vizitele și să vedem ce funcții sunt folosite, ca să îmbunătățim trainerul. Este opțional și rămâne dezactivat până accepți.",
+    "accept": "ACCEPTĂ",
+    "reject": "REFUZĂ",
+    "privacy": "Politica de confidențialitate"
+  },
+  "unsupported": {
+    "title": "BROWSERUL TĂU NU POATE RULA TRAINERUL",
+    "reason": {
+      "webgl2": "Acest browser nu are WebGL 2, care desenează pielea de exersat.",
+      "float-render-targets": "Placa ta video nu poate desena în bufferele în virgulă mobilă care țin cerneala și leziunile pielii (EXT_color_buffer_float)."
+    },
+    "tryTitle": "ÎNCEARCĂ ASTA",
+    "try": {
+      "browser": "Folosește cel mai nou Chrome, Edge, Firefox sau Safari (15 sau mai nou) pe calculator sau tabletă.",
+      "acceleration": "Activează accelerarea hardware în setările browserului.",
+      "drivers": "Actualizează driverele plăcii video și repornește browserul."
+    },
+    "details": "Detalii tehnice: {{reason}}",
+    "profile": "DESCHIDE PROFILUL",
+    "logout": "IEȘI"
+  },
+  "legal": {
+    "back": "ÎNAPOI",
+    "language": "Limba",
+    "draftTitle": "CIORNĂ — NECESITĂ REVIZUIRE JURIDICĂ",
+    "draftText": "Acest text este o ciornă de lucru, nu formularea juridică finală. Tot ce e între [paranteze drepte] urmează să fie completat. Nu te baza pe el până nu a fost revizuit.",
+    "footer": {
+      "label": "Informații legale și cookie-uri",
+      "terms": "Termeni",
+      "privacy": "Confidențialitate",
+      "cookies": "Setări cookie-uri"
+    },
+    "terms": {
+      "title": "TERMENI DE UTILIZARE",
+      "sections": {
+        "service": {
+          "title": "Ce este Tattoo Trainer",
+          "p1": "Tattoo Trainer este un instrument de exersare pentru tatuatorii începători. Alegi o cartușă, un capacel cu cerneală și viteza aparatului, transferi o schiță pe o foaie de piele virtuală ca stencil, o tatuezi și primești o evaluare a cât de fidel ai urmat-o.",
+          "p2": "Este o simulare. Pielea reală, aparatele reale și cerneala reală se comportă diferit."
+        },
+        "noQualification": {
+          "title": "Nu este o calificare",
+          "p1": "Folosirea trainerului nu îți dă nicio calificare, licență, certificat sau permisiune de a tatua. Scorurile și observațiile sunt doar pentru exersare și nu reprezintă o evaluare a vreunei autorități.",
+          "p2": "Tatuarea persoanelor cere pregătire adecvată, instruire în igienă și siguranță și licențele cerute de legea locală. Trainerul nu înlocuiește nimic din acestea și nu oferă sfaturi medicale, de sănătate sau de siguranță."
+        },
+        "account": {
+          "title": "Contul tău",
+          "p1": "Ai nevoie de un cont ca să îți salvezi lucrările. Furnizează date corecte, nu da parola altora și anunță-ne dacă crezi că altcineva ți-a folosit contul. Îți poți șterge contul oricând din Profil (Șterge contul).",
+          "p2": "[Vârsta minimă și regulile privind acordul părinților — de stabilit în urma revizuirii juridice.]"
+        },
+        "sketches": {
+          "title": "Schițele și lucrările tale",
+          "p1": "Păstrezi drepturile asupra a ceea ce încarci. Încărcând o schiță confirmi că îți aparține sau că ai dreptul să o folosești pentru exersare și că nu încalcă drepturile altora sau legea.",
+          "p2": "Ne permiți să stocăm și să prelucrăm schițele și lucrările tale doar pentru a face trainerul să funcționeze pentru tine: ca să ți le arătăm, să facem stenciluri din ele și să îți salvăm progresul. Nu le publicăm și nu le arătăm altor utilizatori."
+        },
+        "rules": {
+          "title": "Utilizare acceptabilă",
+          "p1": "Nu încărca conținut ilegal, instigator la ură sau care încalcă drepturi, nu încerca să strici sau să supraîncarci serviciul și nu încerca să accesezi datele altora."
+        },
+        "beta": {
+          "title": "Beta și disponibilitate",
+          "p1": "Trainerul este în beta închis. Este oferit așa cum este, funcțiile se pot schimba, iar lucrările salvate se pot pierde în ciuda eforturilor noastre. Păstrează propria copie a ceea ce nu îți permiți să pierzi."
+        },
+        "liability": {
+          "title": "Răspundere și legea aplicabilă",
+          "p1": "[Limitarea răspunderii și legea aplicabilă — de redactat în urma revizuirii juridice.]"
+        },
+        "ending": {
+          "title": "Încetare și modificări",
+          "p1": "Poți înceta să folosești trainerul sau îți poți șterge contul oricând. Putem suspenda conturile care încalcă acești termeni. Putem actualiza acești termeni și te vom anunța în aplicație despre schimbările importante."
+        },
+        "contact": {
+          "title": "Contact",
+          "p1": "Întrebări despre acești termeni: {{email}}."
+        }
+      }
+    },
+    "privacy": {
+      "title": "POLITICA DE CONFIDENȚIALITATE",
+      "sections": {
+        "who": {
+          "title": "Cine suntem",
+          "p1": "Tattoo Trainer este operat de [NUMELE ȘI ADRESA OPERATORULUI — de completat]. Întrebări și solicitări: {{email}}."
+        },
+        "data": {
+          "title": "Ce stocăm",
+          "intro": "Păstrăm doar ce are nevoie trainerul:",
+          "account": "Cont: numele, numele de utilizator, adresa de email, nivelul de experiență, limba și setările (nuanța pielii, viteza aparatului, unitățile, aranjarea panourilor).",
+          "works": "Lucrări: datele despre cerneală și leziunile pielii pentru fiecare lucrare, o imagine mică de previzualizare și titlul.",
+          "sketches": "Schițe: imaginea încărcată de tine și stencilul făcut din ea.",
+          "sessions": "Sesiuni de exersare: când ai exersat, numărul de treceri, abaterea medie și nivelul de traumă, plus statisticile adunate din ele (sesiuni, ore, serie de zile).",
+          "device": "Pe dispozitivul tău: copii salvate ale lucrărilor, ca să se deschidă offline, autentificarea, limba și alegerea privind cookie-urile.",
+          "analytics": "Analiză, doar dacă accepți: ce funcții sunt folosite (înregistrări, prima trasare, transferul stencilului, salvări, sfârșitul unei sesiuni) și date de bază despre dispozitiv, prin cookie-uri Google Analytics."
+        },
+        "where": {
+          "title": "Unde se stochează",
+          "p1": "Datele contului, lucrările, schițele și sesiunile sunt stocate la Google Firebase (Authentication, Cloud Firestore, Cloud Storage) în UE, în regiunea europe-west3 (Frankfurt). Dacă accepți analiza, Google Analytics poate prelucra date în afara UE. [Transferurile și garanțiile — de confirmat în urma revizuirii juridice.]"
+        },
+        "why": {
+          "title": "De ce le folosim",
+          "p1": "Ca să funcționeze trainerul (contul, salvarea, statisticile) și, doar cu acordul tău, ca să înțelegem și să îmbunătățim aplicația. [Temeiurile legale — de confirmat în urma revizuirii juridice.]"
+        },
+        "cookies": {
+          "title": "Analiză și cookie-uri",
+          "p1": "Cookie-urile de analiză rămân oprite până le accepți în banner. Îți poți schimba alegerea oricând în Profil → Cookie-uri de analiză sau cu linkul „Setări cookie-uri” din subsol. Refuzul sau retragerea acordului oprește analiza și șterge cookie-urile. Trainerul nu folosește cookie-uri de publicitate."
+        },
+        "sharing": {
+          "title": "Cine îți vede datele",
+          "p1": "Doar tu îți poți citi lucrările, schițele și sesiunile. Nu îți vindem datele. Google prelucrează date pentru noi ca furnizor de găzduire și analiză."
+        },
+        "keep": {
+          "title": "Păstrare și ștergere",
+          "p1": "Păstrăm datele cât timp există contul. Profil → Șterge contul îți șterge profilul, lucrările, schițele, sesiunile, numele de utilizator, fișierele stocate și autentificarea, și curăță copiile de pe dispozitiv. [Perioadele de păstrare a copiilor de siguranță și a datelor de analiză — de confirmat.]"
+        },
+        "rights": {
+          "title": "Drepturile tale",
+          "p1": "Poți cere acces la date, corectarea, exportul sau ștergerea lor, te poți opune folosirii lor sau îți poți retrage acordul și poți depune plângere la autoritatea pentru protecția datelor. Scrie la {{email}}; multe le poți face singur în Profil."
+        },
+        "children": {
+          "title": "Copii",
+          "p1": "[Limitele de vârstă — de stabilit în urma revizuirii juridice.]"
+        },
+        "changes": {
+          "title": "Modificări",
+          "p1": "Vom actualiza această pagină când se schimbă ceva și te vom anunța în aplicație despre schimbările importante."
+        }
+      }
+    }
+  },
+  "onboarding": {
+    "label": "Tur rapid",
+    "step": "SFAT {{n}} / {{total}}",
+    "skip": "SARI PESTE",
+    "back": "ÎNAPOI",
+    "next": "URMĂTORUL",
+    "done": "AM ÎNȚELES",
+    "cartridge": {
+      "title": "ALEGE O CARTUȘĂ",
+      "text": "Linerele (RL) trasează contururi; shaderele (RS) și magnumurile (M1, RM) umplu și degradează. Începe cu un liner pentru linii."
+    },
+    "dip": {
+      "title": "ÎNMOAIE ACUL",
+      "text": "Alege un capacel cu cerneală, apoi apasă ÎNMOAIE (Ctrl/⌘ + D). Acul desenează doar cât are cerneală și aceasta se termină pe parcurs."
+    },
+    "stencil": {
+      "title": "ADAUGĂ UN STENCIL",
+      "text": "Încarcă o schiță în panoul Stencil, ajustează liniile, transferă-o pe piele și poziționeaz-o. Apoi apasă APLICĂ STENCILUL (sau Enter) ca s-o fixezi și să începi să desenezi."
+    },
+    "draw": {
+      "title": "DESENEAZĂ",
+      "text": "Trage peste piele ca să tatuezi. Mișcă-te constant: viteza și numărul de treceri schimbă aspectul liniei, iar bara de jos îți punctează precizia."
+    }
+  },
+  "preview": {
+    "badge": "Previzualizare — salvarea este dezactivată",
+    "signupDisabled": "Înregistrarea este dezactivată în această previzualizare."
   }
 }

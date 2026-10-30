@@ -38,7 +38,7 @@ export const DEFAULT_PANEL_POSITIONS: Record<PanelId, PanelPosition> = {
 export const PAN_VISIBLE_MARGIN_PX = 120;
 
 export const ZOOM_MIN = 0.5;
-export const ZOOM_MAX = 3;
+export const ZOOM_MAX = 4;
 export const ZOOM_STEP = 0.25;
 export const ROTATE_STEP_DEG = 15;
 export const ROTATE_WHEEL_STEP_DEG = 5;

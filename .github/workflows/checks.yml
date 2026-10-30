@@ -1,0 +1,73 @@
+# The checks every change goes through. Called by pr.yml, main.yml and release.yml, so the three never drift apart.
+name: Checks
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            functions/package-lock.json
+
+      # The Firestore and Storage emulators need a JDK (21 or newer).
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm --prefix functions ci
+
+      - name: Lint
+        run: |
+          npm run lint
+          npm --prefix functions run lint
+
+      - name: Typecheck
+        run: |
+          npm run typecheck
+          npm --prefix functions run build
+
+      - name: Install the Firebase CLI and the test browser
+        run: |
+          npm install --global firebase-tools@15.34.1
+          npx playwright install --with-deps chromium
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      # Own emulators (Firestore + Storage, demo project): see firebase.rules-test.json.
+      - name: Security rules tests
+        run: npm run test:rules
+
+      # Demo emulators (Auth, Firestore, Storage) and two Vite dev servers: the normal app and the preview build.
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+      - name: Build
+        run: npm run build
+
+      - name: Keep the Playwright report when the tests fail
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

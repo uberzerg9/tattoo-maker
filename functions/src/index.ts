@@ -10,6 +10,13 @@ initializeApp();
 setGlobalOptions({ region: "europe-west3", maxInstances: 10 });
 const db = getFirestore();
 
+// Callables answer only the real app: App Check is enforced everywhere except the local emulator,
+// which does not issue App Check tokens.
+const enforceAppCheck = process.env.FUNCTIONS_EMULATOR !== "true";
+
+// The sign-in behind a destructive call must be this fresh (the app asks for the password right before).
+const MAX_AUTH_AGE_S = 5 * 60;
+
 const dayOf = (ms: number) => new Date(ms).toISOString().slice(0, 10);
 
 export const onSessionCreated = onDocumentCreated(
@@ -58,9 +65,13 @@ export const onSessionCreated = onDocumentCreated(
   },
 );
 
-export const deleteAccount = onCall(async (req) => {
+export const deleteAccount = onCall({ enforceAppCheck }, async (req) => {
   const uid = req.auth?.uid;
   if (!uid) throw new HttpsError("unauthenticated", "Sign in first");
+  const authTime = req.auth?.token.auth_time;
+  if (typeof authTime !== "number" || Date.now() / 1000 - authTime > MAX_AUTH_AGE_S) {
+    throw new HttpsError("unauthenticated", "Sign in again to delete the account");
+  }
   const user = await db.doc(`users/${uid}`).get();
   const username = user.get("username");
   await db.recursiveDelete(db.doc(`users/${uid}`));

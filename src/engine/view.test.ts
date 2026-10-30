@@ -40,7 +40,7 @@ describe("view transform", () => {
   });
 
   it("round-trips screen → mm → screen exactly", () => {
-    const zooms = [0.5, 1, 1.25, 2, 3];
+    const zooms = [0.5, 1, 1.25, 2, 3, 4];
     const rotations = [-180, -135, -45, -15, 0, 5, 15, 45, 90, 135, 180];
     const points = [
       [0, 0],
@@ -62,15 +62,15 @@ describe("view transform", () => {
     }
   });
 
-  it("lands a hit exactly under the cursor at 300% zoom rotated 45°", () => {
-    const view: View = { zoom: 3, offsetX: 0, offsetY: 0, rotationDeg: 45 };
+  it("lands a hit exactly under the cursor at 400% zoom rotated 45°", () => {
+    const view: View = { zoom: 4, offsetX: 0, offsetY: 0, rotationDeg: 45 };
     const mm = screenToSheetMm(800, 500, view, stage);
     const px = sheetMmToScreen(mm.x, mm.y, view, stage);
     expect(Math.hypot(px.x - 800, px.y - 500)).toBeLessThan(1e-6);
     // 80 css px right and 50 down of the centre, rotated back by 45° and divided by zoom
     const rx =
       (80 * Math.cos(Math.PI / 4) + 50 * Math.sin(Math.PI / 4)) /
-      3 /
+      4 /
       CSS_PX_PER_MM;
     expect(mm.x).toBeCloseTo(SHEET_MM.width / 2 + rx, 9);
   });

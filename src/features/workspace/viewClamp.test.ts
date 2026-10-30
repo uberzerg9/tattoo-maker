@@ -34,7 +34,7 @@ function polygonsOverlap(a: Point[], b: Point[]): boolean {
 
 describe("pan clamp", () => {
   it("keeps the sheet on screen at any zoom and rotation, even when dragged to the extreme", () => {
-    const zooms = [ZOOM_MIN, 0.75, 1, 1.5, 2, 2.5, ZOOM_MAX];
+    const zooms = [ZOOM_MIN, 0.75, 1, 1.5, 2, 2.5, 3, 3.5, ZOOM_MAX];
     const rotations = [-180, -135, -90, -45, -15, 0, 5, 15, 45, 90, 135, 180];
     const far = 100_000;
 

@@ -25,7 +25,7 @@ export interface PresetBundle {
   render: { healedInkFactor: number; healedBlurMm: number; freshRedness: number };
 }
 
-export const SUPPORTED_PRESET_VERSION = 1;
+export const SUPPORTED_PRESET_VERSION = 2;
 
 export const CARTRIDGE_IDS = ["rl-3", "rl-7", "rs-9", "m1-7", "rm-15"] as const satisfies readonly CartridgeId[];
 const LAYOUTS: readonly NeedleLayout[] = ["round-tight", "round-loose", "flat-row", "curved-row"];

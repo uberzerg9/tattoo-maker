@@ -1,0 +1,49 @@
+/* The strip above the toolbar while a stencil is being placed. It is a row of the bottom grid, so it never covers the toolbar. */
+.placement-bar {
+  grid-column: 1 / -1;
+  justify-self: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+  max-width: min(760px, 100%);
+  padding: 8px 10px 8px 16px;
+  background: var(--color-yellow);
+  color: var(--color-ink);
+  border: var(--border-panel);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-card);
+}
+
+.placement-bar__hint {
+  flex: 1 1 280px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.placement-bar__keys {
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.placement-bar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.placement-bar__actions .btn {
+  height: auto;
+  min-height: 44px; /* a comfortable finger target */
+  padding: 6px 16px;
+}
+
+/* No keyboard on a touch screen: do not advertise keys. */
+@media (pointer: coarse) {
+  .placement-bar__keys {
+    display: none;
+  }
+}

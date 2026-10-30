@@ -3,18 +3,173 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
     function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function validId(id) { return id.matches('[A-Za-z0-9_-]{1,64}'); }
+
+    // users/{uid}/sketches/{id}: см. src/features/works/workRemote.ts
+    function validSketch(uid, id, d) {
+      return d.keys().hasOnly(['originalPath', 'stencilPath', 'threshold', 'lineWeight', 'removeFills', 'fileName', 'createdAt'])
+        && d.keys().hasAll(['originalPath', 'stencilPath', 'threshold', 'lineWeight', 'removeFills', 'fileName', 'createdAt'])
+        && d.originalPath is string
+        && d.originalPath.matches('users/' + uid + '/sketches/' + id + '/original\\.(png|jpg|webp)')
+        && d.stencilPath == 'users/' + uid + '/sketches/' + id + '/stencil.png'
+        && d.threshold is int && d.threshold >= 0 && d.threshold <= 255
+        && d.lineWeight is number && d.lineWeight >= 0.5 && d.lineWeight <= 10
+        && d.removeFills is bool
+        && d.fileName is string && d.fileName.size() <= 255
+        && d.createdAt is timestamp;
+    }
+
+    // users/{uid}/works/{id}: см. src/features/works/workRemote.ts
+    function validWork(uid, id, d) {
+      return d.keys().hasOnly(['title', 'sketchId', 'skinTone', 'inkPath', 'traumaPath', 'previewPath', 'sizeCm', 'presetsVersion', 'state', 'createdAt', 'updatedAt'])
+        && d.keys().hasAll(['title', 'sketchId', 'skinTone', 'inkPath', 'traumaPath', 'previewPath', 'sizeCm', 'presetsVersion', 'state', 'createdAt', 'updatedAt'])
+        && d.title is string && d.title.size() > 0 && d.title.size() <= 120
+        && (d.sketchId == null || (d.sketchId is string && validId(d.sketchId)))
+        && d.skinTone in ['t1', 't2', 't3', 't4', 't5', 't6']
+        && d.inkPath == 'users/' + uid + '/works/' + id + '/ink.bin'
+        && d.traumaPath == 'users/' + uid + '/works/' + id + '/trauma.bin'
+        && d.previewPath == 'users/' + uid + '/works/' + id + '/preview.webp'
+        && (d.sizeCm == null || (d.sizeCm is number && d.sizeCm > 0 && d.sizeCm <= 30))
+        && d.presetsVersion is int && d.presetsVersion >= 1
+        && validState(d.state)
+        && d.createdAt is timestamp
+        && d.updatedAt == request.time;
+    }
+
+    // Состояние движка (EngineState в src/engine/types.ts): всё, что не лежит в ink.bin и trauma.bin.
+    function validState(s) {
+      return s is map
+        && s.keys().hasOnly(['version', 'presetsVersion', 'strokes', 'deviation', 'supply', 'placement'])
+        && s.keys().hasAll(['version', 'presetsVersion', 'strokes', 'deviation', 'supply', 'placement'])
+        && s.version == 1
+        && s.presetsVersion is int && s.presetsVersion >= 1
+        && s.strokes is int && s.strokes >= 0 && s.strokes <= 1000000
+        && s.deviation is map
+        && s.deviation.keys().hasOnly(['sum', 'count'])
+        && s.deviation.keys().hasAll(['sum', 'count'])
+        && s.deviation.sum is number && s.deviation.sum >= 0
+        && s.deviation.count is int && s.deviation.count >= 0
+        && validSupply(s.supply)
+        && (s.placement == null || validPlacement(s.placement));
+    }
+
+    // SupplyState: колпачки — id → уровень, картриджи — id → { level, tone }.
+    function validSupply(s) {
+      return s is map
+        && s.keys().hasOnly(['caps', 'needles'])
+        && s.keys().hasAll(['caps', 'needles'])
+        && s.caps is map && s.caps.size() <= 16
+        && s.needles is map
+        && s.needles.keys().hasOnly(['rl-3', 'rl-7', 'rs-9', 'm1-7', 'rm-15']);
+    }
+
+    function validPlacement(p) {
+      return p is map
+        && p.keys().hasOnly(['centerXMm', 'centerYMm', 'rotationDeg', 'scale'])
+        && p.keys().hasAll(['centerXMm', 'centerYMm', 'rotationDeg', 'scale'])
+        && p.centerXMm is number && p.centerYMm is number && p.rotationDeg is number
+        && p.scale is number && p.scale > 0;
+    }
+
+    // users/{uid}: см. claimProfile() в src/features/auth/authService.ts и src/features/profile/profileService.ts.
+    // Проверяется документ целиком, каким он станет после записи; stats пишет только функция (Admin SDK).
+    function validUser(uid, d) {
+      return d.keys().hasOnly(['name', 'username', 'level', 'language', 'createdAt', 'settings', 'stats'])
+        && d.keys().hasAll(['name', 'username', 'level', 'language', 'createdAt', 'settings'])
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 60
+        && d.username is string && d.username.matches('[a-z0-9_]{3,20}')
+        && d.level in ['never', 'fake', 'apprentice']
+        && d.language in ['en', 'ru', 'ro']
+        && d.createdAt is timestamp
+        && validSettings(d.settings);
+    }
+
+    function validSettings(s) {
+      return s is map
+        && s.keys().hasOnly(['skinTone', 'machineHz', 'units', 'panelLayout'])
+        && s.keys().hasAll(['skinTone', 'machineHz', 'units'])
+        && s.skinTone in ['t1', 't2', 't3', 't4', 't5', 't6']
+        && s.machineHz is int && s.machineHz >= 50 && s.machineHz <= 150
+        && s.units in ['cm', 'in']
+        && (!('panelLayout' in s) || validPanelLayout(s.panelLayout));
+    }
+
+    // PanelLayout в src/features/workspace/panelLayout.ts; панели — PANEL_IDS в config.ts.
+    function validPanelLayout(l) {
+      return l is map
+        && l.keys().hasOnly(['positions', 'open'])
+        && l.keys().hasAll(['positions', 'open'])
+        && l.positions is map
+        && l.positions.keys().hasOnly(['carts', 'caps', 'machine', 'skin', 'stencil'])
+        && l.positions.keys().hasAll(['carts', 'caps', 'machine', 'skin', 'stencil'])
+        && validPanelPosition(l.positions.carts)
+        && validPanelPosition(l.positions.caps)
+        && validPanelPosition(l.positions.machine)
+        && validPanelPosition(l.positions.skin)
+        && validPanelPosition(l.positions.stencil)
+        && l.open is map
+        && l.open.keys().hasOnly(['carts', 'caps', 'machine', 'skin', 'stencil'])
+        && l.open.keys().hasAll(['carts', 'caps', 'machine', 'skin', 'stencil'])
+        && l.open.carts is bool && l.open.caps is bool && l.open.machine is bool
+        && l.open.skin is bool && l.open.stencil is bool;
+    }
+
+    function validPanelPosition(p) {
+      return p is map
+        && p.keys().hasOnly(['side', 'x', 'y'])
+        && p.keys().hasAll(['side', 'x', 'y'])
+        && p.side in ['left', 'right']
+        && p.x is number && p.x >= 0 && p.x <= 4000
+        && p.y is number && p.y >= 0 && p.y <= 4000;
+    }
+
+    // users/{uid}/sessions/{id}: см. src/features/session/sessionService.ts. Статистику из них считает функция,
+    // поэтому значения ограничены: нельзя «накрутить» часы, проходы или точность.
+    function validSession(d) {
+      return d.keys().hasOnly(['workId', 'startedAt', 'endedAt', 'passes', 'deviationMm', 'traumaLevel'])
+        && d.keys().hasAll(['workId', 'startedAt', 'endedAt', 'passes', 'deviationMm', 'traumaLevel'])
+        && d.workId is string && validId(d.workId)
+        && d.startedAt is timestamp
+        && d.endedAt is timestamp
+        && d.endedAt > d.startedAt
+        && d.endedAt <= request.time
+        && d.endedAt.toMillis() - d.startedAt.toMillis() < 12 * 60 * 60 * 1000
+        && d.passes is int && d.passes >= 0 && d.passes <= 100000
+        && d.deviationMm is number && d.deviationMm >= 0 && d.deviationMm <= 50
+        && d.traumaLevel in ['low', 'medium', 'high'];
+    }
 
     match /users/{uid} {
       allow read: if isOwner(uid);
-      allow create: if isOwner(uid) && !('stats' in request.resource.data);
-      allow update: if isOwner(uid) && !request.resource.data.diff(resource.data)
-        .affectedKeys().hasAny(['stats', 'username', 'createdAt']);
+      // Профиль создаётся вместе с usernames/{name} (одна транзакция): имя должно принадлежать этому же uid.
+      allow create: if isOwner(uid)
+        && !('stats' in request.resource.data)
+        && validUser(uid, request.resource.data)
+        && request.resource.data.createdAt == request.time
+        && getAfter(/databases/$(database)/documents/usernames/$(request.resource.data.username)).data.uid == uid;
+      allow update: if isOwner(uid)
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['stats', 'username', 'createdAt'])
+        && validUser(uid, request.resource.data);
       allow delete: if false; // только через функцию удаления аккаунта
 
-      match /sketches/{id} { allow read, write: if isOwner(uid); }
-      match /works/{id}    { allow read, write: if isOwner(uid); }
+      // Эскиз и работа: только владелец, только поля и пути, которые пишет приложение.
+      match /sketches/{id} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validId(id) && validSketch(uid, id, request.resource.data);
+        allow update: if isOwner(uid) && validSketch(uid, id, request.resource.data)
+          && request.resource.data.createdAt == resource.data.createdAt;
+        allow delete: if isOwner(uid);
+      }
+      match /works/{id} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validId(id) && validWork(uid, id, request.resource.data);
+        allow update: if isOwner(uid) && validWork(uid, id, request.resource.data)
+          && request.resource.data.createdAt == resource.data.createdAt;
+        allow delete: if isOwner(uid);
+      }
       match /sessions/{id} {
-        allow read, create: if isOwner(uid);
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validSession(request.resource.data);
         allow update, delete: if false;
       }
     }
@@ -22,6 +177,7 @@ service cloud.firestore {
     match /usernames/{name} {
       allow read: if signedIn();
       allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['uid'])
         && request.resource.data.uid == request.auth.uid
         && name.matches('^[a-z0-9_]{3,20}$');
       allow update, delete: if false;

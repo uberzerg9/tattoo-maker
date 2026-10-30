@@ -22,6 +22,37 @@ export interface StencilPlacement {
   scale: number;
 }
 
+/** What the supply (cartridges and caps) looked like, so undo and restore can give the ink back. */
+export interface SupplyState {
+  caps: Record<string, number>;
+  needles: Record<string, { level: number; tone: number }>;
+}
+
+/** Everything about a work that is not in the two pixel buffers. JSON-safe. */
+export interface EngineState {
+  version: 1;
+  /** Version of the cartridge presets the work was drawn with. */
+  presetsVersion: number;
+  /** Strokes on the sheet: the passes. */
+  strokes: number;
+  /** Sum and number of the stencil distances behind the work's deviation. */
+  deviation: { sum: number; count: number };
+  supply: SupplyState;
+  /** Where the stencil sits; null when the work has none. */
+  placement: StencilPlacement | null;
+}
+
+/** A work as it is stored: the buffers, a preview, and the state. */
+export interface WorkSnapshot {
+  /** gzipped ink levels and total ink (ink.bin). */
+  ink: Blob;
+  /** gzipped trauma (trauma.bin). */
+  trauma: Blob;
+  /** 512 px preview (preview.webp). */
+  preview: Blob;
+  state: EngineState;
+}
+
 export interface Score {
   passes: number;
   /** Mean distance to the stencil in mm; null until a liner has hit near a stencil line. */
@@ -41,6 +72,8 @@ export interface EngineEvents {
   unsupported: UnsupportedReason;
   /** True when the work has changes that are not saved yet. */
   dirty: boolean;
+  /** How many strokes undo() can take back; 0 disables the Undo button. */
+  undoSteps: number;
   /** A stencil can be moved until the first stroke after it was transferred; then it locks. */
   stencilLocked: boolean;
 }
@@ -60,14 +93,23 @@ export interface DebugStats {
   lastSpacingMm: number | null;
   /** Depth of the last hit, 0..1; null before the first hit. */
   lastDepth: number | null;
+  /** Hits of the strokes that can still be undone. */
   hitCount: number;
+  /** Strokes on the sheet: the passes. */
   strokeCount: number;
+  undoSteps: number;
+  /** Full-size undo checkpoints held on the GPU. */
+  checkpointSlots: number;
   /** CPU time to turn the last frame's hits into dots and stamp them, ms. */
   stampMs: number;
   /** Needle dots in the last non-empty stamp batch. */
   lastBatchDots: number;
   /** Ink dots stamped since the engine started, halos included. */
   dotsStamped: number;
+  /** Share of the inked area that is overworked, 0..1, from the last GPU reduction. */
+  overworkShare: number;
+  /** Mean distance to the stencil of liner hits near a line, mm; null until there is one. */
+  deviationMm: number | null;
   /** Ink in the current cartridge, 0..1, and its tone (0 black … 1 white). */
   inkLevel: number;
   inkTone: number;
@@ -80,6 +122,8 @@ export interface DebugOptions {
   showHitCentres: boolean;
   /** Show the raw trauma buffer as a heatmap (yellow = the overwork threshold). */
   showTraumaHeatmap: boolean;
+  /** Colour every hit by its distance to the stencil: green on the line, red 3 mm or more away. */
+  showDeviationHeatmap: boolean;
   /** Replace the depth of every hit with this value (0..1); null uses the pointer. */
   depthOverride: number | null;
 }
@@ -108,21 +152,41 @@ export interface TattooEngine {
   setSkinTone(hex: string): void;
   setView(view: EngineView): void;
   setStencil(mask: ImageBitmap, distanceField: Float32Array): void;
-  /** Moves / rotates / scales the stencil. Ignored once it is locked by a stroke. */
+  /** Moves / rotates / scales the stencil. Ignored once it has been applied. */
   setStencilPlacement(placement: StencilPlacement): void;
+  /** Fixes the stencil where it is. Until then it is being placed and nothing can be drawn. */
+  applyStencil(): void;
+  /** Takes a stencil off the skin (placement cancelled). */
+  removeStencil(): void;
   setStencilVisibility(visible: boolean, opacity: number): void;
   setRenderMode(mode: RenderMode): void;
   /** The UI forwards raw pointer events while the needle tool is active. */
   pointer(e: PointerEvent): void;
+  /** Drops the stroke in progress and everything it did (ink, hits, score), as if it had not started. */
+  cancelStroke(): void;
+  /** Takes the last stroke back. Does nothing while a stroke is being drawn. */
   undo(): void;
-  snapshot(): Promise<{ ink: Blob; trauma: Blob; preview: Blob }>;
-  restore(s: { ink: Blob; trauma: Blob }): Promise<void>;
+  /** Reads the sheet back from the GPU (about 50 ms) and encodes it for storage. */
+  snapshot(): Promise<WorkSnapshot>;
+  /**
+   * Replaces the sheet with a saved one and forgets the undo history. Set the stencil first
+   * (setStencil) so its placement and the deviation can be restored with it.
+   */
+  restore(s: Pick<WorkSnapshot, "ink" | "trauma" | "state">): Promise<void>;
   on<K extends keyof EngineEvents>(
     event: K,
     cb: (payload: EngineEvents[K]) => void,
   ): () => void;
+  /** The score of the current session: strokes and deviation since it started. */
+  sessionScore(): Score;
+  /** Starts a new session window, after the previous one was written. */
+  startSession(): void;
   getDebugStats(): DebugStats;
   setDebugOptions(options: Partial<DebugOptions>): void;
-  /** Debug aid: forgets every recorded hit. Real undo arrives with milestone 7. */
+  /** Starts a clean sheet: no ink, no strokes, no stencil, full caps. The skin tone stays. */
+  newWork(): void;
+  /** Debug aid: forgets every recorded hit, and the undo history with them. */
   clearHits(): void;
+  /** Debug aid: hashes of the ink and trauma buffers, read back from the GPU. */
+  getBufferHash(): { ink: string; trauma: string } | null;
 }

@@ -1,0 +1,17 @@
+# Every merge to main: the same checks as a pull request. Nothing is deployed; releases are made by tagging (release.yml).
+name: Main
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: main
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml

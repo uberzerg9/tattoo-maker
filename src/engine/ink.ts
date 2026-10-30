@@ -1,6 +1,6 @@
 import type { Hit } from "./hit";
 import type { PresetBundle } from "./presets";
-import type { CartridgeId, InkCapId } from "./types";
+import type { CartridgeId, InkCapId, SupplyState } from "./types";
 
 /** Caps from darkest to lightest. The index is the ink's "level" in the ink buffer. */
 export const CAP_ORDER = ["black", "g60", "g30", "g10", "white"] as const satisfies readonly InkCapId[];
@@ -109,6 +109,20 @@ export class InkSupply {
       const used = this.presets.ink.consumptionPerHit * this.presets.cartridges[hit.cartridgeId].needles;
       n.level = Math.max(0, n.level - used);
     }
+  }
+
+  /** Everything undo has to give back: the caps and what each cartridge carries. */
+  snapshot(): SupplyState {
+    return {
+      caps: { ...this.caps },
+      needles: Object.fromEntries([...this.needles].map(([id, n]) => [id, { ...n }])),
+    };
+  }
+
+  restore(state: SupplyState): void {
+    Object.assign(this.caps, state.caps);
+    this.needles.clear();
+    for (const [id, n] of Object.entries(state.needles)) this.needles.set(id as CartridgeId, { ...n });
   }
 
   private needle(cartridge: CartridgeId): Needle {

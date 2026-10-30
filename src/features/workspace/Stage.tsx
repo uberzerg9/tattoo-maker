@@ -1,14 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent, RefObject } from "react";
 import { useTranslation } from "react-i18next";
-import { SHEET_CSS_PX, isInsideSheet, screenToSheetMm } from "../../engine";
+import { SHEET_CSS_PX, SHEET_MM, isInsideSheet, screenToSheetMm } from "../../engine";
 import type { TattooEngine } from "../../engine";
+import { useFormat } from "../../i18n/useFormat";
 import { useWorkspaceStore } from "../../store/workspaceStore";
 import { StencilHandles } from "../stencil/StencilHandles";
 import { Stickers } from "./Stickers";
-import { ROTATE_WHEEL_STEP_DEG } from "./config";
+import { ROTATE_WHEEL_STEP_DEG, ZOOM_MAX, ZOOM_MIN } from "./config";
+import { pinchView } from "./pinch";
+import type { PinchStart } from "./pinch";
+import { toDisplay } from "./units";
 
 interface PanState {
+  /** The pointer that moves the sheet. */
+  pointerId: number;
   startX: number;
   startY: number;
   originX: number;
@@ -21,16 +27,34 @@ interface StageProps {
   engineRef: RefObject<TattooEngine | null>;
 }
 
+/** A finger or pencil or mouse that is down on the stage, in client coordinates. */
+interface ActivePointer {
+  x: number;
+  y: number;
+  type: string;
+}
+
+interface PinchState {
+  /** The two touch pointers that make the pinch. */
+  ids: [number, number];
+  start: PinchStart;
+}
+
 const WHEEL_ZOOM_SPEED = 0.006;
 const WHEEL_DELTA_LIMIT = 60;
 
 /** Pan / zoom / rotate surface. The engine draws the skin sheet into the canvas. */
 export function Stage({ canvasRef, engineRef }: StageProps) {
   const { t } = useTranslation();
+  const format = useFormat();
+  const units = useWorkspaceStore((s) => s.units);
   const stageRef = useRef<HTMLDivElement>(null);
   const pan = useRef<PanState | null>(null);
   /** Pointer id of the stroke in progress, if any. */
   const drawing = useRef<number | null>(null);
+  /** Every pointer that is down, by id: the touches decide between pan and pinch. */
+  const pointers = useRef(new Map<number, ActivePointer>());
+  const pinch = useRef<PinchState | null>(null);
   const [isPanning, setIsPanning] = useState(false);
 
   const tool = useWorkspaceStore((s) => s.tool);
@@ -38,7 +62,18 @@ export function Stage({ canvasRef, engineRef }: StageProps) {
   const offsetX = useWorkspaceStore((s) => s.offsetX);
   const offsetY = useWorkspaceStore((s) => s.offsetY);
   const rotation = useWorkspaceStore((s) => s.rotation);
-  const engineError = useWorkspaceStore((s) => s.engineError);
+  /** A stencil that has not been applied yet: the sheet can be moved and the stencil placed, but nothing is drawn. */
+  const placing = useWorkspaceStore((s) => s.stencilSize !== null && !s.stencilLocked);
+
+  // Safari turns a two-finger pinch into a page zoom (gesture events) unless they are cancelled; the stage's own pinch does the job.
+  useEffect(() => {
+    const block = (e: Event) => e.preventDefault();
+    const events = ["gesturestart", "gesturechange", "gestureend"];
+    for (const name of events) document.addEventListener(name, block, { passive: false });
+    return () => {
+      for (const name of events) document.removeEventListener(name, block);
+    };
+  }, []);
 
   // The pan limits depend on the stage size.
   useEffect(() => {
@@ -96,48 +131,121 @@ export function Stage({ canvasRef, engineRef }: StageProps) {
     return isInsideSheet(mm);
   };
 
+  const stagePoint = (p: { x: number; y: number }) => {
+    const rect = canvasRef.current?.getBoundingClientRect();
+    return { x: p.x - (rect?.left ?? 0), y: p.y - (rect?.top ?? 0) };
+  };
+
+  const touchIds = () => [...pointers.current].filter(([, p]) => p.type === "touch").map(([id]) => id);
+
+  const startPan = (e: PointerEvent<HTMLDivElement>, pointerId = e.pointerId, from = { x: e.clientX, y: e.clientY }) => {
+    const s = useWorkspaceStore.getState();
+    pan.current = { pointerId, startX: from.x, startY: from.y, originX: s.offsetX, originY: s.offsetY };
+    setIsPanning(true);
+  };
+
+  /** Two fingers down: zoom and move together, anchored at the midpoint between them. */
+  const startPinch = (e: PointerEvent<HTMLDivElement>) => {
+    const [first, second] = touchIds();
+    if (first === undefined || second === undefined) return;
+    // A second finger is never part of a stroke: whatever the first one started is dropped, ink and all.
+    if (drawing.current !== null) {
+      engineRef.current?.cancelStroke();
+      drawing.current = null;
+    }
+    pan.current = null;
+    const s = useWorkspaceStore.getState();
+    pinch.current = {
+      ids: [first, second],
+      start: {
+        view: { zoom: s.zoom, offsetX: s.offsetX, offsetY: s.offsetY, rotationDeg: s.rotation },
+        a: stagePoint(pointers.current.get(first)!),
+        b: stagePoint(pointers.current.get(second)!),
+      },
+    };
+    setIsPanning(true);
+    void e;
+  };
+
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    if (tool === "needle" && isOnSheet(e)) {
-      if (e.button === 0) {
+    const type = e.pointerType;
+    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY, type });
+
+    if (type === "touch") {
+      e.currentTarget.setPointerCapture(e.pointerId);
+      const touches = touchIds();
+      if (touches.length >= 2) {
+        if (!pinch.current) startPinch(e);
+      } else if (drawing.current === null) {
+        // One finger moves the sheet and never draws. (A palm resting beside a pencil stroke is ignored.)
+        startPan(e);
+      }
+      return;
+    }
+
+    // Apple Pencil is always the needle; a mouse follows the selected tool.
+    const needle = type === "pen" || tool === "needle";
+    if (needle && !placing && isOnSheet(e)) {
+      if (e.button === 0 || type === "pen") {
+        if (type === "pen") pan.current = null; // a pencil that comes down wins over a finger that was panning
         drawing.current = e.pointerId;
         e.currentTarget.setPointerCapture(e.pointerId);
         engineRef.current?.pointer(e.nativeEvent);
       }
       return;
     }
-    pan.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      originX: offsetX,
-      originY: offsetY,
-    };
+    startPan(e);
     e.currentTarget.setPointerCapture(e.pointerId);
-    setIsPanning(true);
   };
 
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    const known = pointers.current.get(e.pointerId);
+    if (known) {
+      known.x = e.clientX;
+      known.y = e.clientY;
+    }
+    const g = pinch.current;
+    if (g?.ids.includes(e.pointerId)) {
+      const a = pointers.current.get(g.ids[0]);
+      const b = pointers.current.get(g.ids[1]);
+      if (!a || !b) return;
+      const store = useWorkspaceStore.getState();
+      const view = pinchView(g.start, stagePoint(a), stagePoint(b), { width: store.stageWidth, height: store.stageHeight }, { minZoom: ZOOM_MIN, maxZoom: ZOOM_MAX });
+      store.setView({ zoom: view.zoom, rotation: view.rotationDeg, offsetX: view.offsetX, offsetY: view.offsetY });
+      return;
+    }
     if (drawing.current === e.pointerId) {
       engineRef.current?.pointer(e.nativeEvent);
       return;
     }
     const p = pan.current;
-    if (!p) return;
-    useWorkspaceStore
-      .getState()
-      .setOffset(
-        p.originX + e.clientX - p.startX,
-        p.originY + e.clientY - p.startY,
-      );
+    if (!p || p.pointerId !== e.pointerId) return;
+    useWorkspaceStore.getState().setOffset(p.originX + e.clientX - p.startX, p.originY + e.clientY - p.startY);
   };
 
   const onPointerEnd = (e: PointerEvent<HTMLDivElement>) => {
+    pointers.current.delete(e.pointerId);
     if (drawing.current === e.pointerId) {
       drawing.current = null;
       engineRef.current?.pointer(e.nativeEvent);
       return;
     }
-    pan.current = null;
-    setIsPanning(false);
+    const g = pinch.current;
+    if (g?.ids.includes(e.pointerId)) {
+      pinch.current = null;
+      const left = touchIds();
+      if (left.length >= 2) startPinch(e); // a third finger takes over
+      else if (left.length === 1) {
+        // One finger is still down: carry on moving the sheet with it, from where it is now.
+        const rest = pointers.current.get(left[0]!)!;
+        startPan(e, left[0]!, { x: rest.x, y: rest.y });
+      } else setIsPanning(false);
+      return;
+    }
+    if (pan.current?.pointerId === e.pointerId) {
+      pan.current = null;
+      setIsPanning(false);
+    }
   };
 
   // The label follows the sheet with the same transform the engine applies.
@@ -176,16 +284,8 @@ export function Stage({ canvasRef, engineRef }: StageProps) {
           } as CSSProperties
         }
       >
-        <div className="sheet__label">{t("workspace.sheet.label")}</div>
+        <div className="sheet__label">{t("workspace.sheet.label", { w: format.decimal(toDisplay(SHEET_MM.width / 10, units)), h: format.decimal(toDisplay(SHEET_MM.height / 10, units)), unit: t(`workspace.units.${units}`) })}</div>
       </div>
-      {engineError && (
-        <div className="unsupported" role="alert">
-          <h2 className="unsupported__title">
-            {t("workspace.unsupported.title")}
-          </h2>
-          <p className="unsupported__hint">{t("workspace.unsupported.hint")}</p>
-        </div>
-      )}
     </div>
   );
 }

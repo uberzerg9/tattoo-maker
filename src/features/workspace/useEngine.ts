@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import type { RefObject } from "react";
 import { shallow } from "zustand/shallow";
 import { createEngine } from "../../engine";
@@ -18,16 +18,18 @@ function skinHex(id: SkinToneId): string {
  * Creates the engine once per mount, pushes the store state into it and keeps it in sync.
  * UI state stays in the store; engine events flow back into it.
  */
-export function useEngine(canvasRef: RefObject<HTMLCanvasElement | null>) {
-  const engineRef = useRef<TattooEngine | null>(null);
+export function useEngine(canvasRef: RefObject<HTMLCanvasElement | null>, engineRef: RefObject<TattooEngine | null>) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const store = useWorkspaceStore;
+    store.getState().setEngineError(null);
     const engine = createEngine({ debug: DEBUG, tuning: DEBUG_TUNING });
     engineRef.current = engine;
+    // Debug sessions only: lets browser tests drive the engine directly.
+    if (DEBUG) (window as unknown as { __tattoo?: TattooEngine }).__tattoo = engine;
 
     const offUnsupported = engine.on("unsupported", (reason) =>
       store.getState().setEngineError(reason),
@@ -49,10 +51,16 @@ export function useEngine(canvasRef: RefObject<HTMLCanvasElement | null>) {
         },
       }),
     );
+    const offScore = engine.on("score", (score) => store.getState().setScore(score));
+    const offUndoSteps = engine.on("undoSteps", (steps) => store.getState().setUndoSteps(steps));
+    const offDirty = engine.on("dirty", (dirty) => {
+      if (!store.getState().workLoading || !dirty) store.getState().setDirty(dirty);
+    });
     const offStencilLocked = engine.on("stencilLocked", (locked) =>
       store.getState().setStencilLocked(locked),
     );
     engine.mount(canvas);
+    store.getState().setEngineReady(true);
 
     const s = store.getState();
     engine.setCartridge(s.cartridge);
@@ -94,6 +102,10 @@ export function useEngine(canvasRef: RefObject<HTMLCanvasElement | null>) {
         () => engine.dip(),
       ),
       store.subscribe(
+        (st) => st.undoCount,
+        () => engine.undo(),
+      ),
+      store.subscribe(
         (st) => st.stencilPlacement,
         (v) => engine.setStencilPlacement(v),
       ),
@@ -120,10 +132,14 @@ export function useEngine(canvasRef: RefObject<HTMLCanvasElement | null>) {
       offInkLevel();
       offCapLevels();
       offStencilLocked();
+      offUndoSteps();
+      offDirty();
+      store.getState().setEngineReady(false);
+      offScore();
+      // The ref keeps the destroyed engine: the session hook still reads its score as the page unmounts.
       engine.destroy();
-      engineRef.current = null;
     };
-  }, [canvasRef]);
+  }, [canvasRef, engineRef]);
 
   return engineRef;
 }

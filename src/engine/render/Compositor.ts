@@ -19,9 +19,14 @@ import type { StencilSize } from "../stencil";
 import type { StencilPlacement } from "../types";
 import { WHITE_INK_RGB, inkTransmittance } from "../ink";
 import { markerFrag, sheetFrag, sheetVert } from "../shaders";
+import type { RawBuffers } from "../snapshot/format";
 import type { Point, Size, View } from "../view";
+import { readHalves, toImageRows, writeHalves } from "./BufferIO";
+import { BufferHasher, CheckpointPool, hashAttachment } from "./Checkpoints";
+import type { CheckpointSlot, CopySource } from "./Checkpoints";
 import { HitDots } from "./HitDots";
 import { InkBuffer } from "./InkBuffer";
+import { ScoreReducer } from "./ScoreReducer";
 import { SkinTexture } from "./SkinTexture";
 import { StencilTexture } from "./StencilTexture";
 import { TraumaBuffer } from "./TraumaBuffer";
@@ -59,6 +64,8 @@ export class Compositor {
   private readonly ink: InkBuffer;
   private readonly trauma: TraumaBuffer;
   private readonly stencilTexture: StencilTexture;
+  private readonly reducer: ScoreReducer;
+  private readonly checkpoints: CheckpointPool;
   private readonly presets: PresetBundle;
 
   constructor(gl: WebGL2RenderingContext, presets: PresetBundle) {
@@ -75,6 +82,8 @@ export class Compositor {
     this.ink = new InkBuffer(gl, this.quad);
     this.trauma = new TraumaBuffer(gl, this.quad);
     this.stencilTexture = new StencilTexture(gl);
+    this.reducer = new ScoreReducer(gl, this.quad);
+    this.checkpoints = new CheckpointPool(gl);
   }
 
   /** Stamps a frame's dots: ink (with halos) into the ink buffer, needle dots into the trauma buffer. */
@@ -89,6 +98,111 @@ export class Compositor {
 
   clearStencil(): void {
     this.stencilTexture.clear();
+  }
+
+  /** Starts shrinking the ink and trauma buffers for the trauma level; false while one is in flight. */
+  requestReduction(): boolean {
+    return this.reducer.request(this.ink.totalTexture, this.trauma.texture, this.presets.trauma.overworkThreshold);
+  }
+
+  /** True while a reduction has been started and its result not collected. */
+  get reductionBusy(): boolean {
+    return this.reducer.busy;
+  }
+
+  /** The finished reduction, or null if it is not ready. Never waits for the GPU. */
+  pollReduction(): Float32Array | null {
+    return this.reducer.poll();
+  }
+
+  /** Copies the ink and trauma buffers into a checkpoint, on the GPU. */
+  saveCheckpoint(): CheckpointSlot {
+    const slot = this.checkpoints.acquire();
+    this.checkpoints.save(slot, this.liveSources());
+    return slot;
+  }
+
+  /** Puts a checkpoint back into the buffers; null is the blank sheet. */
+  restoreCheckpoint(slot: CheckpointSlot | null): void {
+    if (slot === null) {
+      this.clearBuffers();
+      return;
+    }
+    this.checkpoints.restore(slot, [this.ink.levelsTexture, this.ink.totalTexture, this.trauma.texture]);
+    this.ink.markChanged();
+    this.trauma.markChanged();
+  }
+
+  releaseCheckpoint(slot: CheckpointSlot): void {
+    this.checkpoints.release(slot);
+  }
+
+  /** Full-size checkpoint copies allocated so far; stops growing once the pool is warm. */
+  get checkpointSlots(): number {
+    return this.checkpoints.allocated;
+  }
+
+  /** Reads the ink and trauma buffers back as half-float bits. Waits for the GPU: about 50 ms. */
+  readBuffers(): RawBuffers {
+    const [levels, total, trauma] = this.liveSources();
+    return {
+      levels: readHalves(this.gl, levels, 4),
+      total: readHalves(this.gl, total, 1),
+      trauma: readHalves(this.gl, trauma, 1),
+    };
+  }
+
+  /** Replaces the ink and trauma buffers with saved ones. */
+  writeBuffers(raw: RawBuffers): void {
+    writeHalves(this.gl, this.ink.levelsTexture, raw.levels, 4);
+    writeHalves(this.gl, this.ink.totalTexture, raw.total, 1);
+    writeHalves(this.gl, this.trauma.texture, raw.trauma, 1);
+    this.ink.markChanged();
+    this.trauma.markChanged();
+  }
+
+  /** The sheet as it looks fresh, scaled to `width` px, as straight-alpha RGBA rows (top first). */
+  renderPreview(width: number): { width: number; height: number; data: Uint8ClampedArray } {
+    const gl = this.gl;
+    const height = Math.round((width * SHEET_MM.height) / SHEET_MM.width);
+    const texture = gl.createTexture();
+    const framebuffer = gl.createFramebuffer();
+    if (!texture || !framebuffer) throw new Error("Could not allocate the preview");
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texStorage2D(gl.TEXTURE_2D, 1, gl.RGBA8, width, height);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+    gl.viewport(0, 0, width, height);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    this.prepareFrame();
+    const view = { zoom: width / SHEET_CSS_PX.width, offsetX: 0, offsetY: 0, rotationDeg: 0 };
+    this.draw(view, { width, height }, { stencil: null, healed: false, showTrauma: false });
+    const pixels = new Uint8Array(width * height * 4);
+    gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.deleteFramebuffer(framebuffer);
+    gl.deleteTexture(texture);
+    return { width, height, data: toImageRows(pixels, width, height) };
+  }
+
+  /** Debug: hashes of the ink buffers and the trauma buffer, read back synchronously. */
+  hashBuffers(): { ink: string; trauma: string } {
+    const [levels, total, trauma] = this.liveSources();
+    const ink = new BufferHasher();
+    hashAttachment(this.gl, levels, ink);
+    hashAttachment(this.gl, total, ink);
+    const hurt = new BufferHasher();
+    hashAttachment(this.gl, trauma, hurt);
+    return { ink: ink.digest(), trauma: hurt.digest() };
+  }
+
+  private liveSources(): [CopySource, CopySource, CopySource] {
+    return [
+      { framebuffer: this.ink.framebuffer, attachment: 0 },
+      { framebuffer: this.ink.framebuffer, attachment: 1 },
+      { framebuffer: this.trauma.framebuffer, attachment: 0 },
+    ];
   }
 
   /** Debug: forgets all ink and trauma. */
@@ -156,9 +270,9 @@ export class Compositor {
   }
 
   /** Debug: draws the centre of every recorded hit. */
-  drawHitDots(log: HitLog, view: View, stage: Size): void {
-    this.hitDots.sync(log.positions, log.count);
-    this.hitDots.draw(this.viewUniforms(view, stage));
+  drawHitDots(log: HitLog, view: View, stage: Size, byDeviation: boolean): void {
+    this.hitDots.sync(log.positions, log.deviations, log.count);
+    this.hitDots.draw(this.viewUniforms(view, stage), byDeviation);
   }
 
   /** Debug: marks a sheet position (mm) with a magenta ring and cross. */
@@ -187,6 +301,8 @@ export class Compositor {
     this.ink.dispose();
     this.trauma.dispose();
     this.stencilTexture.dispose();
+    this.reducer.dispose();
+    this.checkpoints.dispose();
     gl.deleteProgram(this.sheetProgram.program);
     gl.deleteProgram(this.markerProgram.program);
     for (const attrib of Object.values(this.quad.attribs ?? {}))

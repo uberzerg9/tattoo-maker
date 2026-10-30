@@ -27,7 +27,7 @@ export class InkBuffer {
   readonly levelsTexture: WebGLTexture;
   readonly totalTexture: WebGLTexture;
   private readonly gl: WebGL2RenderingContext;
-  private readonly framebuffer: WebGLFramebuffer;
+  readonly framebuffer: WebGLFramebuffer;
   private readonly programInfo: twgl.ProgramInfo;
   private readonly dots: DotInstances;
   private mipmapsStale = false;
@@ -78,6 +78,11 @@ export class InkBuffer {
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    this.mipmapsStale = true;
+  }
+
+  /** The textures changed outside stamp() (a checkpoint was restored). */
+  markChanged(): void {
     this.mipmapsStale = true;
   }
 

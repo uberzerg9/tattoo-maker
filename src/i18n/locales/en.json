@@ -1,4 +1,7 @@
 {
+  "app": {
+    "title": "Tattoo Trainer"
+  },
   "workspace": {
     "brand": {
       "a": "TATTOO",
@@ -13,11 +16,19 @@
       "open": "Profile",
       "title": "PROFILE",
       "close": "Close",
-      "level": "Beginner · {{sessions}} sessions",
+      "level_one": "Beginner · {{count, number}} session",
+      "level_other": "Beginner · {{count, number}} sessions",
       "language": "Language",
       "note": "The whole interface switches instantly. Lessons and hints follow the same language.",
       "view": "PROFILE",
-      "logout": "LOG OUT"
+      "logout": "LOG OUT",
+      "works": {
+        "title": "Saved work",
+        "empty": "Nothing saved yet.",
+        "open": "Open {{title}}",
+        "updated": "Updated {{date}}",
+        "localOnly": "On this device only"
+      }
     },
     "panel": {
       "collapse": "Collapse",
@@ -28,7 +39,7 @@
       "ink": "INK"
     },
     "sheet": {
-      "label": "SHEET 20 × 15 CM"
+      "label": "SHEET {{w}} × {{h}} {{unit}}"
     },
     "carts": {
       "title": "CARTRIDGES",
@@ -114,8 +125,7 @@
         "unitPx": "px",
         "removeFills": "Remove fills and shading",
         "size": "Size on skin",
-        "cmTall": "cm tall",
-        "sizeHint": "Max {{max}} cm, the size of the skin sheet. After transfer, move and rotate the stencil right on the skin.",
+        "sizeHint": "Max {{max}} {{unit}}, the size of the skin sheet. After transfer, move and rotate the stencil right on the skin.",
         "otherFile": "OTHER FILE",
         "cancel": "CANCEL",
         "transfer": "TRANSFER TO SKIN",
@@ -130,6 +140,11 @@
           "size": "That file is over 10 MB.",
           "decode": "That image could not be read.",
           "failed": "Something went wrong while making the stencil."
+        },
+        "tall": "{{unit}} tall",
+        "unit": {
+          "cm": "cm",
+          "in": "in"
         }
       }
     },
@@ -169,6 +184,12 @@
       "depth": "depth",
       "hits": "hits / strokes",
       "showHits": "hit centres",
+      "undoSteps": "undo steps",
+      "hashMark": "mark hash",
+      "hashCompare": "compare hash",
+      "hashSame": "same",
+      "hashDifferent": "different",
+      "hashNone": "no hash yet",
       "clearHits": "clear hits",
       "stampMs": "stamp ms",
       "dots": "dots/batch",
@@ -176,17 +197,375 @@
       "ink": "ink %",
       "showTrauma": "trauma heatmap",
       "depthOverride": "depth override",
-      "depthValue": "forced depth"
-    },
-    "unsupported": {
-      "title": "YOUR BROWSER CAN'T RUN THE TRAINER",
-      "hint": "Practice skin needs WebGL 2 with float render targets. Try the latest Chrome, Edge, Firefox or Safari."
+      "depthValue": "forced depth",
+      "showDeviation": "deviation heatmap",
+      "overwork": "overworked %",
+      "deviation": "deviation mm"
     },
     "placing": {
-      "hint": "Drag the middle to move, the corners to resize, the top handle to rotate. Your first stroke locks the stencil.",
+      "hint": "Drag the middle to move the stencil, the corners to resize it, the top handle to rotate it. Nothing can be drawn until you apply it.",
       "move": "Move stencil",
       "scale": "Resize stencil",
-      "rotate": "Rotate stencil"
+      "rotate": "Rotate stencil",
+      "keys": "Enter or Space — apply · Esc — cancel",
+      "label": "Place the stencil",
+      "apply": "APPLY STENCIL",
+      "cancel": "CANCEL"
+    },
+    "work": {
+      "new": "New",
+      "untitled": "Untitled work",
+      "confirmDiscard": "You have unsaved changes. Discard them?",
+      "openFailed": "Couldn't open this work.",
+      "status": {
+        "saving": "Saving…",
+        "saved": "Saved",
+        "offline": "Offline — saved locally",
+        "failed": "Couldn't save",
+        "unsaved": "Unsaved changes",
+        "opening": "Opening…"
+      }
+    },
+    "units": {
+      "cm": "CM",
+      "in": "IN"
     }
+  },
+  "auth": {
+    "splash": "Loading…",
+    "common": {
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "show": "SHOW",
+      "hide": "HIDE",
+      "or": "or",
+      "google": "Continue with Google",
+      "apple": "Continue with Apple",
+      "appleSoon": "Sign in with Apple is coming soon"
+    },
+    "login": {
+      "title": "LOG IN",
+      "sticker": "DON'T SHAKE",
+      "tagline": "Practice on skin that never bleeds.",
+      "forgot": "Forgot password?",
+      "keep": "Keep me logged in",
+      "submit": "LOG IN",
+      "busy": "LOGGING IN…",
+      "newHere": "New here?",
+      "create": "Create an account"
+    },
+    "signup": {
+      "title": "SIGN UP",
+      "badge": "FREE",
+      "sticker": "FIRST LINE FREE",
+      "heroA": "JOIN THE",
+      "heroB": "NEEDLE",
+      "heroC": "CLUB",
+      "b1": "Real cartridges, real techniques",
+      "b2": "Feedback on every line you pull",
+      "b3": "Your sketches, your stencils",
+      "name": "Name",
+      "namePlaceholder": "Alex",
+      "username": "Username",
+      "usernamePlaceholder": "@inkalex",
+      "usernameHint": "3–20 letters a–z, digits or _",
+      "passwordPlaceholder": "At least 8 characters",
+      "strengthLabel": "Password strength",
+      "strength": {
+        "weak": "WEAK",
+        "ok": "OK",
+        "good": "GOOD",
+        "strong": "STRONG"
+      },
+      "level": "Your experience",
+      "levels": {
+        "never": "Never tattooed",
+        "fake": "Practice skin only",
+        "apprentice": "Apprentice"
+      },
+      "language": "Interface language",
+      "agree": "I agree to the <terms>Terms</terms> and <privacy>Privacy policy</privacy>",
+      "submit": "CREATE ACCOUNT",
+      "busy": "CREATING…",
+      "already": "Already inked?",
+      "login": "Log in"
+    },
+    "complete": {
+      "title": "ALMOST THERE",
+      "intro": "Your account {{email}} is ready. Pick a username to finish.",
+      "taken": "That username is taken. Pick another one — your account is already created.",
+      "submit": "FINISH"
+    },
+    "forgot": {
+      "title": "FORGOT PASSWORD",
+      "intro": "Enter your email and we'll send you a link to set a new password.",
+      "submit": "SEND LINK",
+      "sent": "If an account exists for {{email}}, a reset link is on its way. Check your inbox.",
+      "back": "Back to log in"
+    },
+    "verify": {
+      "region": "Email verification",
+      "text": "Verify your email — we sent a link to {{email}}.",
+      "resend": "RESEND",
+      "resendIn": "RESEND IN {{seconds}} S",
+      "check": "I'VE VERIFIED",
+      "sent": "Sent. Check your inbox.",
+      "notYet": "Not verified yet."
+    },
+    "errors": {
+      "required": "Required.",
+      "invalidEmail": "Enter a valid email address.",
+      "nameRequired": "Enter your name.",
+      "usernameInvalid": "3–20 characters: a–z, 0–9 or _.",
+      "usernameTaken": "That username is taken.",
+      "passwordShort": "At least 8 characters.",
+      "invalidCredentials": "Wrong email or password.",
+      "emailInUse": "That email is already registered. Try logging in or resetting your password.",
+      "weakPassword": "That password is too weak. Use at least 8 characters.",
+      "tooManyRequests": "Too many tries. Wait a few minutes and try again.",
+      "network": "Network problem. Check your connection and try again.",
+      "popupBlocked": "The sign-in window was blocked. Allow pop-ups and try again.",
+      "provider": "Couldn't sign in with that provider. Try again or use email.",
+      "unknown": "Something went wrong. Try again.",
+      "wrongPassword": "Wrong password.",
+      "emailTaken": "That email is used by another account.",
+      "reauthNeeded": "Please sign in again and retry.",
+      "deleteFailed": "Couldn't delete the account. Nothing was lost; try again."
+    },
+    "stickers": {
+      "ink": "INK",
+      "oops": "OOPS",
+      "new": "NEW"
+    }
+  },
+  "profilePage": {
+    "close": "Close",
+    "cancel": "CANCEL",
+    "failed": "Couldn't save. Try again.",
+    "back": "WORKSPACE",
+    "stats": {
+      "title": "MY STATS",
+      "sessions_one": "session",
+      "sessions_other": "sessions",
+      "hours": "hours on skin",
+      "deviation": "avg deviation, mm",
+      "streak": "day streak"
+    },
+    "works": {
+      "rename": "RENAME",
+      "delete": "DELETE",
+      "renameTitle": "RENAME WORK",
+      "titleLabel": "Title",
+      "deleteTitle": "DELETE WORK",
+      "deleteText": "Delete “{{title}}”? The work and its files are removed for good."
+    },
+    "settings": {
+      "title": "SETTINGS",
+      "save": "SAVE CHANGES",
+      "saved": "Saved.",
+      "account": "ACCOUNT",
+      "language": "LANGUAGE",
+      "languageNote": "Applies to the whole app: workspace, lessons and hints. Saved as soon as you pick it.",
+      "defaults": "WORKSPACE DEFAULTS",
+      "units": "Units",
+      "unit": {
+        "cm": "cm",
+        "in": "inches"
+      },
+      "danger": "DANGER ZONE",
+      "providerAccount": "You sign in with your Google or Apple account, so the email and password are managed there."
+    },
+    "email": {
+      "change": "Change email",
+      "title": "CHANGE EMAIL",
+      "intro": "We'll send a confirmation link to the new address. Your email changes once you open it.",
+      "newEmail": "New email",
+      "send": "SEND LINK",
+      "sent": "We sent a link to {{email}}. Your email changes after you open it."
+    },
+    "password": {
+      "change": "Change password",
+      "title": "CHANGE PASSWORD",
+      "new": "New password",
+      "update": "UPDATE",
+      "done": "Your password was changed."
+    },
+    "reauth": {
+      "password": "Current password",
+      "provider": "For your safety we'll ask you to sign in again with your provider."
+    },
+    "delete": {
+      "button": "DELETE ACCOUNT",
+      "title": "DELETE ACCOUNT",
+      "warning": "This permanently deletes your account, your username, your saved works, sketches and stats. It can't be undone.",
+      "confirm": "DELETE FOREVER",
+      "busy": "DELETING…"
+    },
+    "analytics": {
+      "title": "Analytics cookies",
+      "text": "Anonymous usage statistics help us improve the trainer. You can change your mind any time.",
+      "on": "ON",
+      "off": "OFF"
+    }
+  },
+  "consent": {
+    "title": "Analytics cookies",
+    "text": "We'd like to count visits and see which features get used, to improve the trainer. It's optional and stays off until you accept.",
+    "accept": "ACCEPT",
+    "reject": "REJECT",
+    "privacy": "Privacy policy"
+  },
+  "unsupported": {
+    "title": "YOUR BROWSER CAN'T RUN THE TRAINER",
+    "reason": {
+      "webgl2": "This browser has no WebGL 2, which is what draws the practice skin.",
+      "float-render-targets": "Your graphics setup can't draw into the floating-point buffers that hold the ink and the skin damage (EXT_color_buffer_float)."
+    },
+    "tryTitle": "TRY THIS",
+    "try": {
+      "browser": "Use the latest Chrome, Edge, Firefox or Safari (15 or newer) on a computer or tablet.",
+      "acceleration": "Turn on hardware acceleration in the browser settings.",
+      "drivers": "Update your graphics drivers and restart the browser."
+    },
+    "details": "Technical details: {{reason}}",
+    "profile": "OPEN PROFILE",
+    "logout": "LOG OUT"
+  },
+  "legal": {
+    "back": "BACK",
+    "language": "Language",
+    "draftTitle": "DRAFT — NEEDS LEGAL REVIEW",
+    "draftText": "This text is a working draft, not final legal wording. Anything in [square brackets] is still to be filled in. Do not rely on it until it has been reviewed.",
+    "footer": {
+      "label": "Legal and cookies",
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "cookies": "Cookie settings"
+    },
+    "terms": {
+      "title": "TERMS OF USE",
+      "sections": {
+        "service": {
+          "title": "What Tattoo Trainer is",
+          "p1": "Tattoo Trainer is a practice tool for beginner tattoo artists. You pick a cartridge, an ink cap and a machine speed, transfer a sketch onto a sheet of virtual practice skin as a stencil, tattoo it, and get feedback on how closely you followed it.",
+          "p2": "It is a simulation. Real skin, real machines and real ink behave differently."
+        },
+        "noQualification": {
+          "title": "No qualification",
+          "p1": "Using the trainer does not give you any qualification, licence, certificate or permission to tattoo. Scores and feedback are for practice only and are not an assessment by any authority.",
+          "p2": "Tattooing people takes proper training, hygiene and safety education, and the licences your local law asks for. The trainer replaces none of that and gives no medical, health or safety advice."
+        },
+        "account": {
+          "title": "Your account",
+          "p1": "You need an account to save your work. Give accurate details, keep your password to yourself, and tell us if you think someone else has used your account. You can delete your account at any time in the Profile (Delete account).",
+          "p2": "[Minimum age and parental consent rules — to be set by legal review.]"
+        },
+        "sketches": {
+          "title": "Your sketches and works",
+          "p1": "You keep the rights to what you upload. By uploading a sketch you confirm that you own it or have the right to use it for practice, and that it does not infringe anyone else's rights or break the law.",
+          "p2": "You allow us to store and process your sketches and works only to run the trainer for you: to show them back to you, make stencils from them and save your progress. We do not publish them or show them to other users."
+        },
+        "rules": {
+          "title": "Acceptable use",
+          "p1": "Do not upload unlawful, hateful or infringing content, try to break or overload the service, or try to reach other people's data."
+        },
+        "beta": {
+          "title": "Beta and availability",
+          "p1": "The trainer is in closed beta. It is provided as it is, features can change, and saved work can be lost despite our efforts to prevent it. Keep your own copy of anything you cannot afford to lose."
+        },
+        "liability": {
+          "title": "Liability and governing law",
+          "p1": "[Limitation of liability and governing law — to be written by legal review.]"
+        },
+        "ending": {
+          "title": "Ending and changes",
+          "p1": "You can stop using the trainer or delete your account at any time. We may suspend accounts that break these terms. We may update these terms and will tell you about important changes in the app."
+        },
+        "contact": {
+          "title": "Contact",
+          "p1": "Questions about these terms: {{email}}."
+        }
+      }
+    },
+    "privacy": {
+      "title": "PRIVACY POLICY",
+      "sections": {
+        "who": {
+          "title": "Who we are",
+          "p1": "Tattoo Trainer is run by [OPERATOR NAME AND ADDRESS — to be filled in]. Questions and requests: {{email}}."
+        },
+        "data": {
+          "title": "What we store",
+          "intro": "We keep only what the trainer needs:",
+          "account": "Account: your name, username, email address, experience level, language and settings (skin tone, machine speed, units, panel layout).",
+          "works": "Works: the ink and skin-damage data of each work, a small preview image and its title.",
+          "sketches": "Sketches: the image you upload and the stencil made from it.",
+          "sessions": "Practice sessions: when you practised, the number of passes, the average deviation and the trauma level, and the statistics added up from them (sessions, hours, streak).",
+          "device": "On your device: saved copies of your works so they open offline, your sign-in, your language and your cookie choice.",
+          "analytics": "Analytics, only if you accept: which features are used (sign-ups, first stroke, stencil transfers, saves, end of a session) and basic device data, through Google Analytics cookies."
+        },
+        "where": {
+          "title": "Where it is stored",
+          "p1": "Account data, works, sketches and sessions are stored with Google Firebase (Authentication, Cloud Firestore, Cloud Storage) in the EU, in the europe-west3 region (Frankfurt). If you accept analytics, Google Analytics may process data outside the EU. [Transfers and safeguards — to be confirmed by legal review.]"
+        },
+        "why": {
+          "title": "Why we use it",
+          "p1": "To provide the trainer (your account, saving, statistics) and, only with your consent, to understand and improve it. [Legal bases — to be confirmed by legal review.]"
+        },
+        "cookies": {
+          "title": "Analytics and cookies",
+          "p1": "Analytics cookies stay off until you accept them in the banner. You can change your choice at any time in Profile → Analytics cookies, or with the cookie settings link in the footer. Refusing or withdrawing stops analytics and removes the cookies. The trainer does not use advertising cookies."
+        },
+        "sharing": {
+          "title": "Who sees your data",
+          "p1": "Only you can read your works, sketches and sessions. We do not sell your data. Google processes data for us as our hosting and analytics provider."
+        },
+        "keep": {
+          "title": "Keeping and deleting",
+          "p1": "We keep your data while your account exists. Profile → Delete account removes your profile, works, sketches, sessions, username, stored files and your sign-in, and clears the copies on your device. [Backup retention and analytics retention periods — to be confirmed.]"
+        },
+        "rights": {
+          "title": "Your rights",
+          "p1": "You can ask to see, correct, export or delete your data, object to its use or withdraw consent, and complain to your data protection authority. Write to {{email}}; much of this you can do yourself in the Profile."
+        },
+        "children": {
+          "title": "Children",
+          "p1": "[Age limits — to be set by legal review.]"
+        },
+        "changes": {
+          "title": "Changes",
+          "p1": "We will update this page when something changes and tell you about important changes in the app."
+        }
+      }
+    }
+  },
+  "onboarding": {
+    "label": "Quick tour",
+    "step": "TIP {{n}} / {{total}}",
+    "skip": "SKIP",
+    "back": "BACK",
+    "next": "NEXT",
+    "done": "GOT IT",
+    "cartridge": {
+      "title": "PICK A CARTRIDGE",
+      "text": "Liners (RL) draw outlines; shaders (RS) and magnums (M1, RM) fill and blend. Start with a liner for line work."
+    },
+    "dip": {
+      "title": "DIP THE NEEDLE",
+      "text": "Choose an ink cap, then press DIP NEEDLE (Ctrl/⌘ + D). The needle only draws while it has ink, and it runs out as you work."
+    },
+    "stencil": {
+      "title": "ADD A STENCIL",
+      "text": "Upload a sketch in the Stencil panel, tune its lines, transfer it to the skin and place it. Then press APPLY STENCIL (or Enter) to lock it in place and start drawing."
+    },
+    "draw": {
+      "title": "NOW DRAW",
+      "text": "Drag over the skin to tattoo. Move steadily: speed and passes change how the line looks, and the strip at the bottom scores your accuracy."
+    }
+  },
+  "preview": {
+    "badge": "Preview — saving disabled",
+    "signupDisabled": "Sign-up is switched off in this preview."
   }
 }

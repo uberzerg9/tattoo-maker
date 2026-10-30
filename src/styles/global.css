@@ -90,6 +90,13 @@ input[type="range"] {
   cursor: pointer;
 }
 
+.icon-btn:disabled {
+  background: var(--color-border-muted);
+  color: var(--color-ink);
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .icon-btn--lime {
   background: var(--color-lime);
 }

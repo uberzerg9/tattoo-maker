@@ -1,0 +1,87 @@
+/* First-run tips: a sticker card beside the thing it explains, with a pulsing outline on that thing. */
+.onboarding {
+  position: fixed;
+  z-index: calc(var(--z-dialog) - 1);
+  box-sizing: border-box;
+  width: min(320px, calc(100vw - 24px));
+  padding: 14px 16px 14px;
+  background: var(--color-yellow);
+  color: var(--color-ink);
+  border: var(--border-panel);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+  font-family: var(--font-body);
+}
+
+/* Phones: no pointing at panels, the card is a sheet at the bottom. */
+@media (max-width: 699px) {
+  .onboarding {
+    left: calc(12px + env(safe-area-inset-left, 0px)) !important;
+    right: calc(12px + env(safe-area-inset-right, 0px)) !important;
+    top: auto !important;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    width: auto;
+    visibility: visible !important;
+  }
+}
+
+.onboarding__step {
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.onboarding__title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.onboarding__text {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.onboarding__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.onboarding__actions .btn {
+  height: auto;
+  min-height: var(--size-control);
+  padding: 6px 12px;
+}
+
+/* SKIP is a quiet link-like button on the left; NEXT stays on the right. */
+.onboarding__skip {
+  margin-right: auto;
+  background: transparent;
+  border-color: transparent;
+  text-decoration: underline;
+}
+
+.onboarding-target {
+  outline: 4px solid var(--color-pink);
+  outline-offset: 3px;
+  animation: onboarding-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes onboarding-pulse {
+  50% {
+    outline-color: var(--color-lime);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-target {
+    animation: none;
+  }
+}

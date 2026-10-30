@@ -17,7 +17,7 @@ const clone = () => structuredClone(raw) as unknown as Raw;
 describe("bundled presets", () => {
   it("match the values in ENGINE.md §4", () => {
     const c = bundledPresets.cartridges;
-    expect(bundledPresets.version).toBe(1);
+    expect(bundledPresets.version).toBe(2);
     expect(c["rl-7"]).toEqual({
       group: "RL",
       needles: 7,
@@ -32,7 +32,7 @@ describe("bundled presets", () => {
     expect(c["rm-15"].layout).toBe("curved-row");
     expect(c["rs-9"].layout).toBe("round-loose");
     expect(c["rm-15"].footprintMm).toBe(5);
-    expect(bundledPresets.ink).toEqual({ consumptionPerHit: 0.0006, fadeBelow: 0.25 });
+    expect(bundledPresets.ink).toEqual({ consumptionPerHit: 0.00018, fadeBelow: 0.25 });
     expect(bundledPresets.trauma).toEqual({ overworkThreshold: 0.6, blowoutDepth: 0.85 });
     expect(bundledPresets.render).toEqual({ healedInkFactor: 0.85, healedBlurMm: 0.12, freshRedness: 0.55 });
   });
@@ -53,7 +53,7 @@ describe("parsePresets", () => {
 
   it("rejects an unsupported version", () => {
     const j = clone();
-    j.version = 2;
+    j.version = 3;
     expect(() => parsePresets(j)).toThrow(/version/);
   });
 

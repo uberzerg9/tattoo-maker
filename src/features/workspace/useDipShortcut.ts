@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useWorkspaceStore } from "../../store/workspaceStore";
 
 /** True when typing would be hijacked: focus is in a form field or an editable element. */
-function isEditable(target: EventTarget | null): boolean {
+export function isEditable(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
   return (
     target instanceof HTMLInputElement ||

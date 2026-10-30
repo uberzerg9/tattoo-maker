@@ -21,8 +21,8 @@ const ROTATE_HANDLE_OFFSET_PX = 34;
 const NUDGE_MM = 1;
 
 /**
- * Handles on a stencil that has not been drawn over yet: drag the middle to move, a corner to
- * resize, the round handle above it to rotate. The first stroke locks it and removes them.
+ * Handles on a stencil that has not been applied yet: drag the middle to move, a corner to
+ * resize, the round handle above it to rotate. Applying the stencil (PlacementBar) removes them.
  */
 export function StencilHandles() {
   const { t } = useTranslation();
@@ -113,7 +113,6 @@ export function StencilHandles() {
         <button key={i} type="button" className="stencil-handle stencil-handle--scale" style={at(c)} aria-label={t("workspace.placing.scale")} onPointerDown={(e) => begin("scale", e)} onPointerMove={move} onPointerUp={end} onPointerCancel={end} />
       ))}
       <button type="button" className="stencil-handle stencil-handle--rotate" style={at(rotateAt)} aria-label={t("workspace.placing.rotate")} onPointerDown={(e) => begin("rotate", e)} onPointerMove={move} onPointerUp={end} onPointerCancel={end} />
-      <div className="placing-hint">{t("workspace.placing.hint")}</div>
     </div>
   );
 }
